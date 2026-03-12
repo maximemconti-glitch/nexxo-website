@@ -426,6 +426,100 @@
       background: linear-gradient(90deg, var(--accent), transparent);
       margin: 0 auto 64px; border-radius: 2px;
     }
+
+    /* ─── WHITE HERO ─── */
+    #hero {
+      background: #ffffff;
+      z-index: 2;
+    }
+    #hero .orb-1, #hero .orb-2 { opacity: 0; }
+    #hero .grid-overlay {
+      background-image:
+        linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px);
+    }
+    #hero .hero-eyebrow { color: #6e6e73; }
+    #hero .hero-title { color: #1d1d1f; }
+    #hero .hero-subtitle { color: #6e6e73; }
+    #hero .scroll-hint { color: #6e6e73; }
+    #hero .scroll-arrow { background: linear-gradient(to bottom, var(--accent), transparent); }
+    #hero .btn-secondary { color: #1d1d1f; border-color: rgba(0,0,0,0.15); }
+    #hero .btn-secondary:hover { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.28); }
+
+    /* ─── NAVBAR ON WHITE ─── */
+    #navbar:not(.nav-scrolled) .nav-logo { color: #1d1d1f; }
+    #navbar:not(.nav-scrolled) .nav-logo img { filter: none; }
+    #navbar:not(.nav-scrolled) .nav-links a:not(.nav-cta) { color: #6e6e73; }
+    #navbar:not(.nav-scrolled) .nav-links a:not(.nav-cta):hover { color: #1d1d1f; }
+
+    /* ─── RÉALISATIONS ─── */
+    #realisations {
+      background: #ffffff;
+      padding: 120px 32px;
+      position: relative; z-index: 2;
+    }
+    .real-header { max-width: 1200px; margin: 0 auto 64px; }
+    .real-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: #6e6e73; font-family: var(--font-mono);
+      display: block; margin-bottom: 16px;
+    }
+    .real-title {
+      font-family: var(--font-head); font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700; color: #1d1d1f; line-height: 1.1;
+      letter-spacing: -0.03em; margin-bottom: 20px;
+    }
+    .real-sub {
+      font-size: 1rem; color: #6e6e73;
+      max-width: 56ch; line-height: 1.7;
+    }
+    .real-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 28px; max-width: 1200px; margin: 0 auto;
+    }
+    .browser-card {
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid #e5e5e5;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: #fff;
+    }
+    .browser-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.13);
+    }
+    .browser-bar {
+      background: #f5f5f7; padding: 10px 14px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span { width: 11px; height: 11px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #febc2e; }
+    .dot-g { background: #28c840; }
+    .browser-url {
+      flex: 1; background: #e5e5e5; border-radius: 4px;
+      padding: 3px 10px; font-size: 0.7rem;
+      color: #6e6e73; font-family: var(--font-mono);
+      text-align: center; overflow: hidden; white-space: nowrap;
+    }
+    .browser-img { width: 100%; height: 210px; object-fit: cover; display: block; }
+    .browser-footer {
+      padding: 14px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .browser-name {
+      font-family: var(--font-head); font-size: 0.92rem;
+      font-weight: 600; color: #1d1d1f;
+    }
+    .browser-tag {
+      font-size: 0.72rem; color: #6e6e73;
+      border: 1px solid #e5e5e5; border-radius: 100px;
+      padding: 4px 12px; background: #f5f5f7;
+    }
+    @media (max-width: 900px) { .real-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 580px) { .real-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -460,8 +554,8 @@
         <span class="nav-logo-name">Nexxo</span>
       </a>
       <div class="nav-links">
+        <a href="#realisations">Réalisations</a>
         <a href="#features">Services</a>
-        <a href="#specs">Résultats</a>
         <a href="#testimonials">Clients</a>
         <a href="mailto:contact@nexxo.systems" class="nav-cta">Réserver un appel</a>
       </div>
@@ -499,6 +593,83 @@
       <canvas id="frameCanvas"></canvas>
 
 
+    </div>
+  </section>
+
+  <!-- Réalisations -->
+  <section id="realisations">
+    <div class="real-header">
+      <span class="real-eyebrow">Nos réalisations</span>
+      <h2 class="real-title">Ce qu'on<br>construit.</h2>
+      <p class="real-sub">Du restaurant gastronomique au cabinet médical — des sites pensés pour chaque secteur, chaque audience, chaque objectif.</p>
+    </div>
+    <div class="real-grid">
+      <div class="browser-card">
+        <div class="browser-bar">
+          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="browser-url">restaurant-jules.fr</span>
+        </div>
+        <img class="browser-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=80&fit=crop" alt="Restaurant">
+        <div class="browser-footer">
+          <span class="browser-name">Le Jules — Restaurant</span>
+          <span class="browser-tag">Restauration</span>
+        </div>
+      </div>
+      <div class="browser-card">
+        <div class="browser-bar">
+          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="browser-url">elise-paris.fr</span>
+        </div>
+        <img class="browser-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80&fit=crop" alt="Mode">
+        <div class="browser-footer">
+          <span class="browser-name">Élise Paris — Mode</span>
+          <span class="browser-tag">Boutique</span>
+        </div>
+      </div>
+      <div class="browser-card">
+        <div class="browser-bar">
+          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="browser-url">martin-plombier.fr</span>
+        </div>
+        <img class="browser-img" src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=700&q=80&fit=crop" alt="Plombier">
+        <div class="browser-footer">
+          <span class="browser-name">Martin — Plombier</span>
+          <span class="browser-tag">Artisan</span>
+        </div>
+      </div>
+      <div class="browser-card">
+        <div class="browser-bar">
+          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="browser-url">shop-nova.fr</span>
+        </div>
+        <img class="browser-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=700&q=80&fit=crop" alt="E-commerce">
+        <div class="browser-footer">
+          <span class="browser-name">Shop Nova — E-commerce</span>
+          <span class="browser-tag">E-commerce</span>
+        </div>
+      </div>
+      <div class="browser-card">
+        <div class="browser-bar">
+          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="browser-url">cabinet-moreau.fr</span>
+        </div>
+        <img class="browser-img" src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=700&q=80&fit=crop" alt="Médical">
+        <div class="browser-footer">
+          <span class="browser-name">Cabinet Moreau</span>
+          <span class="browser-tag">Médical</span>
+        </div>
+      </div>
+      <div class="browser-card">
+        <div class="browser-bar">
+          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="browser-url">coach-elite.fr</span>
+        </div>
+        <img class="browser-img" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=700&q=80&fit=crop" alt="Coach">
+        <div class="browser-footer">
+          <span class="browser-name">Coach Élite</span>
+          <span class="browser-tag">Consultant</span>
+        </div>
+      </div>
     </div>
   </section>
 
