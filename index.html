@@ -259,28 +259,63 @@
     /* ─── SPECS ─── */
     #specs {
       position: relative; z-index: 1;
-      padding: 120px 32px;
+      padding: 100px 32px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    #specs::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(var(--accent-rgb),0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .specs-eyebrow {
+      display: block; text-align: center;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 56px;
     }
     .specs-grid {
       display: grid; grid-template-columns: repeat(4,1fr);
-      gap: 40px; max-width: 1000px; margin: 0 auto; text-align: center;
+      gap: 20px; max-width: 1100px; margin: 0 auto; text-align: center;
     }
-    .spec-item {}
+    .spec-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px; padding: 40px 24px 36px;
+      transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+      opacity: 0; transform: translateY(28px);
+    }
+    .spec-item.revealed {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1),
+                  border-color 0.3s ease, background 0.3s ease;
+    }
+    .spec-item:hover {
+      border-color: rgba(var(--accent-rgb),0.35);
+      background: rgba(var(--accent-rgb),0.04);
+      transform: translateY(-3px);
+    }
+    .spec-item.revealed:hover { transform: translateY(-3px); }
     .spec-number {
-      font-family: var(--font-head); font-size: 3.5rem;
-      font-weight: 700; display: block; transition: text-shadow 0.3s ease;
-      color: var(--text);
+      font-family: var(--font-head); font-size: 3.8rem;
+      font-weight: 700; display: block; line-height: 1;
+      letter-spacing: -0.03em;
+      transition: text-shadow 0.3s ease; color: var(--text);
     }
     .spec-number.counting {
-      text-shadow: 0 0 24px rgba(var(--accent-rgb),0.5);
+      text-shadow: 0 0 40px rgba(var(--accent-rgb),0.7);
     }
     .spec-label {
-      font-size: 0.88rem; color: var(--text-secondary);
-      margin-top: 8px; display: block; line-height: 1.4;
+      font-size: 0.82rem; color: var(--text-secondary);
+      margin-top: 14px; display: block; line-height: 1.55;
     }
-    @media (max-width: 768px) {
-      .specs-grid { grid-template-columns: repeat(2,1fr); gap: 32px; }
-      .spec-number { font-size: 2.5rem; }
+    @media (max-width: 900px) {
+      .specs-grid { grid-template-columns: repeat(2,1fr); gap: 16px; }
+      .spec-number { font-size: 2.8rem; }
+    }
+    @media (max-width: 480px) {
+      .specs-grid { grid-template-columns: 1fr; }
     }
 
     /* ─── SECTION HEADERS ─── */
@@ -678,22 +713,23 @@
 
   <!-- Specs -->
   <section id="specs">
+    <span class="specs-eyebrow">Ce que Nexxo apporte</span>
     <div class="specs-grid">
       <div class="spec-item" data-target="48" data-suffix="h">
         <span class="spec-number">0</span>
         <span class="spec-label">Délai de livraison</span>
       </div>
-      <div class="spec-item" data-target="7" data-suffix="€">
+      <div class="spec-item" data-target="2" data-suffix="h">
         <span class="spec-number">0</span>
-        <span class="spec-label">Par campagne IA (max)</span>
+        <span class="spec-label">par jour gagnées en moyenne avec l'automatisation</span>
       </div>
       <div class="spec-item" data-target="100" data-suffix="%">
         <span class="spec-number">0</span>
-        <span class="spec-label">Clé en main</span>
+        <span class="spec-label">Implémentation &amp; approfondissement de votre Branding</span>
       </div>
-      <div class="spec-item" data-target="4" data-suffix="">
+      <div class="spec-item" data-target="100" data-suffix="%">
         <span class="spec-number">0</span>
-        <span class="spec-label">Étapes seulement</span>
+        <span class="spec-label">personnalisé pour votre entreprise et vos besoins</span>
       </div>
     </div>
   </section>
@@ -1045,16 +1081,17 @@
           const items = entry.target.querySelectorAll('.spec-item');
           items.forEach((item, i) => {
             setTimeout(() => {
+              item.classList.add('revealed');
               const numEl = item.querySelector('.spec-number');
               const target = parseFloat(item.dataset.target);
               const suffix = item.dataset.suffix || '';
               countUp(numEl, target, suffix);
-            }, i * 180);
+            }, i * 160);
           });
           specObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.2 });
 
     const specsEl = document.getElementById('specs');
     if (specsEl) specObserver.observe(specsEl);
