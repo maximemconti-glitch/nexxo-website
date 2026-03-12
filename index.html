@@ -3,27 +3,480 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexxo — Site en construction</title>
+  <title>Nexxo — Automatisation IA & Sites Web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #080808;
+      --bg2: #0f0f0f;
+      --text: #f0ece4;
+      --muted: #888880;
+      --accent: #c8ff00;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      background: #0a0a0a;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
       display: flex;
       align-items: center;
-      justify-content: center;
-      text-align: center;
+      justify-content: space-between;
+      padding: 1.4rem 4vw;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      background: rgba(8,8,8,0.7);
     }
-    h1 { font-size: 3rem; font-weight: 700; letter-spacing: -1px; }
-    p { margin-top: 1rem; color: #888; font-size: 1.1rem; }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--accent); }
+
+    nav a.cta-nav {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 0.55rem 1.3rem;
+      border-radius: 100px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: opacity 0.2s;
+    }
+
+    nav a.cta-nav:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10rem 4vw 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,255,0,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.1s forwards;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      max-width: 14ch;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero p {
+      margin-top: 2rem;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 48ch;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.35s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .btn-ghost:hover { color: var(--text); }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 4vw;
+    }
+
+    /* SERVICES */
+    .services {
+      padding: 7rem 4vw;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3.5rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5px;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .service-card {
+      padding: 2.8rem;
+      background: var(--bg2);
+      transition: background 0.3s;
+      position: relative;
+    }
+
+    .service-card:hover { background: #131313; }
+
+    .service-card + .service-card {
+      border-left: 1.5px solid var(--border);
+    }
+
+    @media (max-width: 700px) {
+      .service-card + .service-card {
+        border-left: none;
+        border-top: 1.5px solid var(--border);
+      }
+    }
+
+    .service-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+    }
+
+    .service-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .service-card p {
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.8rem;
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+    }
+
+    /* HOW */
+    .how {
+      padding: 7rem 4vw;
+    }
+
+    .how h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 4rem;
+      max-width: 24ch;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: rgba(200,255,0,0.15);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .step h4 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .step p {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* CTA */
+    .cta-section {
+      margin: 0 4vw 7rem;
+      padding: 5rem 4rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 400px; height: 300px;
+      background: radial-gradient(circle, rgba(200,255,0,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      max-width: 20ch;
+    }
+
+    .cta-section p {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 40ch;
+      margin-bottom: 2.5rem;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 2.5rem 4vw;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--text); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <div>
-    <h1>Nexxo</h1>
-    <p>Site en construction — bientôt disponible.</p>
-  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">Nexxo<span>.</span></a>
+    <a href="#contact" class="cta-nav">Prendre contact</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-tag">Agence IA & Sites Web</span>
+    <h1>Votre croissance,<br><em>automatisée.</em></h1>
+    <p>Nexxo accompagne les entreprises dans la création de leur présence digitale et l'automatisation de leurs processus grâce à l'intelligence artificielle.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Réserver un appel →</a>
+      <a href="#services" class="btn-ghost">Voir nos services ↓</a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <p class="section-label">Ce qu'on fait</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <p class="service-num">01</p>
+        <h3>Création de sites web</h3>
+        <p>Des sites professionnels clé en main — design, développement, SEO et hébergement. Vous n'avez rien à gérer techniquement. On livre un site prêt à générer des clients.</p>
+        <div class="service-tags">
+          <span class="tag">Design</span>
+          <span class="tag">Développement</span>
+          <span class="tag">SEO</span>
+          <span class="tag">Maintenance</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <p class="service-num">02</p>
+        <h3>Automatisation IA</h3>
+        <p>On identifie les tâches répétitives qui mobilisent vos équipes — marketing, logistique, après-vente — et on les automatise. Vos salariés se concentrent sur ce qui a vraiment de la valeur.</p>
+        <div class="service-tags">
+          <span class="tag">Lead generation</span>
+          <span class="tag">Marketing</span>
+          <span class="tag">Logistique</span>
+          <span class="tag">SAV</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- HOW -->
+  <section class="how">
+    <h2>Un process simple,<br>des résultats concrets.</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h4>Analyse</h4>
+        <p>On étudie votre situation, vos outils et vos points de friction. Aucun engagement, juste un échange de 15 minutes.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h4>Proposition</h4>
+        <p>On vous présente une solution sur mesure — site, automatisation ou les deux — avec un délai et un tarif clairs.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h4>Livraison</h4>
+        <p>On livre. Vous n'avez rien à gérer. On reste disponibles pour les ajustements et la maintenance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <h2>Prêt à passer à la vitesse supérieure ?</h2>
+    <p>Un appel de 15 minutes suffit pour voir ce qu'on peut faire pour vous.</p>
+    <a href="mailto:contact@nexxo.systems" class="btn-primary">contact@nexxo.systems →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Nexxo. Tous droits réservés.</p>
+    <a href="mailto:contact@nexxo.systems">contact@nexxo.systems</a>
+  </footer>
+
 </body>
 </html>
