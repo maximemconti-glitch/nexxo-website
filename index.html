@@ -67,7 +67,12 @@
       transition: opacity 0.6s ease;
     }
     .loader-content { text-align: center; }
-    .loader-logo img { height: 48px; margin-bottom: 32px; filter: brightness(0) invert(1); }
+    .loader-logo { margin-bottom: 32px; }
+    .wordmark { font-family: var(--font-head); font-weight: 700; letter-spacing: -0.03em; color: currentColor; }
+    .wordmark .accent-dot { color: #0071e3; }
+    .loader-logo .wordmark { font-size: 2rem; color: #ffffff; }
+    .nav-logo .wordmark { font-size: 1.45rem; }
+    .footer-brand .wordmark { font-size: 1.3rem; }
     .loader-text {
       font-family: var(--font-mono); font-size: 0.75rem;
       letter-spacing: 3px; text-transform: uppercase;
@@ -109,9 +114,6 @@
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
       text-decoration: none; color: var(--text);
-    }
-    .nav-logo img {
-      height: 28px; filter: brightness(0) invert(1);
     }
     .nav-logo-name {
       font-family: var(--font-head); font-weight: 600; font-size: 1rem;
@@ -399,10 +401,6 @@
       display: flex; align-items: center; justify-content: center;
       gap: 10px; margin-bottom: 28px;
     }
-    .footer-brand img { height: 28px; filter: brightness(0) invert(1); }
-    .footer-brand-name {
-      font-family: var(--font-head); font-weight: 600;
-    }
     .footer-links {
       display: flex; justify-content: center; gap: 32px; margin-bottom: 28px;
     }
@@ -448,7 +446,6 @@
 
     /* ─── NAVBAR ON WHITE ─── */
     #navbar:not(.nav-scrolled) .nav-logo { color: #1d1d1f; }
-    #navbar:not(.nav-scrolled) .nav-logo img { filter: none; }
     #navbar:not(.nav-scrolled) .nav-links a:not(.nav-cta) { color: #6e6e73; }
     #navbar:not(.nav-scrolled) .nav-links a:not(.nav-cta):hover { color: #1d1d1f; }
 
@@ -537,7 +534,7 @@
   <div id="loader">
     <div class="loader-content">
       <div class="loader-logo">
-        <img src="logo-nexxo.png" alt="Nexxo">
+        <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
       </div>
       <p class="loader-text">Loading</p>
       <div class="loader-bar-track">
@@ -550,7 +547,7 @@
   <nav id="navbar">
     <div class="nav-inner">
       <a class="nav-logo" href="#">
-        <img src="logo-nexxo.png" alt="Nexxo">
+        <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
       </a>
       <div class="nav-links">
         <a href="#realisations">Réalisations</a>
@@ -800,8 +797,7 @@
   <!-- Footer -->
   <footer>
     <div class="footer-brand">
-      <img src="logo-nexxo.png" alt="Nexxo">
-      <span class="footer-brand-name">Nexxo</span>
+      <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
     </div>
     <div class="footer-links">
       <a href="#features">Services</a>
