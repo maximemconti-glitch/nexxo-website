@@ -397,37 +397,6 @@
     }
     .btn-large { font-size: 1.05rem; padding: 18px 48px; }
 
-    /* ─── TESTIMONIALS ─── */
-    #testimonials { position: relative; z-index: 1; padding: 80px 0 120px; }
-    .testimonials-track {
-      display: flex; gap: 20px;
-      overflow-x: auto; scroll-snap-type: x mandatory;
-      padding: 16px 40px 40px;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none; cursor: grab;
-    }
-    .testimonials-track::-webkit-scrollbar { display: none; }
-    .testimonials-track.dragging { cursor: grabbing; }
-    .testimonial-card {
-      min-width: 340px; scroll-snap-align: start;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-radius: 20px; padding: 32px; flex-shrink: 0;
-      transition: border-color 0.3s ease;
-    }
-    .testimonial-card:hover { border-color: rgba(var(--accent-rgb),0.15); }
-    .testimonial-stars { color: var(--accent); font-size: 0.85rem; margin-bottom: 16px; }
-    .testimonial-text {
-      font-size: 0.95rem; line-height: 1.7;
-      color: rgba(255,255,255,0.85); margin-bottom: 24px;
-      font-style: italic;
-    }
-    .testimonial-author {}
-    .author-name {
-      display: block; font-family: var(--font-head);
-      font-weight: 600; font-size: 0.9rem;
-    }
     .author-role {
       display: block; font-size: 0.8rem; color: var(--text-secondary);
       margin-top: 2px;
@@ -594,7 +563,6 @@
       <div class="nav-links">
         <a href="#realisations">Réalisations</a>
         <a href="#features">Services</a>
-        <a href="#testimonials">Clients</a>
         <a href="mailto:contact@nexxo.systems" class="nav-cta">Réserver un appel</a>
       </div>
     </div>
@@ -799,55 +767,6 @@
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section id="testimonials">
-    <div class="section-header">
-      <span class="section-eyebrow">Témoignages</span>
-      <h2 class="section-title">Ce que disent nos clients</h2>
-    </div>
-    <div class="testimonials-track" id="testimonialTrack">
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"En 48h j'avais un site que mes clients adorent. Le référencement local fonctionne vraiment — on remonte sur Google Maps et les réservations en ligne ont augmenté de 40% en un mois."</p>
-        <div class="testimonial-author">
-          <span class="author-name">Thomas M.</span>
-          <span class="author-role">Propriétaire, Restaurant Les Arènes — Paris 11e</span>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"J'avais peur que ce soit trop technique pour moi. Clé en main, c'est exactement ça — ils ont géré le domaine, les textes, les photos. Trois semaines après le lancement, mon carnet de commandes est plein."</p>
-        <div class="testimonial-author">
-          <span class="author-name">Sophie D.</span>
-          <span class="author-role">Fondatrice, Atelier Solène — Lyon</span>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"Nexxo a automatisé notre process de suivi client de A à Z. Ce qui prenait 3h à mon équipe chaque matin se fait maintenant seul. C'est vraiment construit pour nous — pas une solution générique."</p>
-        <div class="testimonial-author">
-          <span class="author-name">Alexandre B.</span>
-          <span class="author-role">Coach Business Indépendant — Paris</span>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"On avait un devis à 5 000€ ailleurs pour quelque chose d'inférieur. Nexxo a livré exactement ce qu'il nous fallait, dans les délais, avec un accompagnement pro du début à la fin. Je les recommande sans hésiter."</p>
-        <div class="testimonial-author">
-          <span class="author-name">Camille R.</span>
-          <span class="author-role">Directrice, Cabinet RH Nexus — Bordeaux</span>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"La prospection automatique nous a trouvé des clients qu'on aurait mis des semaines à identifier manuellement. En 10 jours on avait 3 nouveaux projets signés. Le système continue de tourner en fond."</p>
-        <div class="testimonial-author">
-          <span class="author-name">Romain L.</span>
-          <span class="author-role">Gérant, Agence Photo Studio L — Marseille</span>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Footer -->
   <footer>
@@ -857,7 +776,6 @@
     <div class="footer-links">
       <a href="#features">Services</a>
       <a href="#specs">Résultats</a>
-      <a href="#testimonials">Clients</a>
       <a href="mailto:contact@nexxo.systems">contact@nexxo.systems</a>
     </div>
     <p class="footer-copy">&copy; 2026 Nexxo. Tous droits réservés. — Agence Web &amp; Automatisation IA, Paris.</p>
@@ -1097,28 +1015,6 @@
     if (specsEl) specObserver.observe(specsEl);
 
     // ─────────────────────────────────────────
-    // TESTIMONIALS DRAG
-    // ─────────────────────────────────────────
-    (function() {
-      const track = document.getElementById('testimonialTrack');
-      if (!track) return;
-      let isDown = false, startX, scrollLeft;
-
-      track.addEventListener('mousedown', e => {
-        isDown = true;
-        track.classList.add('dragging');
-        startX = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-      });
-      track.addEventListener('mouseleave', () => { isDown = false; track.classList.remove('dragging'); });
-      track.addEventListener('mouseup', () => { isDown = false; track.classList.remove('dragging'); });
-      track.addEventListener('mousemove', e => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - track.offsetLeft;
-        track.scrollLeft = scrollLeft - (x - startX);
-      });
-    })();
 
     // ─────────────────────────────────────────
     // CONFETTI
