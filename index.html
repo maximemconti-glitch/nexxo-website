@@ -309,14 +309,21 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-radius: 20px; padding: 32px;
+      border-radius: 20px; overflow: hidden;
       transition: transform 0.3s ease, border-color 0.3s ease;
     }
     .feature-card:hover {
       transform: translateY(-4px);
       border-color: rgba(var(--accent-rgb),0.2);
     }
-    .feature-icon { font-size: 1.8rem; margin-bottom: 16px; }
+    .feature-card-img {
+      height: 160px;
+      background-size: cover;
+      background-position: center;
+    }
+    .feature-card-body {
+      padding: 24px 28px 28px;
+    }
     .feature-card h3 {
       font-family: var(--font-head); font-size: 1.05rem;
       font-weight: 600; margin-bottom: 10px;
@@ -700,34 +707,46 @@
     <div class="section-divider"></div>
     <div class="features-grid">
       <div class="feature-card">
-        <div class="feature-icon">🎨</div>
-        <h3>Design sur mesure</h3>
-        <p>Responsive, moderne, aligné avec votre identité. Chaque site est unique — aucun template générique.</p>
+        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&auto=format&q=80')"></div>
+        <div class="feature-card-body">
+          <h3>Design sur mesure</h3>
+          <p>Responsive, moderne, aligné avec votre identité. Chaque site est unique — aucun template générique.</p>
+        </div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">📍</div>
-        <h3>SEO local &amp; technique</h3>
-        <p>Remontez sur Google Maps et captez les recherches de votre zone. Configuration technique incluse.</p>
+        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&auto=format&q=80')"></div>
+        <div class="feature-card-body">
+          <h3>SEO local &amp; technique</h3>
+          <p>Remontez sur Google Maps et captez les recherches de votre zone. Configuration technique incluse.</p>
+        </div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">🔧</div>
-        <h3>Hébergement &amp; maintenance</h3>
-        <p>Domaine, HTTPS, sauvegardes et mises à jour — tout est inclus. Vous n'avez rien à gérer.</p>
+        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&auto=format&q=80')"></div>
+        <div class="feature-card-body">
+          <h3>Hébergement &amp; maintenance</h3>
+          <p>Domaine, HTTPS, sauvegardes et mises à jour — tout est inclus. Vous n'avez rien à gérer.</p>
+        </div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">🤖</div>
-        <h3>Automatisation sur mesure</h3>
-        <p>Prospection, SAV, gestion interne, logistique… On automatise n'importe quel process — construit spécifiquement pour votre activité.</p>
+        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&auto=format&q=80')"></div>
+        <div class="feature-card-body">
+          <h3>Automatisation sur mesure</h3>
+          <p>Prospection, SAV, gestion interne, logistique… On automatise n'importe quel process — construit spécifiquement pour votre activité.</p>
+        </div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">🎯</div>
-        <h3>Personnalisation totale</h3>
-        <p>Pas de solution générique. Chaque workflow est conçu autour de vos outils, vos équipes et vos contraintes réelles.</p>
+        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&auto=format&q=80')"></div>
+        <div class="feature-card-body">
+          <h3>Personnalisation totale</h3>
+          <p>Pas de solution générique. Chaque workflow est conçu autour de vos outils, vos équipes et vos contraintes réelles.</p>
+        </div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Gain de temps immédiat</h3>
-        <p>Les tâches répétitives disparaissent. Vos équipes se concentrent sur ce qui a de la valeur. L'IA fait le reste.</p>
+        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1495364141860-b0d03eccd065?w=600&auto=format&q=80')"></div>
+        <div class="feature-card-body">
+          <h3>Gain de temps immédiat</h3>
+          <p>Les tâches répétitives disparaissent. Vos équipes se concentrent sur ce qui a de la valeur. L'IA fait le reste.</p>
+        </div>
       </div>
     </div>
   </section>
