@@ -10,6 +10,49 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ─── CUSTOM CURSOR ─── */
+    html, body, a, button, input, [role="button"] { cursor: none !important; }
+
+    #cursor-dot {
+      position: fixed; z-index: 999999; pointer-events: none;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #0071e3;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s cubic-bezier(0.16,1,0.3,1),
+                  height 0.2s cubic-bezier(0.16,1,0.3,1),
+                  background 0.2s ease, opacity 0.3s ease;
+      will-change: left, top;
+    }
+    #cursor-ring {
+      position: fixed; z-index: 999998; pointer-events: none;
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1.5px solid rgba(0,113,227,0.55);
+      transform: translate(-50%, -50%);
+      transition: width 0.35s cubic-bezier(0.16,1,0.3,1),
+                  height 0.35s cubic-bezier(0.16,1,0.3,1),
+                  border-color 0.3s ease, background 0.3s ease, opacity 0.3s ease;
+      will-change: left, top;
+    }
+    /* Hover state — anneau s'agrandit, dot se rétracte */
+    body.cursor-hover #cursor-ring {
+      width: 52px; height: 52px;
+      border-color: rgba(0,113,227,0.35);
+      background: rgba(0,113,227,0.05);
+    }
+    body.cursor-hover #cursor-dot {
+      width: 4px; height: 4px;
+      background: #34aadc;
+    }
+    /* Click state */
+    body.cursor-click #cursor-dot {
+      width: 12px; height: 12px;
+      background: var(--accent);
+    }
+    body.cursor-click #cursor-ring {
+      width: 22px; height: 22px;
+      border-color: rgba(0,113,227,0.8);
+    }
+
     :root {
       --accent: #0071e3;
       --accent-rgb: 0, 113, 227;
@@ -1148,6 +1191,10 @@
 </head>
 <body>
 
+  <!-- Custom cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
   <!-- Starscape -->
   <canvas id="starscape"></canvas>
 
@@ -2033,6 +2080,51 @@
         });
         requestAnimationFrame(loop);
       })();
+    })();
+
+    // ─────────────────────────────────────────
+    // CUSTOM CURSOR
+    // ─────────────────────────────────────────
+    (function() {
+      const dot  = document.getElementById('cursor-dot');
+      const ring = document.getElementById('cursor-ring');
+      if (!dot || !ring) return;
+
+      let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+      let rx = mx, ry = my;
+
+      // Dot follows instantly
+      window.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
+      });
+
+      // Ring follows via lerp — ultra-fluide
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      (function animRing() {
+        rx = lerp(rx, mx, 0.13);
+        ry = lerp(ry, my, 0.13);
+        ring.style.left = rx.toFixed(1) + 'px';
+        ring.style.top  = ry.toFixed(1) + 'px';
+        requestAnimationFrame(animRing);
+      })();
+
+      // Hover — éléments interactifs
+      const interactive = 'a, button, .bento-card, .spec-item, .browser-card, .team-card, .nav-cta, .btn-primary, .btn-secondary, .btn-dark';
+      document.querySelectorAll(interactive).forEach(el => {
+        el.style.cursor = 'none';
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+
+      // Click
+      window.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
+      window.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
+
+      // Quitter / revenir
+      document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+      document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
     })();
 
     // ─────────────────────────────────────────
