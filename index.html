@@ -256,59 +256,78 @@
       .scroll-animation { height: 320vh; }
     }
 
-    /* ─── SPECS ─── */
+    /* ─── SPECS (WHITE) ─── */
     #specs {
-      position: relative; z-index: 1;
-      padding: 100px 32px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: relative; z-index: 2;
+      padding: 100px 32px 120px;
+      background: #f5f5f7;
     }
     #specs::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(var(--accent-rgb),0.07) 0%, transparent 70%);
+      background: radial-gradient(ellipse 50% 60% at 50% 100%, rgba(var(--accent-rgb),0.06) 0%, transparent 70%);
       pointer-events: none;
     }
+    .specs-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .specs-header {
+      margin-bottom: 64px;
+    }
     .specs-eyebrow {
-      display: block; text-align: center;
-      font-family: var(--font-mono); font-size: 0.72rem;
-      letter-spacing: 3px; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 56px;
+      display: block;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 20px;
+    }
+    .specs-title {
+      font-family: var(--font-head); font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700; color: #1d1d1f; line-height: 1.05;
+      letter-spacing: -0.04em;
     }
     .specs-grid {
       display: grid; grid-template-columns: repeat(4,1fr);
-      gap: 20px; max-width: 1100px; margin: 0 auto; text-align: center;
+      gap: 16px; text-align: left;
     }
     .spec-item {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 20px; padding: 40px 24px 36px;
-      transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.07);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.04);
+      border-radius: 20px; padding: 36px 28px 32px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
       opacity: 0; transform: translateY(28px);
     }
     .spec-item.revealed {
       opacity: 1; transform: translateY(0);
       transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1),
-                  border-color 0.3s ease, background 0.3s ease;
+                  border-color 0.3s ease, box-shadow 0.3s ease;
     }
+    .spec-item::before {
+      content: '';
+      position: absolute; inset: 0; border-radius: 20px;
+      background: radial-gradient(circle 200px at var(--mx,50%) var(--my,50%),
+        rgba(var(--accent-rgb),0.07) 0%, transparent 70%);
+      opacity: 0; transition: opacity 0.4s ease; pointer-events: none; z-index: 0;
+    }
+    .spec-item:hover::before { opacity: 1; }
     .spec-item:hover {
-      border-color: rgba(var(--accent-rgb),0.35);
-      background: rgba(var(--accent-rgb),0.04);
-      transform: translateY(-3px);
+      border-color: rgba(var(--accent-rgb),0.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
     }
-    .spec-item.revealed:hover { transform: translateY(-3px); }
     .spec-number {
       font-family: var(--font-head); font-size: 3.8rem;
       font-weight: 700; display: block; line-height: 1;
-      letter-spacing: -0.03em;
-      transition: text-shadow 0.3s ease; color: var(--text);
+      letter-spacing: -0.04em;
+      transition: color 0.35s ease; color: #1d1d1f;
+      position: relative; z-index: 1;
     }
-    .spec-number.counting {
-      text-shadow: 0 0 40px rgba(var(--accent-rgb),0.7);
-    }
+    .spec-number.counting { color: var(--accent); }
+    .spec-item:hover .spec-number { color: var(--accent); }
     .spec-label {
-      font-size: 0.82rem; color: var(--text-secondary);
+      font-size: 0.82rem; color: #6e6e73;
       margin-top: 14px; display: block; line-height: 1.55;
+      position: relative; z-index: 1;
     }
     @media (max-width: 900px) {
       .specs-grid { grid-template-columns: repeat(2,1fr); gap: 16px; }
@@ -392,14 +411,33 @@
       overflow: hidden;
       position: relative;
       display: flex; flex-direction: column;
-      transition: border-color 0.35s ease, transform 0.35s ease;
+      /* transform managed by JS tilt — only transition on leave */
+      transition: border-color 0.35s ease, box-shadow 0.35s ease;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.035), 0 0 0 6px rgba(255,255,255,0.012);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .bento-card:not(.is-tilting) {
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), border-color 0.35s ease, box-shadow 0.35s ease;
     }
     .bento-card:hover {
-      border-color: rgba(var(--accent-rgb),0.28);
-      transform: translateY(-4px);
-      box-shadow: 0 0 0 1px rgba(var(--accent-rgb),0.14), 0 0 0 6px rgba(var(--accent-rgb),0.05),
-                  0 24px 60px rgba(0,0,0,0.4);
+      border-color: rgba(var(--accent-rgb),0.3);
+      box-shadow: 0 0 0 1px rgba(var(--accent-rgb),0.15), 0 0 0 6px rgba(var(--accent-rgb),0.05),
+                  0 32px 80px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.3);
+    }
+    /* Mouse-follow spotlight on dark bento cards */
+    .bento-card::after {
+      content: '';
+      position: absolute; inset: 0; z-index: 5; pointer-events: none; border-radius: 24px;
+      background: radial-gradient(circle 280px at var(--mx, 50%) var(--my, -100px),
+        rgba(255,255,255,0.055) 0%, transparent 70%);
+      opacity: 0; transition: opacity 0.4s ease;
+    }
+    .bento-card:hover::after { opacity: 1; }
+    /* Card 4 glow overrides the spotlight (handled via .bento-card--glow::after) */
+    .bento-card--glow::after {
+      background: radial-gradient(ellipse 100% 100% at 50% 50%,
+        rgba(var(--accent-rgb),0.12) 0%, transparent 70%);
     }
     .bento-card-ui {
       flex: 1;
@@ -724,30 +762,50 @@
       .bento-title { font-size: clamp(2.2rem,8vw,3.5rem); }
     }
 
-    /* ─── CTA ─── */
+    /* ─── CTA (WHITE) ─── */
     #cta {
-      position: relative; z-index: 1;
-      text-align: center; padding: 120px 32px;
-      overflow: hidden;
+      position: relative; z-index: 2;
+      text-align: center; padding: 140px 32px;
+      overflow: hidden; background: #ffffff;
     }
     .cta-orb {
-      position: absolute; width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(var(--accent-rgb),0.12) 0%, transparent 70%);
+      position: absolute; width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(var(--accent-rgb),0.06) 0%, transparent 70%);
       border-radius: 50%; top: 50%; left: 50%;
       transform: translate(-50%,-50%); pointer-events: none;
     }
-    .cta-content { position: relative; z-index: 2; max-width: 600px; margin: 0 auto; }
+    .cta-content { position: relative; z-index: 2; max-width: 620px; margin: 0 auto; }
+    .cta-eyebrow {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 24px;
+    }
     .cta-content h2 {
-      font-family: var(--font-head); font-size: clamp(2rem,4vw,3rem);
-      font-weight: 700; line-height: 1.15; letter-spacing: -0.02em;
-      margin-bottom: 20px;
+      font-family: var(--font-head); font-size: clamp(2.5rem,5vw,4rem);
+      font-weight: 700; line-height: 1.05; letter-spacing: -0.04em;
+      margin-bottom: 20px; color: #1d1d1f;
     }
     .cta-content p {
-      font-size: 1.05rem; color: var(--text-secondary);
-      line-height: 1.7; margin-bottom: 40px;
+      font-size: 1.05rem; color: #6e6e73;
+      line-height: 1.7; margin-bottom: 44px;
+      max-width: 480px; margin-left: auto; margin-right: auto;
     }
-    .btn-large { font-size: 1.05rem; padding: 18px 48px; }
-
+    .btn-large { font-size: 1rem; padding: 17px 44px; }
+    .btn-dark {
+      background: #1d1d1f; color: #fff;
+      border-radius: 100px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+      border: none;
+    }
+    .btn-dark:hover {
+      background: #2d2d2f;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+      transform: translateY(-3px);
+    }
+    .cta-note {
+      display: block; margin-top: 20px;
+      font-size: 0.8rem; color: rgba(110,110,115,0.7);
+    }
     .author-role {
       display: block; font-size: 0.8rem; color: var(--text-secondary);
       margin-top: 2px;
@@ -922,47 +980,48 @@
     @media (max-width: 900px) { .real-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 580px) { .real-grid { grid-template-columns: 1fr; } }
 
-    /* ─── TEAM ─── */
+    /* ─── TEAM (WHITE) ─── */
     #team {
-      position: relative; z-index: 1;
+      position: relative; z-index: 2;
       padding: 100px 32px 120px;
+      background: #f5f5f7;
     }
+    #team .section-title { color: #1d1d1f; }
+    #team .section-eyebrow { color: var(--accent); }
     .team-grid {
       display: grid; grid-template-columns: repeat(4,1fr);
-      gap: 28px; max-width: 1100px; margin: 0 auto;
+      gap: 20px; max-width: 1100px; margin: 0 auto;
     }
     .team-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.07);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
       border-radius: 20px; overflow: hidden;
-      transition: transform 0.3s ease, border-color 0.3s ease;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .team-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(var(--accent-rgb),0.25);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+      border-color: rgba(var(--accent-rgb),0.18);
     }
     .team-photo {
       width: 100%; aspect-ratio: 1;
-      background: rgba(255,255,255,0.04);
+      background: #eeeef0;
       display: flex; align-items: center; justify-content: center;
     }
     .team-photo-icon {
       width: 56px; height: 56px; border-radius: 50%;
-      background: rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.07);
       display: flex; align-items: center; justify-content: center;
     }
-    .team-photo-icon svg { opacity: 0.3; }
-    .team-body {
-      padding: 20px 20px 24px;
-    }
+    .team-photo-icon svg { opacity: 0.25; stroke: #1d1d1f; }
+    .team-body { padding: 20px 20px 24px; }
     .team-name {
       display: block; font-family: var(--font-head);
       font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;
-      color: rgba(255,255,255,0.4);
+      color: rgba(29,29,31,0.35);
     }
     .team-role {
-      display: block; font-size: 0.8rem;
-      color: var(--text-secondary);
+      display: block; font-size: 0.8rem; color: #6e6e73;
     }
     @media (max-width: 900px) { .team-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 480px) { .team-grid { grid-template-columns: 1fr; } }
@@ -992,6 +1051,61 @@
       border-radius: 100px; padding: 6px 16px;
       color: var(--text-secondary);
     }
+
+    /* ─── 3D TILT — shared ─── */
+    .spec-item, .browser-card, .team-card {
+      will-change: transform;
+    }
+    .spec-item:not(.is-tilting) {
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1),
+                  border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.65s cubic-bezier(0.16,1,0.3,1);
+    }
+    .spec-item.is-tilting {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .browser-card:not(.is-tilting) {
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
+    }
+    .browser-card.is-tilting {
+      transition: box-shadow 0.3s ease;
+    }
+    .team-card:not(.is-tilting) {
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .team-card.is-tilting {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* ─── SECTION TRANSITIONS ─── */
+    /* Dark section coming after white gets a clean cut with extra depth */
+    #features {
+      box-shadow: 0 -1px 0 rgba(255,255,255,0.06);
+    }
+    /* Join (dark) section gets stronger visual separation */
+    #join {
+      position: relative; z-index: 2;
+    }
+
+    /* ─── BROWSER CARD 3D HOVER UPGRADE ─── */
+    .browser-card:hover {
+      box-shadow: 0 28px 70px rgba(0,0,0,0.15), 0 6px 16px rgba(0,0,0,0.08);
+      border-color: rgba(0,0,0,0.12);
+    }
+
+    /* ─── SPEC ITEM REVEALED OVERRIDE ─── */
+    .spec-item.revealed:not(.is-tilting) {
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1),
+                  opacity 0.65s cubic-bezier(0.16,1,0.3,1),
+                  border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* ─── TEAM CARD TILT ─── */
+    .team-card:hover {
+      border-color: rgba(var(--accent-rgb),0.18);
+    }
+
+    /* ─── SECTION TAG (overrides) ─── */
+    #join .section-title { color: var(--text); }
   </style>
 </head>
 <body>
@@ -1165,23 +1279,28 @@
 
   <!-- Specs -->
   <section id="specs">
-    <span class="specs-eyebrow">Ce que Nexxo apporte</span>
-    <div class="specs-grid">
-      <div class="spec-item" data-target="48" data-suffix="h">
-        <span class="spec-number">0</span>
-        <span class="spec-label">Délai de livraison</span>
+    <div class="specs-inner">
+      <div class="specs-header">
+        <span class="specs-eyebrow">Ce que Nexxo apporte</span>
+        <h2 class="specs-title">Les chiffres<br>qui parlent.</h2>
       </div>
-      <div class="spec-item" data-target="2" data-suffix="h">
-        <span class="spec-number">0</span>
-        <span class="spec-label">par jour gagnées en moyenne avec l'automatisation</span>
-      </div>
-      <div class="spec-item" data-target="1" data-suffix="">
-        <span class="spec-number">0</span>
-        <span class="spec-label">identité visuelle unique conçue pour vous<br><span style="opacity:0.5;font-size:0.75rem">(logo · couleurs · typographie · iconographie · charte)</span></span>
-      </div>
-      <div class="spec-item" data-target="100" data-suffix="%">
-        <span class="spec-number">0</span>
-        <span class="spec-label">personnalisé pour votre entreprise et vos besoins</span>
+      <div class="specs-grid">
+        <div class="spec-item" data-target="48" data-suffix="h">
+          <span class="spec-number">0</span>
+          <span class="spec-label">Délai de livraison moyen — site en ligne en 2 jours</span>
+        </div>
+        <div class="spec-item" data-target="2" data-suffix="h">
+          <span class="spec-number">0</span>
+          <span class="spec-label">par jour récupérées en moyenne grâce à l'automatisation</span>
+        </div>
+        <div class="spec-item" data-target="1" data-suffix="">
+          <span class="spec-number">0</span>
+          <span class="spec-label">identité visuelle unique conçue pour vous<br><span style="opacity:0.5;font-size:0.75rem">(logo · couleurs · typographie · iconographie · charte)</span></span>
+        </div>
+        <div class="spec-item" data-target="100" data-suffix="%">
+          <span class="spec-number">0</span>
+          <span class="spec-label">personnalisé pour votre entreprise et vos besoins</span>
+        </div>
       </div>
     </div>
   </section>
@@ -1404,11 +1523,13 @@
   <section id="cta">
     <div class="cta-orb"></div>
     <div class="cta-content">
+      <span class="cta-eyebrow">On commence quand vous voulez</span>
       <h2>Prêt à automatiser<br>ce qui vous ralentit ?</h2>
       <p>Un appel de 15 minutes suffit. On analyse votre activité, on identifie ce qu'on peut automatiser — et on le construit pour vous.</p>
-      <a href="mailto:contact@nexxo.systems" class="btn-primary btn-large" id="main-cta">
+      <a href="mailto:contact@nexxo.systems" class="btn-dark btn-large" id="main-cta">
         Réserver un appel gratuit →
       </a>
+      <span class="cta-note">Gratuit · Sans engagement · Réponse sous 24h</span>
     </div>
   </section>
 
@@ -1851,6 +1972,39 @@
       hero.addEventListener('mouseleave', () => {
         orbs.forEach(o => { o.el.style.opacity = 0; });
       });
+    })();
+
+    // ─────────────────────────────────────────
+    // 3D TILT + SPOTLIGHT
+    // ─────────────────────────────────────────
+    (function() {
+      function applyTilt(selector, maxDeg, lift) {
+        document.querySelectorAll(selector).forEach(card => {
+          card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            card.classList.add('is-tilting');
+            card.style.transform =
+              `perspective(900px) rotateX(${-y * maxDeg}deg) rotateY(${x * maxDeg}deg) translateZ(${lift}px)`;
+            card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+            card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+          });
+          card.addEventListener('mouseleave', () => {
+            card.classList.remove('is-tilting');
+            card.style.transform = '';
+          });
+        });
+      }
+
+      // Bento cards: strong 3D
+      applyTilt('.bento-card', 8, 12);
+      // Spec cards: subtle 3D
+      applyTilt('.spec-item.revealed', 5, 6);
+      // Portfolio cards: subtle
+      applyTilt('.browser-card', 4, 6);
+      // Team cards: subtle
+      applyTilt('.team-card', 4, 6);
     })();
   </script>
 </body>
