@@ -179,9 +179,9 @@
       display: inline-block;
     }
     .hero-title {
-      font-family: var(--font-head); font-size: clamp(3rem, 7vw, 5.5rem);
-      font-weight: 700; line-height: 1.05; letter-spacing: -0.02em;
-      margin-bottom: 24px;
+      font-family: var(--font-head); font-size: clamp(3.8rem, 8.5vw, 7rem);
+      font-weight: 700; line-height: 0.95; letter-spacing: -0.035em;
+      margin-bottom: 28px;
     }
     .hero-title em {
       font-style: normal;
@@ -325,13 +325,14 @@
       padding: 0 32px;
     }
     .section-eyebrow {
-      font-family: var(--font-mono); font-size: 0.72rem;
-      letter-spacing: 3px; text-transform: uppercase;
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 4px; text-transform: uppercase;
       color: var(--accent); display: block; margin-bottom: 16px;
+      opacity: 0.8;
     }
     .section-title {
-      font-family: var(--font-head); font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700; line-height: 1.15; letter-spacing: -0.02em;
+      font-family: var(--font-head); font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 700; line-height: 1.05; letter-spacing: -0.03em;
     }
 
     /* ─── FEATURES ─── */
@@ -342,14 +343,16 @@
     }
     .feature-card {
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 0 0 6px rgba(255,255,255,0.015);
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border-radius: 20px; overflow: hidden;
-      transition: transform 0.3s ease, border-color 0.3s ease;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .feature-card:hover {
       transform: translateY(-4px);
       border-color: rgba(var(--accent-rgb),0.2);
+      box-shadow: 0 0 0 1px rgba(var(--accent-rgb),0.15), 0 0 0 6px rgba(var(--accent-rgb),0.04);
     }
     .feature-card-img {
       height: 160px;
@@ -444,11 +447,50 @@
     #hero .orb-1, #hero .orb-2 { opacity: 0; }
     #hero .hero-eyebrow { color: #6e6e73; }
     #hero .hero-title { color: #1d1d1f; }
+    #hero .hero-title em {
+      background: linear-gradient(135deg, #0071e3 0%, #34aadc 60%, #0071e3 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    #hero::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 200px; z-index: 10; pointer-events: none;
+      background: linear-gradient(to bottom, transparent 0%, #ffffff 100%);
+    }
     #hero .hero-subtitle { color: #6e6e73; }
     #hero .scroll-hint { color: #6e6e73; }
     #hero .scroll-arrow { background: linear-gradient(to bottom, var(--accent), transparent); }
     #hero .btn-secondary { color: #1d1d1f; border-color: rgba(0,0,0,0.15); }
     #hero .btn-secondary:hover { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.28); }
+
+    .hero-marquee {
+      position: absolute; bottom: 40px; left: 0; right: 0; z-index: 11;
+      overflow: hidden;
+    }
+    .hero-marquee-label {
+      font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 3px;
+      text-transform: uppercase; color: rgba(29,29,31,0.35);
+      margin-bottom: 12px; padding-left: max(64px, 8vw);
+    }
+    .hero-marquee-track {
+      display: flex; white-space: nowrap;
+      animation: marqueeScroll 22s linear infinite;
+    }
+    .hero-marquee-item {
+      display: inline-flex; align-items: center;
+      font-family: var(--font-head); font-size: 0.9rem;
+      font-weight: 600; color: #1d1d1f; padding: 0 28px;
+      flex-shrink: 0;
+    }
+    .hero-marquee-sep {
+      color: #0071e3; font-size: 1.2rem; line-height: 1;
+    }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
 
     /* ─── HERO ORBS ─── */
     .hero-orb {
@@ -664,6 +706,25 @@
       <div class="scroll-hint">
         <span>Scroll pour explorer</span>
         <div class="scroll-arrow"></div>
+      </div>
+    </div>
+    <div class="hero-marquee" aria-hidden="true">
+      <p class="hero-marquee-label">Ce que nous faisons</p>
+      <div class="hero-marquee-track">
+        <span class="hero-marquee-item">Automatisation IA</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Prospection</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">SAV automatisé</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Sites web</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Gestion interne</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Branding</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Lead generation</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Automatisation IA</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Prospection</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">SAV automatisé</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Sites web</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Gestion interne</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Branding</span><span class="hero-marquee-sep">·</span>
+        <span class="hero-marquee-item">Lead generation</span><span class="hero-marquee-sep">·</span>
       </div>
     </div>
   </section>
