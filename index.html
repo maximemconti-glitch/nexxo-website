@@ -923,8 +923,7 @@
       right: 0; top: 0; bottom: 0;
       width: 50%;
       z-index: 1; pointer-events: none;
-      overflow: hidden;
-      border: none; outline: none;
+      clip-path: inset(0);
     }
     .sphere-inner {
       position: absolute; inset: 0;
@@ -2112,12 +2111,9 @@
         'Lead generation', 'IA sur mesure', 'Webdesign',
         'SEO local', 'Conversion', 'Croissance', 'Processus'
       ];
-      const WORDS = [...BASE_WORDS, ...BASE_WORDS]; // duplication
+      const WORDS = [...BASE_WORDS, ...BASE_WORDS];
 
-      const TAU  = Math.PI * 2;
       const seed = (n) => Math.abs(Math.sin(n * 127.1 + 311.7));
-      // Marge en px : les mots ne dépassent pas dans cette zone
-      const MARGIN = 32;
 
       const words = WORDS.map((text, i) => {
         const wrap = document.createElement('div');
@@ -2133,50 +2129,56 @@
 
         const zBase = String(Math.floor(seed(i * 41) * 6) + 1);
         wrap.style.zIndex = zBase;
-
         span.addEventListener('mouseenter', () => { wrap.style.zIndex = '100'; });
         span.addEventListener('mouseleave', () => { wrap.style.zIndex = zBase; });
 
-        // Amplitude réduite pour rester dans le cadre
-        const ax = 18 + seed(i * 11) * 22;
-        const ay = 14 + seed(i * 5)  * 20;
+        // Vitesse très lente, direction aléatoire
+        const angle = seed(i * 13) * Math.PI * 2;
+        const spd   = 0.18 + seed(i * 17) * 0.22; // px/frame
 
         return {
           wrap,
-          // Position de base : fraction en tenant compte de la marge
-          bx: seed(i * 3),  // 0–1, scalé en JS avec marge
-          by: seed(i * 7),
-          ax, ay,
-          sx: TAU / (30 + seed(i * 13) * 24),
-          sy: TAU / (34 + seed(i * 17) * 28),
-          px: seed(i * 19) * TAU,
-          py: seed(i * 23) * TAU,
-          ra: 1.5 + seed(i * 29) * 3,
-          rs: TAU / (40 + seed(i * 31) * 30),
-          rp: seed(i * 37) * TAU,
+          x: 0, y: 0,           // initialisé après mesure
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd,
+          rot: seed(i * 37) * 6 - 3,   // rotation initiale
+          vrot: (seed(i * 29) - 0.5) * 0.012, // très lente
+          w: 0, h: 0,           // dimensions mesurées après layout
         };
       });
 
-      (function animate() {
-        const t = performance.now() * 0.001;
+      // Mesure des dimensions réelles après layout, puis lancement
+      requestAnimationFrame(() => {
         const W = sphereEl.offsetWidth;
         const H = sphereEl.offsetHeight;
-
-        words.forEach(w => {
-          // Zone utile = [MARGIN+ax, W-MARGIN-ax] pour que la dérive reste dedans
-          const rangeX = W - 2 * (MARGIN + w.ax);
-          const rangeY = H - 2 * (MARGIN + w.ay);
-          const baseX  = MARGIN + w.ax + w.bx * Math.max(0, rangeX);
-          const baseY  = MARGIN + w.ay + w.by * Math.max(0, rangeY);
-
-          const x   = baseX + Math.sin(t * w.sx + w.px) * w.ax;
-          const y   = baseY + Math.sin(t * w.sy + w.py) * w.ay;
-          const rot = Math.sin(t * w.rs + w.rp) * w.ra;
-          w.wrap.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${rot.toFixed(2)}deg)`;
+        words.forEach((w, i) => {
+          w.w = w.wrap.offsetWidth  || 120;
+          w.h = w.wrap.offsetHeight || 24;
+          // Position initiale aléatoire dans le cadre
+          w.x = seed(i * 3) * Math.max(0, W - w.w);
+          w.y = seed(i * 7) * Math.max(0, H - w.h);
         });
 
-        requestAnimationFrame(animate);
-      })();
+        (function animate() {
+          const W = sphereEl.offsetWidth;
+          const H = sphereEl.offsetHeight;
+          words.forEach(w => {
+            w.x   += w.vx;
+            w.y   += w.vy;
+            w.rot += w.vrot;
+
+            // Rebond sur les 4 bords
+            if (w.x <= 0)        { w.x = 0;        w.vx =  Math.abs(w.vx); }
+            if (w.x + w.w >= W)  { w.x = W - w.w;  w.vx = -Math.abs(w.vx); }
+            if (w.y <= 0)        { w.y = 0;         w.vy =  Math.abs(w.vy); }
+            if (w.y + w.h >= H)  { w.y = H - w.h;  w.vy = -Math.abs(w.vy); }
+
+            w.wrap.style.transform =
+              `translate(${w.x.toFixed(1)}px,${w.y.toFixed(1)}px) rotate(${w.rot.toFixed(2)}deg)`;
+          });
+          requestAnimationFrame(animate);
+        })();
+      });
     })();
 
     // ─────────────────────────────────────────
