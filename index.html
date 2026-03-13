@@ -188,7 +188,7 @@
     #hero {
       position: relative; min-height: 100vh;
       display: flex; align-items: center; justify-content: flex-start;
-      text-align: left; overflow: hidden; z-index: 1;
+      text-align: left; overflow: clip; z-index: 1;
       padding: 120px max(64px, 8vw) 80px;
     }
     .hero-bg { position: absolute; inset: 0; pointer-events: none; }
@@ -920,11 +920,12 @@
     /* ─── WORD SPHERE ─── */
     #word-sphere {
       position: absolute;
-      right: max(40px, 5vw); top: 50%;
+      right: max(48px, 7vw); top: 50%;
       transform: translateY(-50%);
-      width: 440px; height: 440px;
-      perspective: 750px;
+      width: 480px; height: 480px;
+      perspective: 800px;
       z-index: 1; pointer-events: none;
+      overflow: visible;
     }
     .sphere-inner {
       width: 100%; height: 100%;
@@ -2143,14 +2144,16 @@
         item.span = span;
       });
 
-      // Rotation chaotique : vitesse qui varie dans le temps
-      let rotX = 0, rotY = 0, time = 0;
+      // Rotation : axe incliné ~28° (like a globe tilted), chaos sur Y + légère oscillation X
+      const TILT = 28;        // inclinaison de base (deg)
+      let rotY = 0, time = 0;
 
       (function animate() {
-        time += 0.008;
-        // Vitesse chaotique : combinaison de sinusoïdes
-        rotY += 0.18 + Math.sin(time * 0.6)  * 0.12 + Math.cos(time * 1.3) * 0.06;
-        rotX += 0.08 + Math.cos(time * 0.45) * 0.09 + Math.sin(time * 0.9) * 0.04;
+        time += 0.007;
+        // Y tourne en continu, légèrement chaotique
+        rotY += 0.20 + Math.sin(time * 0.5) * 0.14 + Math.cos(time * 1.1) * 0.07;
+        // X oscille autour du tilt de base — montre/cache les pôles
+        const rotX = TILT + Math.sin(time * 0.38) * 12 + Math.cos(time * 0.72) * 6;
 
         inner.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
 
