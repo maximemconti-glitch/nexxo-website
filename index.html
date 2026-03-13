@@ -222,7 +222,10 @@
       background: rgba(255,255,255,0.04);
     }
     .scroll-hint {
-      margin-top: 64px;
+      position: absolute;
+      bottom: 100px;
+      left: max(64px, 8vw);
+      z-index: 11;
       display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
       color: var(--text-secondary); font-size: 0.8rem;
       letter-spacing: 1px; text-transform: uppercase;
@@ -875,24 +878,46 @@
       position: absolute; bottom: 40px; left: 0; right: 0; z-index: 11;
       overflow: hidden;
     }
+    /* Edge fade masks */
+    .hero-marquee::before, .hero-marquee::after {
+      content: ''; position: absolute; top: 0; height: 100%;
+      width: 140px; z-index: 2; pointer-events: none;
+    }
+    .hero-marquee::before { left: 0; background: linear-gradient(to right, #ffffff 0%, transparent 100%); }
+    .hero-marquee::after  { right: 0; background: linear-gradient(to left, #ffffff 0%, transparent 100%); }
     .hero-marquee-label {
-      font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 3px;
-      text-transform: uppercase; color: rgba(29,29,31,0.35);
-      margin-bottom: 12px; padding-left: max(64px, 8vw);
+      font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 4px;
+      text-transform: uppercase; color: rgba(29,29,31,0.25);
+      margin-bottom: 14px; padding-left: max(64px, 8vw);
     }
     .hero-marquee-track {
-      display: flex; white-space: nowrap;
-      animation: marqueeScroll 22s linear infinite;
+      display: flex; white-space: nowrap; align-items: center;
+      border-top: 1px solid rgba(29,29,31,0.07);
+      padding-top: 14px;
+      animation: marqueeScroll 32s linear infinite;
     }
+    .hero-marquee-track.paused { animation-play-state: paused; }
     .hero-marquee-item {
       display: inline-flex; align-items: center;
-      font-family: var(--font-head); font-size: 0.9rem;
-      font-weight: 600; color: #1d1d1f; padding: 0 28px;
-      flex-shrink: 0;
+      font-family: var(--font-head); font-size: 0.85rem;
+      font-weight: 500; letter-spacing: 0.02em;
+      color: rgba(29,29,31,0.35); padding: 0 44px;
+      flex-shrink: 0; cursor: default;
+      transition: color 0.5s cubic-bezier(0.16,1,0.3,1);
+      position: relative;
     }
-    .hero-marquee-sep {
-      color: #0071e3; font-size: 1.2rem; line-height: 1;
+    /* Thin vertical divider after each item */
+    .hero-marquee-item::after {
+      content: '';
+      position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+      width: 1px; height: 10px;
+      background: rgba(29,29,31,0.12);
     }
+    .hero-marquee-item:hover { color: #1d1d1f; }
+    .hero-marquee-item.marquee-lit {
+      color: var(--accent);
+    }
+    .hero-marquee-sep { display: none; }
     @keyframes marqueeScroll {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
@@ -1172,21 +1197,21 @@
     </div>
     <div class="hero-marquee" aria-hidden="true">
       <p class="hero-marquee-label">Ce que nous faisons</p>
-      <div class="hero-marquee-track">
-        <span class="hero-marquee-item">Automatisation IA</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Prospection</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">SAV automatisé</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Sites web</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Gestion interne</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Branding</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Lead generation</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Automatisation IA</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Prospection</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">SAV automatisé</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Sites web</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Gestion interne</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Branding</span><span class="hero-marquee-sep">·</span>
-        <span class="hero-marquee-item">Lead generation</span><span class="hero-marquee-sep">·</span>
+      <div class="hero-marquee-track" id="marqueeTrack">
+        <span class="hero-marquee-item">Automatisation IA</span>
+        <span class="hero-marquee-item">Prospection</span>
+        <span class="hero-marquee-item">SAV automatisé</span>
+        <span class="hero-marquee-item">Sites web</span>
+        <span class="hero-marquee-item">Gestion interne</span>
+        <span class="hero-marquee-item">Branding</span>
+        <span class="hero-marquee-item">Lead generation</span>
+        <span class="hero-marquee-item">Automatisation IA</span>
+        <span class="hero-marquee-item">Prospection</span>
+        <span class="hero-marquee-item">SAV automatisé</span>
+        <span class="hero-marquee-item">Sites web</span>
+        <span class="hero-marquee-item">Gestion interne</span>
+        <span class="hero-marquee-item">Branding</span>
+        <span class="hero-marquee-item">Lead generation</span>
       </div>
     </div>
   </section>
@@ -1972,6 +1997,48 @@
       hero.addEventListener('mouseleave', () => {
         orbs.forEach(o => { o.el.style.opacity = 0; });
       });
+    })();
+
+    // ─────────────────────────────────────────
+    // MARQUEE — SEQUENTIAL HIGHLIGHT
+    // ─────────────────────────────────────────
+    (function() {
+      const track = document.getElementById('marqueeTrack');
+      if (!track) return;
+      const items = [...track.querySelectorAll('.hero-marquee-item')];
+      const half = items.length / 2; // 7 unique items
+      let idx = 0;
+      let timer;
+
+      function lightUp() {
+        items.forEach(el => el.classList.remove('marquee-lit'));
+        // Light both copies of the same item simultaneously
+        items[idx].classList.add('marquee-lit');
+        items[idx + half].classList.add('marquee-lit');
+        idx = (idx + 1) % half;
+      }
+
+      function startCycle() {
+        lightUp();
+        timer = setInterval(lightUp, 650);
+      }
+
+      function stopCycle() {
+        clearInterval(timer);
+        items.forEach(el => el.classList.remove('marquee-lit'));
+      }
+
+      // Pause scroll + stop highlights on hover
+      track.addEventListener('mouseenter', () => {
+        track.classList.add('paused');
+        stopCycle();
+      });
+      track.addEventListener('mouseleave', () => {
+        track.classList.remove('paused');
+        startCycle();
+      });
+
+      startCycle();
     })();
 
     // ─────────────────────────────────────────
