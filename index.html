@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexxo — Des sites qui font la différence</title>
+  <title>Nexxo — Automatisation IA & Sites Web</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -144,9 +144,9 @@
     /* ─── HERO ─── */
     #hero {
       position: relative; min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center; overflow: hidden; z-index: 1;
-      padding: 120px 32px 80px;
+      display: flex; align-items: center; justify-content: flex-start;
+      text-align: left; overflow: hidden; z-index: 1;
+      padding: 120px max(64px, 8vw) 80px;
     }
     .hero-bg { position: absolute; inset: 0; pointer-events: none; }
     .orb {
@@ -171,7 +171,7 @@
         linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 60px 60px;
     }
-    .hero-content { position: relative; z-index: 2; max-width: 800px; }
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
     .hero-eyebrow {
       font-family: var(--font-mono); font-size: 0.75rem;
       letter-spacing: 3px; text-transform: uppercase;
@@ -193,10 +193,10 @@
     .hero-subtitle {
       font-size: clamp(1rem, 1.5vw, 1.2rem);
       color: var(--text-secondary); line-height: 1.7;
-      margin-bottom: 48px; max-width: 600px; margin-left: auto; margin-right: auto;
+      margin-bottom: 48px; max-width: 560px;
     }
     .hero-buttons {
-      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      display: flex; gap: 16px; justify-content: flex-start; flex-wrap: wrap;
     }
     .btn-primary {
       background: var(--accent); color: #fff;
@@ -223,7 +223,7 @@
     }
     .scroll-hint {
       margin-top: 64px;
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
       color: var(--text-secondary); font-size: 0.8rem;
       letter-spacing: 1px; text-transform: uppercase;
     }
@@ -442,11 +442,6 @@
       z-index: 2;
     }
     #hero .orb-1, #hero .orb-2 { opacity: 0; }
-    #hero .grid-overlay {
-      background-image:
-        linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px);
-    }
     #hero .hero-eyebrow { color: #6e6e73; }
     #hero .hero-title { color: #1d1d1f; }
     #hero .hero-subtitle { color: #6e6e73; }
@@ -454,6 +449,14 @@
     #hero .scroll-arrow { background: linear-gradient(to bottom, var(--accent), transparent); }
     #hero .btn-secondary { color: #1d1d1f; border-color: rgba(0,0,0,0.15); }
     #hero .btn-secondary:hover { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.28); }
+
+    /* ─── HERO ORBS ─── */
+    .hero-orb {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      background: radial-gradient(circle, rgba(0,113,227,0.18) 0%, rgba(0,113,227,0.05) 50%, transparent 70%);
+      opacity: 0; transform: translate(-50%, -50%);
+      transition: opacity 0.45s ease;
+    }
 
     /* ─── NAVBAR ON WHITE ─── */
     #navbar:not(.nav-scrolled) .nav-logo { color: #1d1d1f; }
@@ -528,6 +531,77 @@
     }
     @media (max-width: 900px) { .real-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 580px) { .real-grid { grid-template-columns: 1fr; } }
+
+    /* ─── TEAM ─── */
+    #team {
+      position: relative; z-index: 1;
+      padding: 100px 32px 120px;
+    }
+    .team-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 28px; max-width: 1100px; margin: 0 auto;
+    }
+    .team-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px; overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .team-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(var(--accent-rgb),0.25);
+    }
+    .team-photo {
+      width: 100%; aspect-ratio: 1;
+      background: rgba(255,255,255,0.04);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .team-photo-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .team-photo-icon svg { opacity: 0.3; }
+    .team-body {
+      padding: 20px 20px 24px;
+    }
+    .team-name {
+      display: block; font-family: var(--font-head);
+      font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;
+      color: rgba(255,255,255,0.4);
+    }
+    .team-role {
+      display: block; font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    @media (max-width: 900px) { .team-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 480px) { .team-grid { grid-template-columns: 1fr; } }
+
+    /* ─── JOIN ─── */
+    #join {
+      position: relative; z-index: 1;
+      padding: 100px 32px 120px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .join-inner {
+      max-width: 720px; margin: 0 auto; text-align: center;
+    }
+    .join-inner .section-header {
+      padding: 0; margin-bottom: 48px;
+    }
+    .join-text {
+      font-size: 1.05rem; color: var(--text-secondary);
+      line-height: 1.75; margin-bottom: 20px;
+    }
+    .join-tags {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center; margin: 36px 0;
+    }
+    .join-tag {
+      font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px; padding: 6px 16px;
+      color: var(--text-secondary);
+    }
   </style>
 </head>
 <body>
@@ -563,6 +637,8 @@
       <div class="nav-links">
         <a href="#realisations">Réalisations</a>
         <a href="#features">Services</a>
+        <a href="#team">Notre équipe</a>
+        <a href="#join">Nous rejoindre</a>
         <a href="mailto:contact@nexxo.systems" class="nav-cta">Réserver un appel</a>
       </div>
     </div>
@@ -573,14 +649,13 @@
     <div class="hero-bg">
       <div class="orb orb-1"></div>
       <div class="orb orb-2"></div>
-      <div class="grid-overlay"></div>
     </div>
     <div class="hero-content">
-      <span class="hero-eyebrow">Agence Web &amp; Automatisation IA — Paris</span>
-      <h1 class="hero-title">Des sites qui font<br><em>la différence.</em></h1>
+      <span class="hero-eyebrow">Automatisation IA &amp; Sites Web — Paris</span>
+      <h1 class="hero-title">L'IA qui automatise<br><em>votre entreprise.</em></h1>
       <p class="hero-subtitle">
-        Création web professionnelle clé en main et automatisation IA sur mesure pour votre entreprise.
-        Chaque solution est construite pour vous. Zéro technique de votre côté.
+        Nexxo automatise vos process métier sur mesure — prospection, SAV, gestion interne.
+        Et conçoit des sites web qui convertissent. Tout construit pour vous, sans technique de votre côté.
       </p>
       <div class="hero-buttons">
         <a href="mailto:contact@nexxo.systems" class="btn-primary" id="hero-cta">Réserver un appel →</a>
@@ -768,6 +843,80 @@
   </section>
 
 
+  <!-- Team -->
+  <section id="team">
+    <div class="section-header">
+      <span class="section-eyebrow">L'équipe</span>
+      <h2 class="section-title">Notre équipe</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo">
+          <div class="team-photo-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+        </div>
+        <div class="team-body">
+          <span class="team-name">Photo à venir</span>
+          <span class="team-role">Co-fondateur</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">
+          <div class="team-photo-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+        </div>
+        <div class="team-body">
+          <span class="team-name">Photo à venir</span>
+          <span class="team-role">Co-fondateur</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">
+          <div class="team-photo-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+        </div>
+        <div class="team-body">
+          <span class="team-name">Photo à venir</span>
+          <span class="team-role">—</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">
+          <div class="team-photo-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+        </div>
+        <div class="team-body">
+          <span class="team-name">Photo à venir</span>
+          <span class="team-role">—</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join -->
+  <section id="join">
+    <div class="join-inner">
+      <div class="section-header">
+        <span class="section-eyebrow">Carrières</span>
+        <h2 class="section-title">Rejoindre Nexxo</h2>
+      </div>
+      <p class="join-text">Nous construisons quelque chose de sérieux. Si vous êtes passionné par l'IA, le web et les nouvelles technologies — et que vous voulez avoir un impact réel sur des projets concrets — nous voulons vous rencontrer.</p>
+      <p class="join-text">Chez Nexxo, pas de bureaucratie, pas de bullshit. Une équipe soudée, des clients exigeants, et une culture orientée résultats. Vous apprenez vite, vous progressez vite.</p>
+      <div class="join-tags">
+        <span class="join-tag">Développement Web</span>
+        <span class="join-tag">Automatisation IA</span>
+        <span class="join-tag">Marketing Digital</span>
+        <span class="join-tag">Commercial</span>
+        <span class="join-tag">Design</span>
+      </div>
+      <a href="mailto:contact@nexxo.systems" class="btn-primary">Envoyer votre candidature →</a>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer>
     <div class="footer-brand">
@@ -775,10 +924,12 @@
     </div>
     <div class="footer-links">
       <a href="#features">Services</a>
+      <a href="#team">Notre équipe</a>
+      <a href="#join">Nous rejoindre</a>
       <a href="#specs">Résultats</a>
       <a href="mailto:contact@nexxo.systems">contact@nexxo.systems</a>
     </div>
-    <p class="footer-copy">&copy; 2026 Nexxo. Tous droits réservés. — Agence Web &amp; Automatisation IA, Paris.</p>
+    <p class="footer-copy">&copy; 2026 Nexxo. Tous droits réservés. — Agence IA &amp; Web, Paris.</p>
   </footer>
 
   <script>
@@ -1095,6 +1246,41 @@
 
       bindCta('main-cta');
       bindCta('hero-cta');
+    })();
+
+    // ─────────────────────────────────────────
+    // HERO INTERACTIVE ORBS
+    // ─────────────────────────────────────────
+    (function() {
+      const hero = document.getElementById('hero');
+      if (!hero) return;
+      const ORB_COUNT = 20;
+      const orbs = [];
+
+      for (let i = 0; i < ORB_COUNT; i++) {
+        const el = document.createElement('div');
+        el.className = 'hero-orb';
+        const size = 100 + Math.random() * 180;
+        const px = 5 + Math.random() * 90;
+        const py = 5 + Math.random() * 90;
+        el.style.cssText = `width:${size}px;height:${size}px;left:${px}%;top:${py}%;`;
+        hero.appendChild(el);
+        orbs.push({ el, px, py });
+      }
+
+      hero.addEventListener('mousemove', e => {
+        const rect = hero.getBoundingClientRect();
+        const mx = (e.clientX - rect.left) / rect.width * 100;
+        const my = (e.clientY - rect.top) / rect.height * 100;
+        orbs.forEach(o => {
+          const dist = Math.sqrt((mx - o.px) ** 2 + (my - o.py) ** 2);
+          o.el.style.opacity = Math.max(0, 1 - dist / 24) * 0.85;
+        });
+      });
+
+      hero.addEventListener('mouseleave', () => {
+        orbs.forEach(o => { o.el.style.opacity = 0; });
+      });
     })();
   </script>
 </body>
