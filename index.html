@@ -917,24 +917,18 @@
     #hero .btn-secondary { color: #1d1d1f; border-color: rgba(0,0,0,0.15); }
     #hero .btn-secondary:hover { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.28); }
 
-    /* ─── WORD SPHERE ─── */
+    /* ─── WORD FLOAT ─── */
     #word-sphere {
       position: absolute;
-      right: max(48px, 7vw); top: 50%;
-      transform: translateY(-50%);
-      width: 480px; height: 480px;
-      perspective: 800px;
+      right: 0; top: 0; bottom: 0;
+      width: 50%;
       z-index: 1; pointer-events: none;
-      overflow: visible;
     }
     .sphere-inner {
-      width: 100%; height: 100%;
-      transform-style: preserve-3d;
-      position: relative;
+      position: absolute; inset: 0;
     }
     .sphere-word-wrap {
-      position: absolute; top: 50%; left: 50%;
-      transform-style: preserve-3d;
+      position: absolute; top: 0; left: 0;
       pointer-events: auto;
     }
     .sphere-word {
@@ -942,14 +936,12 @@
       font-family: var(--font-head); font-weight: 600;
       font-size: 1rem; letter-spacing: 0.01em;
       color: rgba(29,29,31,0.72);
-      cursor: pointer; user-select: none;
-      padding: 5px 3px;
+      cursor: pointer; user-select: none; padding: 4px 2px;
       transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
                   color 0.3s ease, text-shadow 0.3s ease;
-      transform-style: preserve-3d;
     }
     .sphere-word:hover {
-      transform: translateZ(110px) scale(1.75) !important;
+      transform: scale(1.75) !important;
       color: var(--accent);
       text-shadow: 0 2px 28px rgba(0,113,227,0.5);
     }
@@ -2104,9 +2096,12 @@
     // ─────────────────────────────────────────
     // WORD SPHERE
     // ─────────────────────────────────────────
+    // WORD FLOAT — chaque mot dérive indépendamment
+    // ─────────────────────────────────────────
     (function() {
-      const inner = document.getElementById('sphereInner');
-      if (!inner) return;
+      const sphereEl = document.getElementById('word-sphere');
+      const inner    = document.getElementById('sphereInner');
+      if (!inner || !sphereEl) return;
 
       const WORDS = [
         'Automatisation IA', 'Prospection', 'SAV automatisé',
@@ -2114,62 +2109,62 @@
         'Lead generation', 'IA sur mesure', 'Webdesign',
         'SEO local', 'Conversion', 'Croissance', 'Processus'
       ];
-      const R = 150; // rayon du nuage
 
-      // Placement : hémisphère avant uniquement — tous les mots lisibles
-      // seed déterministe pour éviter le repositionnement au rechargement
+      const TAU  = Math.PI * 2;
       const seed = (n) => Math.abs(Math.sin(n * 127.1 + 311.7));
-      const items = WORDS.map((word, i) => {
-        const angle = (i / WORDS.length) * 2 * Math.PI + seed(i * 7) * 0.7;
-        const r     = (0.3 + seed(i * 3) * 0.7) * R;
-        return {
-          x: r * Math.cos(angle),
-          y: r * Math.sin(angle) * 0.62, // légèrement aplati verticalement
-          z: seed(i * 5) * 70,           // z ∈ [0, 70] — toujours en avant
-          word
-        };
-      });
 
-      // Créer les éléments DOM
-      items.forEach(item => {
+      const words = WORDS.map((text, i) => {
         const wrap = document.createElement('div');
         wrap.className = 'sphere-word-wrap';
         const span = document.createElement('span');
         span.className = 'sphere-word';
-        span.textContent = item.word;
+        span.textContent = text;
         wrap.appendChild(span);
         inner.appendChild(wrap);
-        item.wrap = wrap;
-        item.span = span;
+
+        // Taille et opacité variées pour donner du relief
+        span.style.fontSize = (0.82 + seed(i * 43) * 0.55).toFixed(2) + 'rem';
+        span.style.opacity  = (0.42 + seed(i * 47) * 0.52).toFixed(2);
+
+        // Couche Z fixe pour que les mots se croisent naturellement
+        const zBase = String(Math.floor(seed(i * 41) * 6) + 1);
+        wrap.style.zIndex = zBase;
+
+        // Hover → premier plan
+        span.addEventListener('mouseenter', () => { wrap.style.zIndex = '100'; });
+        span.addEventListener('mouseleave', () => { wrap.style.zIndex = zBase; });
+
+        return {
+          wrap,
+          // Position de base en fraction du conteneur (avec marge)
+          bx: 0.05 + seed(i * 3)  * 0.82,
+          by: 0.08 + seed(i * 7)  * 0.76,
+          // Amplitude de dérive (px) — mots bien espacés
+          ax: 24 + seed(i * 11) * 34,
+          ay: 18 + seed(i * 5)  * 28,
+          // Vitesse angulaire (période 25–50s)
+          sx: TAU / (28 + seed(i * 13) * 22),
+          sy: TAU / (32 + seed(i * 17) * 26),
+          // Phases initiales — chaque mot a sa propre trajectoire
+          px: seed(i * 19) * TAU,
+          py: seed(i * 23) * TAU,
+          // Rotation légère (±2°–5°)
+          ra: 2 + seed(i * 29) * 3,
+          rs: TAU / (38 + seed(i * 31) * 28),
+          rp: seed(i * 37) * TAU,
+        };
       });
 
-      // Animation : balancement pendulaire gauche/droite — pas de rotation complète
-      let time = 0;
-
       (function animate() {
-        time += 0.008;
-        // Balancement doux sur Y (±20°) + légère inclinaison X (±6°)
-        const rotY = Math.sin(time * 0.38) * 20 + Math.sin(time * 0.83) * 7;
-        const rotX = Math.sin(time * 0.27) * 6  + Math.cos(time * 0.61) * 2.5;
+        const t = performance.now() * 0.001; // secondes
+        const W = sphereEl.offsetWidth;
+        const H = sphereEl.offsetHeight;
 
-        inner.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-
-        // Profondeur : recalcul Z après rotation pour légère variation d'opacité / taille
-        const rxR = rotX * Math.PI / 180;
-        const ryR = rotY * Math.PI / 180;
-        const maxZ = 70;
-
-        items.forEach(item => {
-          const x1 =  item.x * Math.cos(ryR) + item.z * Math.sin(ryR);
-          const z1 = -item.x * Math.sin(ryR) + item.z * Math.cos(ryR);
-          const z2 =  item.y * Math.sin(rxR) + z1 * Math.cos(rxR);
-
-          // depth ∈ [0,1] — les z sont tous positifs donc jamais invisible
-          const depth = Math.max(0, Math.min(1, (z2 + maxZ) / (2 * maxZ)));
-
-          item.wrap.style.transform = `translate3d(${item.x}px, ${item.y}px, ${item.z}px)`;
-          item.span.style.fontSize  = (0.82 + depth * 0.58).toFixed(3) + 'rem';
-          item.span.style.opacity   = (0.42 + depth * 0.58).toFixed(3); // jamais sous 0.42
+        words.forEach(w => {
+          const x   = w.bx * W + Math.sin(t * w.sx + w.px) * w.ax;
+          const y   = w.by * H + Math.sin(t * w.sy + w.py) * w.ay;
+          const rot = Math.sin(t * w.rs + w.rp) * w.ra;
+          w.wrap.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${rot.toFixed(2)}deg)`;
         });
 
         requestAnimationFrame(animate);
