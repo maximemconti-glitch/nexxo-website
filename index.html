@@ -923,6 +923,8 @@
       right: 0; top: 0; bottom: 0;
       width: 50%;
       z-index: 1; pointer-events: none;
+      overflow: hidden;
+      border: none; outline: none;
     }
     .sphere-inner {
       position: absolute; inset: 0;
@@ -2103,15 +2105,19 @@
       const inner    = document.getElementById('sphereInner');
       if (!inner || !sphereEl) return;
 
-      const WORDS = [
+      // 13 mots × 2 = 26 instances flottantes
+      const BASE_WORDS = [
         'Automatisation IA', 'Prospection', 'SAV automatisé',
         'Sites web', 'Gestion interne', 'Branding',
         'Lead generation', 'IA sur mesure', 'Webdesign',
         'SEO local', 'Conversion', 'Croissance', 'Processus'
       ];
+      const WORDS = [...BASE_WORDS, ...BASE_WORDS]; // duplication
 
       const TAU  = Math.PI * 2;
       const seed = (n) => Math.abs(Math.sin(n * 127.1 + 311.7));
+      // Marge en px : les mots ne dépassent pas dans cette zone
+      const MARGIN = 32;
 
       const words = WORDS.map((text, i) => {
         const wrap = document.createElement('div');
@@ -2122,47 +2128,49 @@
         wrap.appendChild(span);
         inner.appendChild(wrap);
 
-        // Taille et opacité variées pour donner du relief
-        span.style.fontSize = (0.82 + seed(i * 43) * 0.55).toFixed(2) + 'rem';
-        span.style.opacity  = (0.42 + seed(i * 47) * 0.52).toFixed(2);
+        span.style.fontSize = (0.78 + seed(i * 43) * 0.52).toFixed(2) + 'rem';
+        span.style.opacity  = (0.38 + seed(i * 47) * 0.55).toFixed(2);
 
-        // Couche Z fixe pour que les mots se croisent naturellement
         const zBase = String(Math.floor(seed(i * 41) * 6) + 1);
         wrap.style.zIndex = zBase;
 
-        // Hover → premier plan
         span.addEventListener('mouseenter', () => { wrap.style.zIndex = '100'; });
         span.addEventListener('mouseleave', () => { wrap.style.zIndex = zBase; });
 
+        // Amplitude réduite pour rester dans le cadre
+        const ax = 18 + seed(i * 11) * 22;
+        const ay = 14 + seed(i * 5)  * 20;
+
         return {
           wrap,
-          // Position de base en fraction du conteneur (avec marge)
-          bx: 0.05 + seed(i * 3)  * 0.82,
-          by: 0.08 + seed(i * 7)  * 0.76,
-          // Amplitude de dérive (px) — mots bien espacés
-          ax: 24 + seed(i * 11) * 34,
-          ay: 18 + seed(i * 5)  * 28,
-          // Vitesse angulaire (période 25–50s)
-          sx: TAU / (28 + seed(i * 13) * 22),
-          sy: TAU / (32 + seed(i * 17) * 26),
-          // Phases initiales — chaque mot a sa propre trajectoire
+          // Position de base : fraction en tenant compte de la marge
+          bx: seed(i * 3),  // 0–1, scalé en JS avec marge
+          by: seed(i * 7),
+          ax, ay,
+          sx: TAU / (30 + seed(i * 13) * 24),
+          sy: TAU / (34 + seed(i * 17) * 28),
           px: seed(i * 19) * TAU,
           py: seed(i * 23) * TAU,
-          // Rotation légère (±2°–5°)
-          ra: 2 + seed(i * 29) * 3,
-          rs: TAU / (38 + seed(i * 31) * 28),
+          ra: 1.5 + seed(i * 29) * 3,
+          rs: TAU / (40 + seed(i * 31) * 30),
           rp: seed(i * 37) * TAU,
         };
       });
 
       (function animate() {
-        const t = performance.now() * 0.001; // secondes
+        const t = performance.now() * 0.001;
         const W = sphereEl.offsetWidth;
         const H = sphereEl.offsetHeight;
 
         words.forEach(w => {
-          const x   = w.bx * W + Math.sin(t * w.sx + w.px) * w.ax;
-          const y   = w.by * H + Math.sin(t * w.sy + w.py) * w.ay;
+          // Zone utile = [MARGIN+ax, W-MARGIN-ax] pour que la dérive reste dedans
+          const rangeX = W - 2 * (MARGIN + w.ax);
+          const rangeY = H - 2 * (MARGIN + w.ay);
+          const baseX  = MARGIN + w.ax + w.bx * Math.max(0, rangeX);
+          const baseY  = MARGIN + w.ay + w.by * Math.max(0, rangeY);
+
+          const x   = baseX + Math.sin(t * w.sx + w.px) * w.ax;
+          const y   = baseY + Math.sin(t * w.sy + w.py) * w.ay;
           const rot = Math.sin(t * w.rs + w.rp) * w.ra;
           w.wrap.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${rot.toFixed(2)}deg)`;
         });
