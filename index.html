@@ -932,9 +932,17 @@
       transform: translate(-50%, -50%);
       filter: blur(8px);
       opacity: 0; transition: opacity 0.3s ease;
-      z-index: 3;
+      z-index: 3; will-change: left, top;
     }
-    #hero:hover .hero-cursor-glow { opacity: 1; }
+    .hero-cursor-trail {
+      position: absolute; pointer-events: none;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,113,227,0.13) 0%, transparent 65%);
+      transform: translate(-50%, -50%);
+      filter: blur(14px);
+      opacity: 0; z-index: 2;
+      will-change: left, top, opacity;
+    }
 
     /* ─── NAVBAR ON WHITE ─── */
     #navbar:not(.nav-scrolled) .nav-logo { color: #1d1d1f; }
@@ -1965,23 +1973,66 @@
     })();
 
     // ─────────────────────────────────────────
-    // HERO CURSOR GLOW
+    // HERO CURSOR GLOW + TRAIL
     // ─────────────────────────────────────────
     (function() {
       const hero = document.getElementById('hero');
       if (!hero) return;
+
+      // Main glow
       const glow = document.createElement('div');
       glow.className = 'hero-cursor-glow';
       hero.appendChild(glow);
 
+      // Trail elements pool
+      const TRAIL = 5;
+      const DURATION = 320; // ms before fully faded
+      const trailEls = Array.from({ length: TRAIL }, () => {
+        const el = document.createElement('div');
+        el.className = 'hero-cursor-trail';
+        hero.appendChild(el);
+        return el;
+      });
+
+      // History: [{x, y, t}]
+      const hist = [];
+
       hero.addEventListener('mousemove', e => {
-        const rect = hero.getBoundingClientRect();
-        glow.style.left    = (e.clientX - rect.left) + 'px';
-        glow.style.top     = (e.clientY - rect.top)  + 'px';
+        const r = hero.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        glow.style.left = x + 'px';
+        glow.style.top  = y + 'px';
         glow.style.opacity = '1';
+        hist.push({ x, y, t: Date.now() });
+        if (hist.length > 120) hist.shift();
       });
       hero.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
       hero.addEventListener('mouseenter', () => { glow.style.opacity = '1'; });
+
+      // rAF loop — update trail
+      (function loop() {
+        const now = Date.now();
+        trailEls.forEach((el, i) => {
+          // Target: past positions evenly spread over DURATION
+          const targetAge = ((i + 1) / TRAIL) * DURATION;
+          const targetT   = now - targetAge;
+          // Find closest history point
+          let best = null, bestD = Infinity;
+          for (const p of hist) {
+            const d = Math.abs(p.t - targetT);
+            if (d < bestD) { bestD = d; best = p; }
+          }
+          if (best && (now - best.t) < DURATION + 60) {
+            const age = Math.min(1, (now - best.t) / DURATION);
+            el.style.left    = best.x + 'px';
+            el.style.top     = best.y + 'px';
+            el.style.opacity = ((1 - age) * 0.5).toFixed(2);
+          } else {
+            el.style.opacity = '0';
+          }
+        });
+        requestAnimationFrame(loop);
+      })();
     })();
 
     // ─────────────────────────────────────────
