@@ -924,12 +924,17 @@
     }
 
     /* ─── HERO ORBS ─── */
-    .hero-orb {
-      position: absolute; border-radius: 50%; pointer-events: none;
-      background: radial-gradient(circle, rgba(0,113,227,0.22) 0%, rgba(0,113,227,0.08) 45%, transparent 70%);
-      opacity: 0; transform: translate(-50%, -50%);
-      transition: opacity 0.45s ease;
+    .hero-orb { display: none; }
+    .hero-cursor-glow {
+      position: absolute; pointer-events: none;
+      width: 380px; height: 380px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,113,227,0.18) 0%, rgba(52,170,220,0.07) 50%, transparent 70%);
+      transform: translate(-50%, -50%);
+      filter: blur(8px);
+      opacity: 0; transition: opacity 0.3s ease;
+      z-index: 3;
     }
+    #hero:hover .hero-cursor-glow { opacity: 1; }
 
     /* ─── NAVBAR ON WHITE ─── */
     #navbar:not(.nav-scrolled) .nav-logo { color: #1d1d1f; }
@@ -1960,38 +1965,21 @@
     })();
 
     // ─────────────────────────────────────────
-    // HERO INTERACTIVE ORBS
+    // HERO CURSOR GLOW
     // ─────────────────────────────────────────
     (function() {
       const hero = document.getElementById('hero');
       if (!hero) return;
-      const ORB_COUNT = 22;
-      const orbs = [];
-
-      for (let i = 0; i < ORB_COUNT; i++) {
-        const el = document.createElement('div');
-        el.className = 'hero-orb';
-        const size = 160 + Math.random() * 260;
-        const px = 5 + Math.random() * 90;
-        const py = 5 + Math.random() * 90;
-        el.style.cssText = `width:${size}px;height:${size}px;left:${px}%;top:${py}%;`;
-        hero.appendChild(el);
-        orbs.push({ el, px, py });
-      }
+      const glow = document.createElement('div');
+      glow.className = 'hero-cursor-glow';
+      hero.appendChild(glow);
 
       hero.addEventListener('mousemove', e => {
         const rect = hero.getBoundingClientRect();
-        const mx = (e.clientX - rect.left) / rect.width * 100;
-        const my = (e.clientY - rect.top) / rect.height * 100;
-        orbs.forEach(o => {
-          const dist = Math.sqrt((mx - o.px) ** 2 + (my - o.py) ** 2);
-          o.el.style.opacity = Math.max(0, 1 - dist / 38) * 0.95;
-        });
+        glow.style.left = (e.clientX - rect.left) + 'px';
+        glow.style.top  = (e.clientY - rect.top)  + 'px';
       });
-
-      hero.addEventListener('mouseleave', () => {
-        orbs.forEach(o => { o.el.style.opacity = 0; });
-      });
+      hero.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
     })();
 
     // ─────────────────────────────────────────
