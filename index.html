@@ -335,45 +335,393 @@
       font-weight: 700; line-height: 1.05; letter-spacing: -0.03em;
     }
 
-    /* ─── FEATURES ─── */
-    #features { position: relative; z-index: 1; padding: 80px 0 120px; }
-    .features-grid {
-      display: grid; grid-template-columns: repeat(3,1fr);
-      gap: 20px; max-width: 1100px; margin: 0 auto; padding: 0 32px;
+    /* ─── BENTO FEATURES ─── */
+    #features {
+      position: relative; z-index: 1;
+      padding: 100px 0 140px;
+      background: #06060c;
     }
-    .feature-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 0 0 6px rgba(255,255,255,0.015);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-radius: 20px; overflow: hidden;
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    #features::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(var(--accent-rgb),0.09) 0%, transparent 65%);
+      pointer-events: none;
     }
-    .feature-card:hover {
+
+    /* Header */
+    .bento-header {
+      max-width: 1200px; margin: 0 auto 56px;
+      padding: 0 48px;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+    }
+    .bento-header-left { flex: 1; }
+    .bento-eyebrow {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 20px;
+    }
+    .bento-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 700; line-height: 1.0;
+      letter-spacing: -0.04em; color: #fff;
+    }
+    .bento-header-right {
+      max-width: 360px; padding-bottom: 6px;
+    }
+    .bento-sub {
+      font-size: 1rem; color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: 480px 480px;
+      gap: 14px;
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    /* Cards */
+    .bento-card {
+      background: #0d0d14;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      display: flex; flex-direction: column;
+      transition: border-color 0.35s ease, transform 0.35s ease;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.035), 0 0 0 6px rgba(255,255,255,0.012);
+    }
+    .bento-card:hover {
+      border-color: rgba(var(--accent-rgb),0.28);
       transform: translateY(-4px);
-      border-color: rgba(var(--accent-rgb),0.2);
-      box-shadow: 0 0 0 1px rgba(var(--accent-rgb),0.15), 0 0 0 6px rgba(var(--accent-rgb),0.04);
+      box-shadow: 0 0 0 1px rgba(var(--accent-rgb),0.14), 0 0 0 6px rgba(var(--accent-rgb),0.05),
+                  0 24px 60px rgba(0,0,0,0.4);
     }
-    .feature-card-img {
-      height: 160px;
-      background-size: cover;
-      background-position: center;
+    .bento-card-ui {
+      flex: 1;
+      padding: 28px 28px 0;
+      overflow: hidden;
+      position: relative;
     }
-    .feature-card-body {
-      padding: 24px 28px 28px;
+    .bento-card-footer {
+      padding: 20px 28px 26px;
+      position: relative; z-index: 2;
+      background: linear-gradient(to top, rgba(13,13,20,0.98) 0%, transparent 100%);
     }
-    .feature-card h3 {
-      font-family: var(--font-head); font-size: 1.05rem;
-      font-weight: 600; margin-bottom: 10px;
+    .bento-card-footer h3 {
+      font-family: var(--font-head);
+      font-size: 1.2rem; font-weight: 700;
+      letter-spacing: -0.025em; margin-bottom: 6px; color: #fff;
     }
-    .feature-card p {
-      font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;
+    .bento-card-footer p {
+      font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;
     }
-    @media (max-width: 900px) {
-      .features-grid { grid-template-columns: repeat(2,1fr); }
+
+    /* ── CARD 1: Workflow pipeline ── */
+    .workflow-ui {
+      display: flex; flex-direction: column; gap: 16px;
+      height: 100%;
     }
-    @media (max-width: 600px) {
-      .features-grid { grid-template-columns: 1fr; }
+    .wf-pipeline {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .wf-stage { flex: 1; }
+    .wf-stage-label {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,255,255,0.3); margin-bottom: 8px; display: block;
+    }
+    .wf-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 10px 12px;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 6px;
+      opacity: 0; transform: translateY(12px);
+      animation: wfItemIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .wf-item--1 { animation-delay: 0.2s; }
+    .wf-item--2 { animation-delay: 0.45s; }
+    .wf-item--3 { animation-delay: 0.7s; }
+    .wf-item--closing { animation-delay: 0.9s; }
+    @keyframes wfItemIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .wf-item-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .wf-item-name {
+      font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.85);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .wf-item-sub {
+      font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 1px;
+    }
+    .wf-item-score {
+      margin-left: auto; font-size: 0.72rem;
+      color: var(--accent); font-weight: 700; flex-shrink: 0;
+    }
+    .wf-badge {
+      margin-left: auto; font-size: 0.65rem; flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+      padding: 2px 8px; color: rgba(255,255,255,0.45);
+    }
+    .wf-badge--blue {
+      background: rgba(var(--accent-rgb),0.12);
+      border-color: rgba(var(--accent-rgb),0.3);
+      color: var(--accent-light);
+    }
+    .wf-arrow {
+      color: rgba(255,255,255,0.2); font-size: 1.1rem;
+      padding-top: 28px; flex-shrink: 0;
+    }
+    .wf-bottom-bar {
+      display: flex; gap: 24px; padding: 12px 14px;
+      background: rgba(255,255,255,0.025); border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-top: auto; margin-bottom: 8px;
+    }
+    .wf-stat { font-size: 0.78rem; color: rgba(255,255,255,0.45); }
+    .wf-stat-green .wf-stat-val { color: #4ade80; }
+    .wf-stat-val { font-weight: 700; color: #fff; margin-right: 4px; }
+
+    /* ── CARD 2: Chat SAV ── */
+    .bento-card-ui--chat { padding: 0; }
+    .chat-ui {
+      display: flex; flex-direction: column; height: 100%;
+    }
+    .chat-topbar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.025);
+    }
+    .chat-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      flex-shrink: 0;
+    }
+    .chat-name { font-size: 0.82rem; font-weight: 600; color: #fff; }
+    .chat-status { font-size: 0.7rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
+    .chat-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #4ade80;
+      animation: chatDotPulse 2s ease-in-out infinite;
+    }
+    @keyframes chatDotPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .chat-messages {
+      flex: 1; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+      overflow: hidden;
+    }
+    .chat-msg {
+      max-width: 82%; padding: 9px 13px; border-radius: 14px;
+      font-size: 0.78rem; line-height: 1.5;
+      opacity: 0; transform: translateY(10px);
+      animation: chatMsgIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .chat-msg--user {
+      background: rgba(var(--accent-rgb),0.18);
+      border: 1px solid rgba(var(--accent-rgb),0.25);
+      color: rgba(255,255,255,0.85); align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .chat-msg--bot {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.8); align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .chat-msg--anim-1 { animation-delay: 0.3s; }
+    .chat-msg--anim-2 { animation-delay: 0.9s; }
+    .chat-msg--anim-3 { animation-delay: 1.6s; }
+    .chat-msg--anim-4 { animation-delay: 2.3s; }
+    @keyframes chatMsgIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .chat-input-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .chat-input-placeholder {
+      flex: 1; font-size: 0.75rem; color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04); border-radius: 8px;
+      padding: 7px 12px;
+    }
+    .chat-send-btn {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; cursor: pointer; flex-shrink: 0;
+    }
+
+    /* ── CARD 3: Dashboard ── */
+    .dash-ui { padding: 4px 0; height: 100%; display: flex; flex-direction: column; gap: 14px; }
+    .dash-title {
+      font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.5);
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .dash-chart { flex: 1; display: flex; align-items: flex-end; }
+    .dash-bars {
+      display: flex; align-items: flex-end; gap: 8px; width: 100%; height: 140px;
+    }
+    .dash-bar-wrap {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%;
+    }
+    .dash-bar {
+      width: 100%; border-radius: 6px 6px 3px 3px;
+      background: rgba(var(--accent-rgb),0.25);
+      height: 0%;
+      animation: dashBarGrow 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .dash-bar--highlight {
+      background: linear-gradient(to top, var(--accent), var(--accent-light));
+      box-shadow: 0 0 20px rgba(var(--accent-rgb),0.4);
+    }
+    .dash-bar-wrap:nth-child(1) .dash-bar { animation-delay: 0.1s; --h: 45%; }
+    .dash-bar-wrap:nth-child(2) .dash-bar { animation-delay: 0.2s; --h: 62%; }
+    .dash-bar-wrap:nth-child(3) .dash-bar { animation-delay: 0.3s; --h: 55%; }
+    .dash-bar-wrap:nth-child(4) .dash-bar { animation-delay: 0.4s; --h: 78%; }
+    .dash-bar-wrap:nth-child(5) .dash-bar { animation-delay: 0.5s; --h: 88%; }
+    .dash-bar-wrap:nth-child(6) .dash-bar { animation-delay: 0.6s; --h: 100%; }
+    @keyframes dashBarGrow {
+      to { height: var(--h); }
+    }
+    .dash-bar-label {
+      font-size: 0.65rem; color: rgba(255,255,255,0.3);
+    }
+    .dash-bar-label--hl { color: var(--accent-light); font-weight: 600; }
+    .dash-metrics {
+      display: flex; gap: 16px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
+    }
+    .dash-metric { flex: 1; }
+    .dash-metric-val {
+      display: block; font-family: var(--font-head); font-size: 1.5rem;
+      font-weight: 700; color: #fff; letter-spacing: -0.03em;
+    }
+    .dash-metric-label { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
+
+    /* ── CARD 4: Browser + glow beam ── */
+    .bento-card--glow { overflow: visible; }
+    .bento-card--glow::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%; transform: translateX(-50%);
+      width: 2px; height: calc(100% + 120px);
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(80,100,255,0.6) 25%,
+        rgba(0,113,227,0.9) 50%,
+        rgba(52,170,220,0.6) 75%,
+        transparent 100%);
+      filter: blur(18px);
+      pointer-events: none; z-index: 0;
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+    .bento-card--glow::after {
+      content: '';
+      position: absolute;
+      top: 10%; left: 50%; transform: translateX(-50%);
+      width: 80px; height: 80%;
+      background: radial-gradient(ellipse 100% 100% at 50% 50%,
+        rgba(var(--accent-rgb),0.12) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .browser-mockup {
+      background: #141420; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.09);
+      overflow: hidden; position: relative; z-index: 1;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.5);
+    }
+    .bm-bar {
+      background: #1a1a28; padding: 10px 14px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .bm-dots { display: flex; gap: 5px; }
+    .bm-dots span { width: 9px; height: 9px; border-radius: 50%; display: block; }
+    .bm-url {
+      flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px;
+      padding: 3px 10px; font-size: 0.68rem; text-align: center;
+      color: rgba(255,255,255,0.3); font-family: var(--font-mono);
+    }
+    .bm-content { padding: 16px; }
+    .bm-nav {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    }
+    .bm-nav-logo {
+      width: 60px; height: 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.2);
+    }
+    .bm-nav-links { display: flex; gap: 8px; flex: 1; }
+    .bm-nav-links div { width: 30px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); }
+    .bm-nav-cta { width: 50px; height: 18px; border-radius: 9px; background: var(--accent); opacity: 0.7; }
+    .bm-hero-area { margin-bottom: 16px; }
+    .bm-hero-title {
+      height: 14px; border-radius: 7px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 100%);
+      width: 75%; margin-bottom: 8px;
+    }
+    .bm-hero-sub {
+      height: 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.08); width: 55%; margin-bottom: 12px;
+    }
+    .bm-hero-btn {
+      width: 80px; height: 20px; border-radius: 10px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light)); opacity: 0.75;
+    }
+    .bm-cards-row { display: flex; gap: 8px; }
+    .bm-mini-card {
+      flex: 1; height: 56px; border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      position: relative; overflow: hidden;
+    }
+    .bm-mini-card::after {
+      content: '';
+      position: absolute; top: 10px; left: 10px; right: 10px;
+      height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1);
+    }
+    /* Shimmer on browser mockup */
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .bm-content::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 3;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    /* Responsive bento */
+    @media (max-width: 1024px) {
+      .bento-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        padding: 0 24px;
+      }
+      .bento-header { padding: 0 24px; flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 700px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .bento-grid > .bento-card { min-height: 420px; }
+      .bento-title { font-size: clamp(2.2rem,8vw,3.5rem); }
     }
 
     /* ─── CTA ─── */
@@ -838,56 +1186,217 @@
     </div>
   </section>
 
-  <!-- Features -->
+  <!-- Features — Bento -->
   <section id="features">
-    <div class="section-header">
-      <span class="section-eyebrow">Nos services</span>
-      <h2 class="section-title">Deux offres. Entièrement sur mesure.</h2>
+    <div class="bento-header">
+      <div class="bento-header-left">
+        <span class="bento-eyebrow">Nos services</span>
+        <h2 class="bento-title">Automatisation<br>sans limites.</h2>
+      </div>
+      <div class="bento-header-right">
+        <p class="bento-sub">Deux offres. Un seul objectif : votre business tourne mieux, plus vite — avec moins d'effort de votre côté.</p>
+      </div>
     </div>
-    <div class="section-divider"></div>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&auto=format&q=80')"></div>
-        <div class="feature-card-body">
-          <h3>Design sur mesure</h3>
-          <p>Responsive, moderne, aligné avec votre identité. Chaque site est unique — aucun template générique.</p>
+
+    <div class="bento-grid">
+
+      <!-- Card 1 — Prospection (large left) -->
+      <div class="bento-card">
+        <div class="bento-card-ui">
+          <div class="workflow-ui">
+            <div class="wf-pipeline">
+              <!-- Stage 1 -->
+              <div class="wf-stage">
+                <span class="wf-stage-label">Détectés</span>
+                <div class="wf-item wf-item--1">
+                  <div class="wf-item-dot" style="background:#4ade80"></div>
+                  <div>
+                    <div class="wf-item-name">Boulangerie Martin</div>
+                    <div class="wf-item-sub">Paris 11ème</div>
+                  </div>
+                  <div class="wf-item-score">92</div>
+                </div>
+                <div class="wf-item wf-item--2">
+                  <div class="wf-item-dot" style="background:#60a5fa"></div>
+                  <div>
+                    <div class="wf-item-name">Plombier Dupont</div>
+                    <div class="wf-item-sub">Lyon</div>
+                  </div>
+                  <div class="wf-item-score">87</div>
+                </div>
+                <div class="wf-item wf-item--3">
+                  <div class="wf-item-dot" style="background:#a78bfa"></div>
+                  <div>
+                    <div class="wf-item-name">Cabinet Leblanc</div>
+                    <div class="wf-item-sub">Bordeaux</div>
+                  </div>
+                  <div class="wf-item-score">94</div>
+                </div>
+              </div>
+              <div class="wf-arrow">→</div>
+              <!-- Stage 2 -->
+              <div class="wf-stage">
+                <span class="wf-stage-label">Contactés</span>
+                <div class="wf-item">
+                  <div class="wf-item-dot" style="background:#f59e0b"></div>
+                  <div>
+                    <div class="wf-item-name">Coiffeur Delorme</div>
+                    <div class="wf-item-sub">Nice · Mail J+2</div>
+                  </div>
+                  <span class="wf-badge">J+2</span>
+                </div>
+                <div class="wf-item">
+                  <div class="wf-item-dot" style="background:#34d399"></div>
+                  <div>
+                    <div class="wf-item-name">Resto Le Jardin</div>
+                    <div class="wf-item-sub">Paris 6ème · Relance</div>
+                  </div>
+                  <span class="wf-badge">J+5</span>
+                </div>
+              </div>
+              <div class="wf-arrow">→</div>
+              <!-- Stage 3 -->
+              <div class="wf-stage">
+                <span class="wf-stage-label">RDV</span>
+                <div class="wf-item wf-item--closing">
+                  <div class="wf-item-dot" style="background:#0071e3"></div>
+                  <div>
+                    <div class="wf-item-name">Pharmacie Morin</div>
+                    <div class="wf-item-sub">Appel demain 10h</div>
+                  </div>
+                  <span class="wf-badge wf-badge--blue">Confirmé</span>
+                </div>
+              </div>
+            </div>
+            <div class="wf-bottom-bar">
+              <span class="wf-stat"><span class="wf-stat-val">148</span> leads qualifiés ce mois</span>
+              <span class="wf-stat wf-stat-green"><span class="wf-stat-val">32</span> RDV obtenus</span>
+            </div>
+          </div>
+        </div>
+        <div class="bento-card-footer">
+          <h3>Prospection automatisée</h3>
+          <p>L'IA détecte, qualifie et contacte vos prospects — pendant que vous dormez.</p>
         </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&auto=format&q=80')"></div>
-        <div class="feature-card-body">
-          <h3>SEO local &amp; technique</h3>
-          <p>Remontez sur Google Maps et captez les recherches de votre zone. Configuration technique incluse.</p>
+
+      <!-- Card 2 — SAV Chat (small right top) -->
+      <div class="bento-card">
+        <div class="bento-card-ui bento-card-ui--chat">
+          <div class="chat-ui">
+            <div class="chat-topbar">
+              <div class="chat-avatar"></div>
+              <div>
+                <div class="chat-name">Assistant Nexxo</div>
+                <div class="chat-status"><span class="chat-dot"></span>En ligne · répond en &lt;3s</div>
+              </div>
+            </div>
+            <div class="chat-messages">
+              <div class="chat-msg chat-msg--user chat-msg--anim-1">Bonjour, c'est quoi vos horaires ?</div>
+              <div class="chat-msg chat-msg--bot chat-msg--anim-2">Bonjour ! Nous sommes ouverts du lundi au samedi de 9h à 19h. Comment puis-je vous aider ?</div>
+              <div class="chat-msg chat-msg--user chat-msg--anim-3">Vous livrez à domicile ?</div>
+              <div class="chat-msg chat-msg--bot chat-msg--anim-4">Oui, dans un rayon de 15 km. Livraison offerte dès 50€. Souhaitez-vous passer une commande ?</div>
+            </div>
+            <div class="chat-input-bar">
+              <span class="chat-input-placeholder">Votre message...</span>
+              <div class="chat-send-btn">→</div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-card-footer">
+          <h3>SAV 24h/7j</h3>
+          <p>Vos clients ont toujours une réponse — même à 3h du matin.</p>
         </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&auto=format&q=80')"></div>
-        <div class="feature-card-body">
-          <h3>Hébergement &amp; maintenance</h3>
-          <p>Domaine, HTTPS, sauvegardes et mises à jour — tout est inclus. Vous n'avez rien à gérer.</p>
+
+      <!-- Card 3 — Dashboard (small left bottom) -->
+      <div class="bento-card">
+        <div class="bento-card-ui">
+          <div class="dash-ui">
+            <div class="dash-title">Performance mensuelle</div>
+            <div class="dash-chart">
+              <div class="dash-bars">
+                <div class="dash-bar-wrap">
+                  <div class="dash-bar" style="--h:45%"></div>
+                  <div class="dash-bar-label">Jan</div>
+                </div>
+                <div class="dash-bar-wrap">
+                  <div class="dash-bar" style="--h:62%"></div>
+                  <div class="dash-bar-label">Fév</div>
+                </div>
+                <div class="dash-bar-wrap">
+                  <div class="dash-bar" style="--h:55%"></div>
+                  <div class="dash-bar-label">Mar</div>
+                </div>
+                <div class="dash-bar-wrap">
+                  <div class="dash-bar" style="--h:78%"></div>
+                  <div class="dash-bar-label">Avr</div>
+                </div>
+                <div class="dash-bar-wrap">
+                  <div class="dash-bar" style="--h:88%"></div>
+                  <div class="dash-bar-label">Mai</div>
+                </div>
+                <div class="dash-bar-wrap">
+                  <div class="dash-bar dash-bar--highlight" style="--h:100%"></div>
+                  <div class="dash-bar-label dash-bar-label--hl">Juin</div>
+                </div>
+              </div>
+            </div>
+            <div class="dash-metrics">
+              <div class="dash-metric">
+                <span class="dash-metric-val">+34%</span>
+                <span class="dash-metric-label">Temps économisé</span>
+              </div>
+              <div class="dash-metric">
+                <span class="dash-metric-val">2.1h</span>
+                <span class="dash-metric-label">Libérées / jour</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-card-footer">
+          <h3>Gestion interne</h3>
+          <p>Factures, stocks, planning — vos opérations automatisées de A à Z.</p>
         </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&auto=format&q=80')"></div>
-        <div class="feature-card-body">
-          <h3>Automatisation sur mesure</h3>
-          <p>Prospection, SAV, gestion interne, logistique… On automatise n'importe quel process — construit spécifiquement pour votre activité.</p>
+
+      <!-- Card 4 — Website mockup (large right) -->
+      <div class="bento-card bento-card--glow">
+        <div class="bento-card-ui">
+          <div class="browser-mockup">
+            <div class="bm-bar">
+              <div class="bm-dots">
+                <span style="background:#ff5f57"></span>
+                <span style="background:#febc2e"></span>
+                <span style="background:#28c840"></span>
+              </div>
+              <div class="bm-url">votresite.fr</div>
+            </div>
+            <div class="bm-content">
+              <div class="bm-nav">
+                <div class="bm-nav-logo"></div>
+                <div class="bm-nav-links"><div></div><div></div><div></div></div>
+                <div class="bm-nav-cta"></div>
+              </div>
+              <div class="bm-hero-area">
+                <div class="bm-hero-title"></div>
+                <div class="bm-hero-sub"></div>
+                <div class="bm-hero-btn"></div>
+              </div>
+              <div class="bm-cards-row">
+                <div class="bm-mini-card"></div>
+                <div class="bm-mini-card"></div>
+                <div class="bm-mini-card"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-card-footer">
+          <h3>Sites qui convertissent</h3>
+          <p>Design sur mesure, SEO intégré, livré en 48 heures. Pensé pour votre client.</p>
         </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&auto=format&q=80')"></div>
-        <div class="feature-card-body">
-          <h3>Personnalisation totale</h3>
-          <p>Pas de solution générique. Chaque workflow est conçu autour de vos outils, vos équipes et vos contraintes réelles.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card-img" style="background-image: url('https://images.unsplash.com/photo-1495364141860-b0d03eccd065?w=600&auto=format&q=80')"></div>
-        <div class="feature-card-body">
-          <h3>Gain de temps immédiat</h3>
-          <p>Les tâches répétitives disparaissent. Vos équipes se concentrent sur ce qui a de la valeur. L'IA fait le reste.</p>
-        </div>
-      </div>
+
     </div>
   </section>
 
