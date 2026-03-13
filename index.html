@@ -940,18 +940,18 @@
     .sphere-word {
       display: block; white-space: nowrap;
       font-family: var(--font-head); font-weight: 600;
-      font-size: 0.85rem; letter-spacing: 0.01em;
-      color: rgba(29,29,31,0.65);
+      font-size: 1rem; letter-spacing: 0.01em;
+      color: rgba(29,29,31,0.72);
       cursor: pointer; user-select: none;
-      padding: 4px 2px;
+      padding: 5px 3px;
       transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
                   color 0.3s ease, text-shadow 0.3s ease;
       transform-style: preserve-3d;
     }
     .sphere-word:hover {
-      transform: translateZ(90px) scale(1.7) !important;
+      transform: translateZ(110px) scale(1.75) !important;
       color: var(--accent);
-      text-shadow: 0 2px 24px rgba(0,113,227,0.45);
+      text-shadow: 0 2px 28px rgba(0,113,227,0.5);
     }
     @media (max-width: 1100px) { #word-sphere { display: none; } }
 
@@ -2114,19 +2114,18 @@
         'Lead generation', 'IA sur mesure', 'Webdesign',
         'SEO local', 'Conversion', 'Croissance', 'Processus'
       ];
-      const R = 160; // rayon sphère
+      const R = 150; // rayon du nuage
 
-      // Distribution de Fibonacci pour positions uniformes
+      // Placement : hémisphère avant uniquement — tous les mots lisibles
+      // seed déterministe pour éviter le repositionnement au rechargement
+      const seed = (n) => Math.abs(Math.sin(n * 127.1 + 311.7));
       const items = WORDS.map((word, i) => {
-        const phi   = Math.acos(1 - 2 * (i + 0.5) / WORDS.length);
-        const theta = Math.PI * (1 + Math.sqrt(5)) * i; // golden angle
-        // légère randomisation pour aspect chaotique
-        const rPhi   = phi   + (Math.random() - 0.5) * 0.5;
-        const rTheta = theta + (Math.random() - 0.5) * 0.8;
+        const angle = (i / WORDS.length) * 2 * Math.PI + seed(i * 7) * 0.7;
+        const r     = (0.3 + seed(i * 3) * 0.7) * R;
         return {
-          x: R * Math.sin(rPhi) * Math.cos(rTheta),
-          y: R * Math.sin(rPhi) * Math.sin(rTheta),
-          z: R * Math.cos(rPhi),
+          x: r * Math.cos(angle),
+          y: r * Math.sin(angle) * 0.62, // légèrement aplati verticalement
+          z: seed(i * 5) * 70,           // z ∈ [0, 70] — toujours en avant
           word
         };
       });
@@ -2144,36 +2143,33 @@
         item.span = span;
       });
 
-      // Rotation : axe incliné ~28° (like a globe tilted), chaos sur Y + légère oscillation X
-      const TILT = 28;        // inclinaison de base (deg)
-      let rotY = 0, time = 0;
+      // Animation : balancement pendulaire gauche/droite — pas de rotation complète
+      let time = 0;
 
       (function animate() {
-        time += 0.007;
-        // Y tourne en continu, légèrement chaotique
-        rotY += 0.20 + Math.sin(time * 0.5) * 0.14 + Math.cos(time * 1.1) * 0.07;
-        // X oscille autour du tilt de base — montre/cache les pôles
-        const rotX = TILT + Math.sin(time * 0.38) * 12 + Math.cos(time * 0.72) * 6;
+        time += 0.008;
+        // Balancement doux sur Y (±20°) + légère inclinaison X (±6°)
+        const rotY = Math.sin(time * 0.38) * 20 + Math.sin(time * 0.83) * 7;
+        const rotX = Math.sin(time * 0.27) * 6  + Math.cos(time * 0.61) * 2.5;
 
         inner.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
 
-        // Profondeur : recalcul Z après rotation pour opacité + taille
+        // Profondeur : recalcul Z après rotation pour légère variation d'opacité / taille
         const rxR = rotX * Math.PI / 180;
         const ryR = rotY * Math.PI / 180;
+        const maxZ = 70;
 
         items.forEach(item => {
-          // Z world après rotation Y puis X
           const x1 =  item.x * Math.cos(ryR) + item.z * Math.sin(ryR);
           const z1 = -item.x * Math.sin(ryR) + item.z * Math.cos(ryR);
           const z2 =  item.y * Math.sin(rxR) + z1 * Math.cos(rxR);
 
-          const depth = (z2 + R) / (2 * R); // 0 = derrière, 1 = devant
-          const scale = 0.65 + depth * 0.6;
-          const alpha = 0.18 + depth * 0.82;
+          // depth ∈ [0,1] — les z sont tous positifs donc jamais invisible
+          const depth = Math.max(0, Math.min(1, (z2 + maxZ) / (2 * maxZ)));
 
           item.wrap.style.transform = `translate3d(${item.x}px, ${item.y}px, ${item.z}px)`;
-          item.span.style.fontSize  = scale.toFixed(3) + 'rem';
-          item.span.style.opacity   = alpha.toFixed(3);
+          item.span.style.fontSize  = (0.82 + depth * 0.58).toFixed(3) + 'rem';
+          item.span.style.opacity   = (0.42 + depth * 0.58).toFixed(3); // jamais sous 0.42
         });
 
         requestAnimationFrame(animate);
