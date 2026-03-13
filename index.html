@@ -926,7 +926,7 @@
     /* ─── HERO ORBS ─── */
     .hero-orb {
       position: absolute; border-radius: 50%; pointer-events: none;
-      background: radial-gradient(circle, rgba(0,113,227,0.18) 0%, rgba(0,113,227,0.05) 50%, transparent 70%);
+      background: radial-gradient(circle, rgba(0,113,227,0.22) 0%, rgba(0,113,227,0.08) 45%, transparent 70%);
       opacity: 0; transform: translate(-50%, -50%);
       transition: opacity 0.45s ease;
     }
@@ -1965,13 +1965,13 @@
     (function() {
       const hero = document.getElementById('hero');
       if (!hero) return;
-      const ORB_COUNT = 20;
+      const ORB_COUNT = 22;
       const orbs = [];
 
       for (let i = 0; i < ORB_COUNT; i++) {
         const el = document.createElement('div');
         el.className = 'hero-orb';
-        const size = 100 + Math.random() * 180;
+        const size = 160 + Math.random() * 260;
         const px = 5 + Math.random() * 90;
         const py = 5 + Math.random() * 90;
         el.style.cssText = `width:${size}px;height:${size}px;left:${px}%;top:${py}%;`;
@@ -1985,7 +1985,7 @@
         const my = (e.clientY - rect.top) / rect.height * 100;
         orbs.forEach(o => {
           const dist = Math.sqrt((mx - o.px) ** 2 + (my - o.py) ** 2);
-          o.el.style.opacity = Math.max(0, 1 - dist / 24) * 0.85;
+          o.el.style.opacity = Math.max(0, 1 - dist / 38) * 0.95;
         });
       });
 
