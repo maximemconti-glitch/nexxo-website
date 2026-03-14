@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Test 2 — Stats</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, sans-serif; }
+
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; width: 460px;
+  }
+
+  .block {
+    background: #0e0e12;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 18px; padding: 28px 24px;
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .block.visible { opacity: 1; transform: translateY(0); }
+
+  /* Accent glow */
+  .block::before {
+    content: ''; position: absolute;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,113,227,0.12) 0%, transparent 70%);
+    top: -30px; right: -30px; pointer-events: none;
+  }
+  .block.green::before { background: radial-gradient(circle, rgba(40,200,64,0.10) 0%, transparent 70%); }
+  .block.orange::before { background: radial-gradient(circle, rgba(255,149,0,0.10) 0%, transparent 70%); }
+  .block.cyan::before { background: radial-gradient(circle, rgba(52,170,220,0.12) 0%, transparent 70%); }
+
+  .icon { font-size: 1.3rem; margin-bottom: 16px; opacity: 0.9; }
+  .val {
+    font-size: 2.8rem; font-weight: 800;
+    letter-spacing: -0.04em; color: #fff;
+    line-height: 1; margin-bottom: 6px;
+  }
+  .val em { color: #0071e3; font-style: normal; }
+  .block.green .val em { color: #28c840; }
+  .block.orange .val em { color: #ff9500; }
+  .block.cyan .val em { color: #34aadc; }
+
+  .label { font-size: 0.8rem; color: rgba(255,255,255,0.4); line-height: 1.4; }
+  .label strong { color: rgba(255,255,255,0.75); font-weight: 500; }
+
+  /* Progress bar on some */
+  .progress { margin-top: 14px; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; width: 0; transition: width 1.2s cubic-bezier(0.16,1,0.3,1); }
+  .block .progress-fill { background: #0071e3; }
+  .block.green .progress-fill { background: #28c840; }
+</style>
+</head>
+<body>
+<div class="grid">
+
+  <div class="block" id="b1">
+    <div class="icon">⚡</div>
+    <div class="val"><span id="v1">0</span><em>h</em></div>
+    <div class="label"><strong>économisées par semaine</strong><br>en tâches répétitives</div>
+    <div class="progress"><div class="progress-fill" id="p1"></div></div>
+  </div>
+
+  <div class="block green" id="b2">
+    <div class="icon">🎯</div>
+    <div class="val"><span id="v2">0</span><em>+</em></div>
+    <div class="label"><strong>leads qualifiés</strong><br>générés ce mois</div>
+    <div class="progress"><div class="progress-fill" id="p2"></div></div>
+  </div>
+
+  <div class="block orange" id="b3">
+    <div class="icon">🚀</div>
+    <div class="val"><span id="v3">0</span><em>j</em></div>
+    <div class="label"><strong>délai de livraison</strong><br>site web complet</div>
+  </div>
+
+  <div class="block cyan" id="b4">
+    <div class="icon">🤖</div>
+    <div class="val"><span id="v4">0</span><em>%</em></div>
+    <div class="label"><strong>personnalisé</strong><br>pour votre entreprise</div>
+  </div>
+
+</div>
+
+<script>
+  function easeOut(t) { return 1 - Math.pow(1-t, 3); }
+
+  function animCount(id, target, decimals=0) {
+    const el = document.getElementById(id);
+    const start = performance.now();
+    const dur = 1400;
+    function step(now) {
+      const p = Math.min((now-start)/dur, 1);
+      const v = easeOut(p) * target;
+      el.textContent = decimals ? v.toFixed(decimals) : Math.round(v);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function animBar(id, pct) {
+    const el = document.getElementById(id);
+    if (el) setTimeout(() => el.style.width = pct+'%', 200);
+  }
+
+  // Stagger in
+  [1,2,3,4].forEach((i, idx) => {
+    setTimeout(() => {
+      document.getElementById('b'+i).classList.add('visible');
+    }, 100 + idx * 120);
+  });
+
+  setTimeout(() => {
+    animCount('v1', 12);
+    animCount('v2', 148);
+    animCount('v3', 2);
+    animCount('v4', 100);
+    animBar('p1', 75);
+    animBar('p2', 88);
+  }, 300);
+</script>
+</body>
+</html>

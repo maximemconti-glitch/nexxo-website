@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Test 3 — Terminal Live</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, sans-serif; }
+
+  .terminal {
+    width: 500px;
+    background: #0b0b0f;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,113,227,0.08);
+  }
+
+  /* Top bar */
+  .tbar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 13px 16px;
+    background: #111116;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+  .tbar-title { margin-left: 8px; font-size: 0.72rem; color: rgba(255,255,255,0.3); font-family: 'Menlo', monospace; }
+  .status { margin-left: auto; display: flex; align-items: center; gap: 5px; font-size: 0.65rem; color: #28c840; }
+  .pulse { width: 6px; height: 6px; border-radius: 50%; background: #28c840; position: relative; }
+  .pulse::after { content:''; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid #28c840; animation: ping 1.5s ease-out infinite; }
+  @keyframes ping { to { transform:scale(2.2); opacity:0; } }
+
+  /* Feed */
+  .feed { padding: 16px; min-height: 280px; max-height: 280px; overflow: hidden; position: relative; }
+  .feed::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: linear-gradient(to bottom, transparent, #0b0b0f);
+    pointer-events: none;
+  }
+
+  .entry {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-size: 0.72rem;
+  }
+  .entry.show { opacity: 1; transform: translateY(0); }
+
+  .time { color: rgba(255,255,255,0.2); font-family: 'Menlo', monospace; flex-shrink: 0; padding-top: 1px; }
+  .tag {
+    padding: 1px 8px; border-radius: 4px; font-size: 0.62rem;
+    font-weight: 600; flex-shrink: 0; padding-top: 2px;
+    font-family: 'Menlo', monospace;
+  }
+  .tag-detect { background: rgba(0,113,227,0.2); color: #34aadc; }
+  .tag-send   { background: rgba(255,149,0,0.15); color: #ff9500; }
+  .tag-reply  { background: rgba(52,170,220,0.15); color: #34aadc; }
+  .tag-rdv    { background: rgba(40,200,64,0.15); color: #28c840; }
+  .tag-auto   { background: rgba(175,82,222,0.15); color: #bf5af2; }
+  .tag-site   { background: rgba(255,45,85,0.15); color: #ff2d55; }
+
+  .msg { color: rgba(255,255,255,0.65); line-height: 1.4; }
+  .msg strong { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+  /* Input bar */
+  .input-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    background: #111116;
+  }
+  .prompt { color: #0071e3; font-family: 'Menlo', monospace; font-size: 0.75rem; }
+  .cursor {
+    width: 7px; height: 14px; background: #0071e3;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .input-label { font-family: 'Menlo', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.25); }
+</style>
+</head>
+<body>
+<div class="terminal">
+  <div class="tbar">
+    <span class="dot dot-r"></span>
+    <span class="dot dot-y"></span>
+    <span class="dot dot-g"></span>
+    <span class="tbar-title">nexxo-agent · live feed</span>
+    <div class="status"><div class="pulse"></div> En ligne</div>
+  </div>
+
+  <div class="feed" id="feed"></div>
+
+  <div class="input-bar">
+    <span class="prompt">›</span>
+    <span class="input-label">Automatisation en cours...</span>
+    <div class="cursor"></div>
+  </div>
+</div>
+
+<script>
+  const EVENTS = [
+    { delay: 400,  tag: 'detect', label: 'DETECT', msg: 'Nouveau prospect — <strong>Boulangerie Martin</strong>, Paris 11e · Score 92/100' },
+    { delay: 1200, tag: 'send',   label: 'MAIL',   msg: 'Email personnalisé envoyé à <strong>martin@boulangerie-martin.fr</strong>' },
+    { delay: 2200, tag: 'auto',   label: 'AUTO',   msg: 'Relance J+2 programmée · Objet : "Votre site web en 48h"' },
+    { delay: 3400, tag: 'reply',  label: 'REPLY',  msg: '<strong>Réponse reçue</strong> de Martin Dupont — "Ça m\'intéresse, on peut se parler ?"' },
+    { delay: 4200, tag: 'rdv',    label: 'RDV',    msg: '<strong>Rendez-vous confirmé</strong> · Lundi 10h · Appel découverte' },
+    { delay: 5200, tag: 'detect', label: 'DETECT', msg: 'Nouveau prospect — <strong>Cabinet Leblanc</strong>, Bordeaux · Score 94/100' },
+    { delay: 5900, tag: 'site',   label: 'SITE',   msg: 'Site web livré — <strong>restaurant-jules.fr</strong> mis en ligne ✓' },
+    { delay: 6700, tag: 'send',   label: 'MAIL',   msg: 'Séquence de 3 mails lancée pour <strong>Cabinet Leblanc</strong>' },
+    { delay: 7600, tag: 'auto',   label: 'AUTO',   msg: 'SAV activé — réponse automatique configurée pour <strong>Boulangerie Martin</strong>' },
+    { delay: 8500, tag: 'rdv',    label: 'RDV',    msg: '<strong>2e RDV</strong> signé ce jour · Pipeline : 32 leads actifs' },
+  ];
+
+  const feed = document.getElementById('feed');
+  let now = new Date();
+
+  function getTime(offsetMs) {
+    const d = new Date(now.getTime() + offsetMs);
+    return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0') + ':' + d.getSeconds().toString().padStart(2,'0');
+  }
+
+  EVENTS.forEach((ev, i) => {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'entry';
+      el.innerHTML = `
+        <span class="time">${getTime(ev.delay)}</span>
+        <span class="tag tag-${ev.tag}">${ev.label}</span>
+        <span class="msg">${ev.msg}</span>
+      `;
+      feed.appendChild(el);
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+      // Scroll down
+      feed.scrollTop = feed.scrollHeight;
+    }, ev.delay);
+  });
+
+  // Loop
+  setTimeout(() => location.reload(), 11000);
+</script>
+</body>
+</html>

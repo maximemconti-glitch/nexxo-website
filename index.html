@@ -6,52 +6,26 @@
   <title>Nexxo — Automatisation IA & Sites Web</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     /* ─── CUSTOM CURSOR ─── */
     html, body, a, button, input, [role="button"] { cursor: none !important; }
 
-    #cursor-dot {
+    #cursor {
       position: fixed; z-index: 999999; pointer-events: none;
-      width: 7px; height: 7px; border-radius: 50%;
-      background: #0071e3;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #ffffff;
+      mix-blend-mode: difference;
       transform: translate(-50%, -50%);
-      transition: width 0.2s cubic-bezier(0.16,1,0.3,1),
-                  height 0.2s cubic-bezier(0.16,1,0.3,1),
-                  background 0.2s ease, opacity 0.3s ease;
+      transition: width 0.28s cubic-bezier(0.16,1,0.3,1),
+                  height 0.28s cubic-bezier(0.16,1,0.3,1),
+                  opacity 0.3s ease;
       will-change: left, top;
     }
-    #cursor-ring {
-      position: fixed; z-index: 999998; pointer-events: none;
-      width: 34px; height: 34px; border-radius: 50%;
-      border: 1.5px solid rgba(0,113,227,0.55);
-      transform: translate(-50%, -50%);
-      transition: width 0.35s cubic-bezier(0.16,1,0.3,1),
-                  height 0.35s cubic-bezier(0.16,1,0.3,1),
-                  border-color 0.3s ease, background 0.3s ease, opacity 0.3s ease;
-      will-change: left, top;
-    }
-    /* Hover state — anneau s'agrandit, dot se rétracte */
-    body.cursor-hover #cursor-ring {
-      width: 52px; height: 52px;
-      border-color: rgba(0,113,227,0.35);
-      background: rgba(0,113,227,0.05);
-    }
-    body.cursor-hover #cursor-dot {
-      width: 4px; height: 4px;
-      background: #34aadc;
-    }
-    /* Click state */
-    body.cursor-click #cursor-dot {
-      width: 12px; height: 12px;
-      background: var(--accent);
-    }
-    body.cursor-click #cursor-ring {
-      width: 22px; height: 22px;
-      border-color: rgba(0,113,227,0.8);
-    }
+    body.cursor-hover #cursor { width: 64px; height: 64px; }
+    body.cursor-click  #cursor { width: 12px; height: 12px; }
 
     :root {
       --accent: #0071e3;
@@ -175,6 +149,7 @@
       padding: 8px 20px; border-radius: 20px;
       font-size: 0.85rem; font-weight: 500;
       transition: all 0.2s;
+      position: relative; overflow: visible;
     }
     .nav-links .nav-cta:hover {
       box-shadow: 0 0 16px rgba(var(--accent-rgb),0.5);
@@ -186,10 +161,10 @@
 
     /* ─── HERO ─── */
     #hero {
-      position: relative; min-height: 100vh;
+      position: relative; min-height: 100svh;
       display: flex; align-items: center; justify-content: flex-start;
       text-align: left; overflow: clip; z-index: 1;
-      padding: 120px max(64px, 8vw) 80px;
+      padding: clamp(80px, 10vh, 120px) max(64px, 8vw) clamp(48px, 6vh, 80px);
     }
     .hero-bg { position: absolute; inset: 0; pointer-events: none; }
     .orb {
@@ -214,37 +189,53 @@
         linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 60px 60px;
     }
-    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+    .hero-content { position: relative; z-index: 2; width: 100%; max-width: calc(50vw - max(64px, 8vw) - 32px); }
     .hero-eyebrow {
-      font-family: var(--font-mono); font-size: 0.75rem;
-      letter-spacing: 3px; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 24px;
-      display: inline-block;
+      display: inline-flex; align-items: center;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-family: var(--font-body); font-size: 0.82rem;
+      font-weight: 400; letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 32px;
+      background: rgba(255,255,255,0.04);
     }
     .hero-title {
-      font-family: var(--font-head); font-size: clamp(3.8rem, 8.5vw, 7rem);
+      font-family: var(--font-head); font-size: clamp(3.2rem, 7.5vw, 6.2rem);
       font-weight: 700; line-height: 0.95; letter-spacing: -0.035em;
-      margin-bottom: 28px;
+      margin-bottom: clamp(16px, 2.5vh, 28px);
     }
     .hero-title em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic; font-weight: 500;
+      font-size: 1.08em;
+      color: var(--accent-light);
+      -webkit-text-fill-color: var(--accent-light);
+      letter-spacing: -0.01em;
     }
     .hero-subtitle {
-      font-size: clamp(1rem, 1.5vw, 1.2rem);
-      color: var(--text-secondary); line-height: 1.7;
-      margin-bottom: 48px; max-width: 560px;
+      font-family: var(--font-body); font-weight: 300;
+      font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+      color: rgba(255,255,255,0.6); line-height: 1.7;
+      margin-bottom: clamp(24px, 3.5vh, 40px); max-width: 500px;
     }
     .hero-buttons {
       display: flex; gap: 16px; justify-content: flex-start; flex-wrap: wrap;
     }
+    /* ─── PARTICLE BURST ─── */
+    .particle {
+      position: absolute; border-radius: 50%;
+      pointer-events: none; z-index: 20;
+      transform: translate(-50%, -50%) scale(0);
+      will-change: transform, opacity;
+    }
+
     .btn-primary {
       background: var(--accent); color: #fff;
       padding: 14px 32px; border-radius: 12px;
       font-weight: 600; font-size: 1rem; text-decoration: none;
+      position: relative; overflow: visible;
       box-shadow: 0 0 24px rgba(var(--accent-rgb),0.35);
       transition: all 0.3s ease; display: inline-block;
       border: none; cursor: pointer; font-family: var(--font-body);
@@ -259,6 +250,7 @@
       border: 1px solid rgba(255,255,255,0.15);
       font-size: 1rem; text-decoration: none;
       transition: all 0.3s ease; display: inline-block;
+      position: relative; overflow: visible;
     }
     .btn-secondary:hover {
       border-color: rgba(255,255,255,0.35);
@@ -283,35 +275,17 @@
       50% { opacity: 1; transform: scaleY(1.15); }
     }
 
-    /* ─── SCROLL ANIMATION ─── */
-    .scroll-animation {
-      height: 380vh; position: relative; z-index: 1;
-    }
-    .scroll-sticky {
-      position: sticky; top: 0; height: 100vh;
-      width: 100%; overflow: hidden;
-    }
-    #frameCanvas {
-      position: absolute; top: 0; left: 0;
-    }
 
-    @media (max-width: 768px) {
-      .scroll-animation { height: 280vh; }
-    }
-    @media (max-width: 1024px) and (min-width: 769px) {
-      .scroll-animation { height: 320vh; }
-    }
-
-    /* ─── SPECS (WHITE) ─── */
+    /* ─── SPECS (DARK) ─── */
     #specs {
       position: relative; z-index: 2;
       padding: 100px 32px 120px;
-      background: #f5f5f7;
+      background: #06060c;
     }
     #specs::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 50% 60% at 50% 100%, rgba(var(--accent-rgb),0.06) 0%, transparent 70%);
+      background: radial-gradient(ellipse 50% 60% at 50% 100%, rgba(var(--accent-rgb),0.10) 0%, transparent 70%);
       pointer-events: none;
     }
     .specs-inner {
@@ -328,7 +302,7 @@
     }
     .specs-title {
       font-family: var(--font-head); font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 700; color: #1d1d1f; line-height: 1.05;
+      font-weight: 700; color: #ffffff; line-height: 1.05;
       letter-spacing: -0.04em;
     }
     .specs-grid {
@@ -336,9 +310,9 @@
       gap: 16px; text-align: left;
     }
     .spec-item {
-      background: #ffffff;
-      border: 1px solid rgba(0,0,0,0.07);
-      box-shadow: 0 2px 16px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.04);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
       border-radius: 20px; padding: 36px 28px 32px;
       position: relative; overflow: hidden;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -365,13 +339,13 @@
       font-family: var(--font-head); font-size: 3.8rem;
       font-weight: 700; display: block; line-height: 1;
       letter-spacing: -0.04em;
-      transition: color 0.35s ease; color: #1d1d1f;
+      transition: color 0.35s ease; color: #ffffff;
       position: relative; z-index: 1;
     }
     .spec-number.counting { color: var(--accent); }
     .spec-item:hover .spec-number { color: var(--accent); }
     .spec-label {
-      font-size: 0.82rem; color: #6e6e73;
+      font-size: 0.82rem; color: rgba(255,255,255,0.5);
       margin-top: 14px; display: block; line-height: 1.55;
       position: relative; z-index: 1;
     }
@@ -400,17 +374,26 @@
       font-weight: 700; line-height: 1.05; letter-spacing: -0.03em;
     }
 
-    /* ─── BENTO FEATURES ─── */
+    /* ─── BENTO FEATURES (WHITE) ─── */
     #features {
       position: relative; z-index: 1;
       padding: 100px 0 140px;
-      background: #06060c;
+      background: #f5f5f7;
     }
     #features::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(var(--accent-rgb),0.09) 0%, transparent 65%);
+      background: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(var(--accent-rgb),0.05) 0%, transparent 65%);
       pointer-events: none;
+    }
+    #featuresStars { display: none; }
+    #features .bento-title { color: #1d1d1f; }
+    #features .bento-sub   { color: #6e6e73; }
+    #features .bento-card  {
+      box-shadow: 0 8px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.10);
+    }
+    #features .bento-card:hover {
+      box-shadow: 0 24px 70px rgba(0,0,0,0.20), 0 8px 20px rgba(0,0,0,0.12);
     }
 
     /* Header */
@@ -808,11 +791,11 @@
       .bento-title { font-size: clamp(2.2rem,8vw,3.5rem); }
     }
 
-    /* ─── CTA (WHITE) ─── */
+    /* ─── CTA (DARK) ─── */
     #cta {
       position: relative; z-index: 2;
       text-align: center; padding: 140px 32px;
-      overflow: hidden; background: #ffffff;
+      overflow: hidden; background: #06060c;
     }
     .cta-orb {
       position: absolute; width: 600px; height: 400px;
@@ -829,28 +812,29 @@
     .cta-content h2 {
       font-family: var(--font-head); font-size: clamp(2.5rem,5vw,4rem);
       font-weight: 700; line-height: 1.05; letter-spacing: -0.04em;
-      margin-bottom: 20px; color: #1d1d1f;
+      margin-bottom: 20px; color: #ffffff;
     }
     .cta-content p {
-      font-size: 1.05rem; color: #6e6e73;
+      font-size: 1.05rem; color: rgba(255,255,255,0.6);
       line-height: 1.7; margin-bottom: 44px;
       max-width: 480px; margin-left: auto; margin-right: auto;
     }
     .btn-large { font-size: 1rem; padding: 17px 44px; }
     .btn-dark {
-      background: #1d1d1f; color: #fff;
+      background: #ffffff; color: #1d1d1f;
       border-radius: 100px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
       border: none;
+      position: relative; overflow: visible;
     }
     .btn-dark:hover {
-      background: #2d2d2f;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+      background: #f0f0f5;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.4);
       transform: translateY(-3px);
     }
     .cta-note {
       display: block; margin-top: 20px;
-      font-size: 0.8rem; color: rgba(110,110,115,0.7);
+      font-size: 0.8rem; color: rgba(255,255,255,0.35);
     }
     .author-role {
       display: block; font-size: 0.8rem; color: var(--text-secondary);
@@ -909,7 +893,10 @@
       content: '';
       position: absolute; bottom: 0; left: 0; right: 0;
       height: 200px; z-index: 10; pointer-events: none;
+      /* Fog only on the left side, over the buttons — right side stays clear */
       background: linear-gradient(to bottom, transparent 0%, #ffffff 100%);
+      -webkit-mask: linear-gradient(to right, black 0%, black 44%, transparent 56%);
+      mask: linear-gradient(to right, black 0%, black 44%, transparent 56%);
     }
     #hero .hero-subtitle { color: #6e6e73; }
     #hero .scroll-hint { color: #6e6e73; }
@@ -917,42 +904,193 @@
     #hero .btn-secondary { color: #1d1d1f; border-color: rgba(0,0,0,0.15); }
     #hero .btn-secondary:hover { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.28); }
 
-    /* ─── WORD FLOAT ─── */
-    #word-sphere {
+    /* ─── HERO WIDGETS ─── */
+    #hero-widgets {
       position: absolute;
       right: 32px; top: 120px; bottom: 80px;
       width: calc(50% - 32px);
-      z-index: 1; pointer-events: none;
-      border-radius: 28px;
-      background: rgba(246,248,255,0.72);
-      border: 1px solid rgba(0,113,227,0.10);
-      box-shadow: 0 2px 40px rgba(0,113,227,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 8px;
+      z-index: 1;
+      background: rgba(0,0,0,0.04);
+      border-radius: 26px;
+      padding: 8px;
+    }
+    @media (max-width: 1100px) { #hero-widgets { display: none; } }
+
+    .widget-card {
+      flex: 1; min-width: 0;
+      background: #ffffff;
+      border-radius: 20px;
       overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.35s ease, filter 0.35s ease;
+      display: flex; flex-direction: column;
+      position: relative;
+      opacity: 0; transform: translateY(12px);
+      animation: cardIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
     }
-    .sphere-inner {
-      position: absolute; inset: 0;
+    #hero-widgets .widget-card:nth-child(1) { animation-delay: 0.15s; }
+    #hero-widgets .widget-card:nth-child(2) { animation-delay: 0.23s; }
+    #hero-widgets .widget-card:nth-child(3) { animation-delay: 0.31s; }
+    #hero-widgets .widget-card:nth-child(4) { animation-delay: 0.39s; }
+    @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+    #hero-widgets:has(.widget-card:hover) .widget-card:not(:hover) {
+      transform: scale(0.97);
+      filter: brightness(0.94);
     }
-    .sphere-word-wrap {
-      position: absolute; top: 0; left: 0;
-      pointer-events: auto;
+    .widget-card:hover {
+      transform: scale(1.04) translateY(-8px);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+      z-index: 10;
     }
-    .sphere-word {
-      display: block; white-space: nowrap;
-      font-family: var(--font-head); font-weight: 600;
-      font-size: 1rem; letter-spacing: 0.01em;
-      color: rgba(29,29,31,0.70);
-      cursor: pointer; user-select: none; padding: 4px 2px;
-      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
-                  color 0.3s ease, text-shadow 0.3s ease;
+
+    /* Window bar */
+    .wbar {
+      display: flex; align-items: center; gap: 6px;
+      padding: 0 14px;
+      height: 36px;
+      background: #f5f5f7;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      flex-shrink: 0;
     }
-    .sphere-word:hover {
-      transform: scale(1.75) !important;
-      color: var(--accent);
-      text-shadow: 0 2px 28px rgba(0,113,227,0.5);
+    .wdot { width: 9px; height: 9px; border-radius: 50%; }
+    .wdot-r { background: #ff5f57; }
+    .wdot-y { background: #ffbd2e; }
+    .wdot-g { background: #28c840; }
+    .wbar-title { margin-left: 6px; font-size: 0.65rem; color: #8e8e93; }
+    .wlive {
+      margin-left: auto; display: flex; align-items: center; gap: 4px;
+      font-size: 0.6rem; color: #28c840; font-weight: 500;
     }
-    @media (max-width: 1100px) { #word-sphere { display: none; } }
+    .wlive-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #28c840;
+      position: relative;
+    }
+    .wlive-dot::after {
+      content: ''; position: absolute; inset: -3px; border-radius: 50%;
+      border: 1.5px solid #28c840; animation: wping 1.5s ease-out infinite;
+    }
+    @keyframes wping { to { transform: scale(2.2); opacity: 0; } }
+
+    /* ── Dashboard ── */
+    .dash-body { padding: 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 10px; }
+    .dash-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+    .ds { background: #f9f9fb; border-radius: 10px; padding: 10px 8px 8px; }
+    .ds-val { font-size: 1.3rem; font-weight: 700; color: #1d1d1f; letter-spacing: -0.03em; line-height: 1; }
+    .ds-val em { color: #0071e3; font-style: normal; }
+    .ds-label { font-size: 0.58rem; color: #8e8e93; margin-top: 3px; }
+    .dash-stitle { font-size: 0.56rem; letter-spacing: 0.08em; text-transform: uppercase; color: #c7c7cc; }
+    .dash-pipeline { display: flex; gap: 6px; flex: 1; min-height: 0; }
+    .dcol { flex: 1; min-width: 0; }
+    .dcol-head { font-size: 0.56rem; color: #c7c7cc; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .dlead {
+      background: #f9f9fb; border: 1px solid rgba(0,0,0,0.05);
+      border-radius: 7px; padding: 5px 7px; margin-bottom: 5px;
+      font-size: 0.64rem; color: #1d1d1f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .dlead-sub { font-size: 0.56rem; color: #aeaeb2; margin-top: 1px; }
+    .dbadge {
+      font-size: 0.55rem; padding: 1px 5px; border-radius: 20px;
+      display: inline-block; margin-top: 2px; font-weight: 600;
+    }
+    .dbadge-blue { background: rgba(0,113,227,0.1); color: #0071e3; }
+    .dbadge-green { background: rgba(40,200,64,0.12); color: #1a9e2a; }
+    .dash-recent { display: flex; flex-direction: column; gap: 4px; flex: 1; min-height: 0; overflow: hidden; margin-bottom: 6px; }
+    .drecent-row { display: flex; align-items: center; gap: 7px; padding: 5px 7px; background: #f9f9fb; border-radius: 7px; }
+    .dr-dot  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .dr-text { font-size: 0.57rem; color: #3d3d3d; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dr-time { font-size: 0.54rem; color: #aeaeb2; font-family: 'Menlo', monospace; flex-shrink: 0; }
+    .dash-live {
+      display: flex; align-items: center; gap: 5px;
+      padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); flex-shrink: 0;
+    }
+    .dpulse { width: 6px; height: 6px; border-radius: 50%; background: #28c840; position: relative; flex-shrink: 0; }
+    .dpulse::after { content:''; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid #28c840; animation: wping 1.5s ease-out infinite; }
+    .dash-live-txt { font-size: 0.6rem; color: #8e8e93; }
+
+    /* ── Terminal ── */
+    .term-body { padding: 10px 12px 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+    .term-feed { flex: 1; overflow: hidden; }
+    .tentry {
+      display: flex; gap: 6px; align-items: flex-start;
+      padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+      font-size: 0.63rem;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .tentry.show { opacity: 1; transform: translateY(0); }
+    .ttime { color: #c7c7cc; font-family: 'Menlo', monospace; flex-shrink: 0; font-size: 0.57rem; padding-top: 1px; }
+    .ttag {
+      padding: 1px 6px; border-radius: 4px; font-size: 0.55rem;
+      font-weight: 600; flex-shrink: 0; font-family: 'Menlo', monospace;
+    }
+    .ttag-detect { background: rgba(0,113,227,0.10); color: #0071e3; }
+    .ttag-send   { background: rgba(0,0,0,0.06);     color: #6e6e73; }
+    .ttag-reply  { background: rgba(0,113,227,0.07); color: #0071e3; }
+    .ttag-rdv    { background: rgba(0,113,227,0.13); color: #005bb5; }
+    .ttag-auto   { background: rgba(0,0,0,0.06);     color: #6e6e73; }
+    .tmsg { color: #3d3d3d; line-height: 1.4; }
+    .tmsg strong { color: #1d1d1f; font-weight: 500; }
+    .term-input {
+      display: flex; align-items: center; gap: 6px;
+      margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.06); flex-shrink: 0;
+    }
+    .tprompt { color: #0071e3; font-family: 'Menlo', monospace; font-size: 0.7rem; font-weight: 700; }
+    .tcursor { width: 6px; height: 12px; background: #0071e3; animation: tblink 1s step-end infinite; }
+    @keyframes tblink { 50% { opacity: 0; } }
+    .tinput-lbl { font-family: 'Menlo', monospace; font-size: 0.62rem; color: #c7c7cc; }
+
+    /* ── SAV IA Chat ── */
+    .chat-body { padding: 10px 12px 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
+    .chat-msgs { flex: 1; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
+    .chat-bubble {
+      max-width: 82%; padding: 7px 10px; border-radius: 12px;
+      font-size: 0.65rem; line-height: 1.45;
+      opacity: 0; transform: translateY(5px);
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+    .chat-bubble.show { opacity: 1; transform: translateY(0); }
+    .bubble-user { background: #0071e3; color: #fff; align-self: flex-end; border-bottom-right-radius: 3px; }
+    .bubble-ai   { background: #f5f5f7; color: #1d1d1f; align-self: flex-start; border-bottom-left-radius: 3px; }
+    .typing-wrap { align-self: flex-start; }
+    .typing-dots { display: flex; gap: 4px; align-items: center; padding: 9px 12px; background: #f5f5f7; border-radius: 12px 12px 12px 3px; }
+    .typing-dot  { width: 5px; height: 5px; border-radius: 50%; background: #aeaeb2; }
+    .typing-dot:nth-child(1) { animation: tdot 1.1s ease-in-out 0.0s infinite; }
+    .typing-dot:nth-child(2) { animation: tdot 1.1s ease-in-out 0.2s infinite; }
+    .typing-dot:nth-child(3) { animation: tdot 1.1s ease-in-out 0.4s infinite; }
+    @keyframes tdot { 0%,60%,100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }
+    .chat-foot { font-size: 0.55rem; color: #c7c7cc; text-align: center; padding-top: 6px; border-top: 1px solid rgba(0,0,0,0.05); flex-shrink: 0; }
+
+    /* ── Dashboard Gestion ── */
+    .dash-tabs { display: flex; gap: 3px; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); flex-shrink: 0; background: #f5f5f7; }
+    .dash-tab { flex: 1; padding: 4px 3px; border: none; background: transparent; border-radius: 6px; font-size: 0.58rem; font-weight: 500; color: #aeaeb2; cursor: none; transition: background 0.2s, color 0.2s; font-family: var(--font-body); }
+    .dash-tab.active { background: #ffffff; color: #0071e3; box-shadow: 0 1px 4px rgba(0,0,0,0.10); }
+    .dash-body { flex: 1; overflow: hidden; position: relative; }
+    .dash-panel { position: absolute; inset: 0; padding: 10px 11px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .dash-panel.active { opacity: 1; pointer-events: auto; }
+    /* Calendar */
+    .cal-week { display: flex; gap: 4px; height: 100%; }
+    .cal-day { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .cal-day-label { font-size: 0.55rem; font-weight: 600; color: #8e8e93; text-align: center; padding-bottom: 3px; border-bottom: 1px solid #e5e5ea; margin-bottom: 2px; }
+    .cal-event { font-size: 0.51rem; padding: 4px 5px; border-radius: 5px; line-height: 1.35; font-weight: 500; }
+    /* Invoice */
+    .inv-form { display: flex; flex-direction: column; gap: 7px; margin-bottom: 8px; }
+    .inv-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: #f9f9fb; border-radius: 7px; }
+    .inv-lbl { font-size: 0.58rem; color: #8e8e93; font-weight: 500; }
+    .inv-val { font-size: 0.62rem; color: #1d1d1f; font-weight: 600; min-height: 1em; }
+    .inv-status { text-align: center; font-size: 0.65rem; font-weight: 600; color: #1a9e2a; padding: 6px; opacity: 0; transition: opacity 0.4s; }
+    .inv-status.show { opacity: 1; }
+    /* Stocks */
+    .stk-list { display: flex; flex-direction: column; gap: 9px; }
+    .stk-row { display: flex; align-items: center; gap: 7px; }
+    .stk-name { font-size: 0.58rem; color: #6e6e73; width: 64px; flex-shrink: 0; }
+    .stk-bar { flex: 1; height: 5px; background: #e5e5ea; border-radius: 3px; overflow: hidden; }
+    .stk-fill { height: 100%; border-radius: 3px; width: 0; transition: width 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .stk-num { font-size: 0.58rem; font-weight: 600; color: #1d1d1f; width: 26px; text-align: right; flex-shrink: 0; }
 
     /* ─── HERO ORBS ─── */
     .hero-orb { display: none; }
@@ -1008,13 +1146,9 @@
     .browser-card {
       border-radius: 12px; overflow: hidden;
       border: 1px solid #e5e5e5;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       background: #fff;
-    }
-    .browser-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.13);
     }
     .browser-bar {
       background: #f5f5f7; padding: 10px 14px;
@@ -1095,6 +1229,7 @@
     #join {
       position: relative; z-index: 1;
       padding: 100px 32px 120px;
+      background: var(--bg);
       border-top: 1px solid rgba(255,255,255,0.06);
     }
     .join-inner {
@@ -1153,8 +1288,8 @@
 
     /* ─── BROWSER CARD 3D HOVER UPGRADE ─── */
     .browser-card:hover {
-      box-shadow: 0 28px 70px rgba(0,0,0,0.15), 0 6px 16px rgba(0,0,0,0.08);
-      border-color: rgba(0,0,0,0.12);
+      box-shadow: 0 48px 90px rgba(0,0,0,0.22), 0 16px 32px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.07);
+      border-color: rgba(0,0,0,0.10);
     }
 
     /* ─── SPEC ITEM REVEALED OVERRIDE ─── */
@@ -1181,28 +1316,18 @@
     }
     /* z-index : les sections s'empilent dans l'ordre */
     #hero              { z-index: 2 !important; }
-    .scroll-animation  { z-index: 3 !important; }
     #realisations      { z-index: 4 !important; }
     #specs             { z-index: 5 !important; }
     #features          { z-index: 6 !important; }
     #cta               { z-index: 7 !important; }
     #team              { z-index: 8 !important; }
     #join              { z-index: 9 !important; }
-    /* Ombre sur le dessus des sections entrantes */
-    .stack-slide + .stack-slide::before,
-    .scroll-animation + .stack-slide::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 60px; z-index: 10; pointer-events: none;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, transparent 100%);
-    }
   </style>
 </head>
 <body>
 
   <!-- Custom cursor -->
-  <div id="cursor-dot"></div>
-  <div id="cursor-ring"></div>
+  <div id="cursor"></div>
 
   <!-- Starscape -->
   <canvas id="starscape"></canvas>
@@ -1260,19 +1385,125 @@
         <a href="#features" class="btn-secondary">Voir les services</a>
       </div>
     </div>
-    <div id="word-sphere" aria-hidden="true">
-      <div class="sphere-inner" id="sphereInner"></div>
+    <div id="hero-widgets" aria-hidden="true">
+
+      <!-- Dashboard -->
+      <div class="widget-card" id="wc-dash">
+        <div class="wbar">
+          <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+          <span class="wbar-title">Prospection Dashboard</span>
+          <div class="wlive"><div class="wlive-dot"></div> Live</div>
+        </div>
+        <div class="dash-body">
+          <div class="dash-stats">
+            <div class="ds"><div class="ds-val" id="ds1">0</div><div class="ds-label">Leads ce mois</div></div>
+            <div class="ds"><div class="ds-val" id="ds2">0</div><div class="ds-label">RDV obtenus</div></div>
+            <div class="ds"><div class="ds-val"><span id="ds3">0</span><em>%</em></div><div class="ds-label">Taux conv.</div></div>
+          </div>
+          <div class="dash-recent">
+            <div class="drecent-row"><span class="dr-dot" style="background:#0071e3"></span><span class="dr-text">Mail envoyé · Boulangerie Martin</span><span class="dr-time">14:32</span></div>
+            <div class="drecent-row"><span class="dr-dot" style="background:#28c840"></span><span class="dr-text">RDV confirmé · Pharmacie Morin</span><span class="dr-time">13:08</span></div>
+            <div class="drecent-row"><span class="dr-dot" style="background:#0071e3"></span><span class="dr-text">Prospect détecté · Cabinet Leblanc</span><span class="dr-time">11:55</span></div>
+          </div>
+          <div class="dash-live">
+            <div class="dpulse"></div>
+            <span class="dash-live-txt">3 automatisations actives</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terminal -->
+      <div class="widget-card" id="wc-term">
+        <div class="wbar">
+          <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+          <span class="wbar-title">nexxo-agent · live</span>
+          <div class="wlive"><div class="wlive-dot"></div> En ligne</div>
+        </div>
+        <div class="term-body">
+          <div class="term-feed" id="wterm-feed"></div>
+          <div class="term-input">
+            <span class="tprompt">›</span>
+            <span class="tinput-lbl">Automatisation en cours...</span>
+            <div class="tcursor"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAV IA Chat -->
+      <div class="widget-card" id="wc-chat">
+        <div class="wbar">
+          <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+          <span class="wbar-title">SAV IA — Assistant 24/7</span>
+        </div>
+        <div class="chat-body">
+          <div class="chat-msgs" id="wchat-msgs"></div>
+          <div class="chat-foot">Répond en &lt;3s · 247 conversations ce mois</div>
+        </div>
+      </div>
+
+      <!-- Dashboard Gestion -->
+      <div class="widget-card" id="wc-dash">
+        <div class="wbar">
+          <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+          <span class="wbar-title">Gestion interne</span>
+        </div>
+        <div class="dash-tabs">
+          <button class="dash-tab active" data-panel="planning">Planning</button>
+          <button class="dash-tab" data-panel="facture">Facture</button>
+          <button class="dash-tab" data-panel="stocks">Stocks</button>
+        </div>
+        <div class="dash-body">
+          <!-- Planning -->
+          <div class="dash-panel active" id="dp-planning">
+            <div class="cal-week">
+              <div class="cal-day">
+                <div class="cal-day-label">Lun</div>
+                <div class="cal-event" style="background:#dbeafe;color:#1e40af">10h — Moreau</div>
+                <div class="cal-event" style="background:#f3f4f6;color:#374151">15h — Factures</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-day-label">Mar</div>
+                <div class="cal-event" style="background:#f3f4f6;color:#374151">11h — Relances</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-day-label">Mer</div>
+                <div class="cal-event" style="background:#dcfce7;color:#166534">14h — Livraison</div>
+                <div class="cal-event" style="background:#dbeafe;color:#1e40af">16h — Démo</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-day-label">Jeu</div>
+                <div class="cal-event" style="background:#fef9c3;color:#92400e">09h — Prospect</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-day-label">Ven</div>
+                <div class="cal-event" style="background:#f3f4f6;color:#374151">10h — Réunion</div>
+              </div>
+            </div>
+          </div>
+          <!-- Facture -->
+          <div class="dash-panel" id="dp-facture">
+            <div class="inv-form">
+              <div class="inv-row"><span class="inv-lbl">Client</span><span class="inv-val" id="iv-client"></span></div>
+              <div class="inv-row"><span class="inv-lbl">Service</span><span class="inv-val" id="iv-service"></span></div>
+              <div class="inv-row"><span class="inv-lbl">Montant</span><span class="inv-val" id="iv-montant"></span></div>
+            </div>
+            <div class="inv-status" id="inv-status"></div>
+          </div>
+          <!-- Stocks -->
+          <div class="dash-panel" id="dp-stocks">
+            <div class="stk-list">
+              <div class="stk-row"><span class="stk-name">Licences IA</span><div class="stk-bar"><div class="stk-fill" data-w="82" style="background:#34d399"></div></div><span class="stk-num">82</span></div>
+              <div class="stk-row"><span class="stk-name">Crédits mail</span><div class="stk-bar"><div class="stk-fill" data-w="45" style="background:#fbbf24"></div></div><span class="stk-num">45%</span></div>
+              <div class="stk-row"><span class="stk-name">Serveurs</span><div class="stk-bar"><div class="stk-fill" data-w="91" style="background:#34d399"></div></div><span class="stk-num">91%</span></div>
+              <div class="stk-row"><span class="stk-name">API calls</span><div class="stk-bar"><div class="stk-fill" data-w="18" style="background:#f87171"></div></div><span class="stk-num">18%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- Scroll Animation -->
-  <section class="scroll-animation">
-    <div class="scroll-sticky">
-      <canvas id="frameCanvas"></canvas>
-
-
-    </div>
-  </section>
 
   <!-- Réalisations -->
   <section id="realisations" class="stack-slide">
@@ -1388,7 +1619,6 @@
         <h2 class="bento-title">Automatisation<br>sans limites.</h2>
       </div>
       <div class="bento-header-right">
-        <p class="bento-sub">Deux offres. Un seul objectif : votre business tourne mieux, plus vite — avec moins d'effort de votre côté.</p>
       </div>
     </div>
 
@@ -1673,22 +1903,22 @@
       </div>
       <a href="mailto:contact@nexxo.systems" class="btn-primary">Envoyer votre candidature →</a>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-brand">
-      <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
-    </div>
-    <div class="footer-links">
-      <a href="#features">Services</a>
-      <a href="#team">Notre équipe</a>
-      <a href="#join">Nous rejoindre</a>
-      <a href="#specs">Résultats</a>
-      <a href="mailto:contact@nexxo.systems">contact@nexxo.systems</a>
-    </div>
-    <p class="footer-copy">&copy; 2026 Nexxo. Tous droits réservés. — Agence IA &amp; Web, Paris.</p>
-  </footer>
+    <!-- Footer (inside last panel) -->
+    <footer>
+      <div class="footer-brand">
+        <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
+      </div>
+      <div class="footer-links">
+        <a href="#features">Services</a>
+        <a href="#team">Notre équipe</a>
+        <a href="#join">Nous rejoindre</a>
+        <a href="#specs">Résultats</a>
+        <a href="mailto:contact@nexxo.systems">contact@nexxo.systems</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Nexxo. Tous droits réservés. — Agence IA &amp; Web, Paris.</p>
+    </footer>
+  </section>
 
   <script>
     // ─────────────────────────────────────────
@@ -1809,90 +2039,19 @@
     })();
 
     // ─────────────────────────────────────────
-    // FRAME SEQUENCE
     // ─────────────────────────────────────────
-    const FRAME_COUNT = 121;
-    const frames = [];
-    let loadedCount = 0;
-    let currentFrame = -1;
-    let ticking = false;
-
-    const canvas = document.getElementById('frameCanvas');
-    const ctx = canvas.getContext('2d');
-    const loader = document.getElementById('loader');
-    const loaderBar = document.getElementById('loaderBar');
-
-    function resizeCanvas() {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = window.innerWidth + 'px';
-      canvas.style.height = window.innerHeight + 'px';
-      if (currentFrame >= 0) drawFrame(currentFrame);
-    }
-
-    function drawFrame(index) {
-      const img = frames[index];
-      if (!img || !img.complete) return;
-      const dpr = window.devicePixelRatio || 1;
-      const cw = canvas.width;
-      const ch = canvas.height;
-      ctx.clearRect(0, 0, cw, ch);
-
-      const imgRatio = img.naturalWidth / img.naturalHeight;
-      const canvasRatio = cw / ch;
-      let drawW, drawH, drawX, drawY;
-
-      if (window.innerWidth > 768) {
-        // Cover-fit: fills canvas, crops overflow
-        if (canvasRatio > imgRatio) {
-          drawW = cw; drawH = cw / imgRatio;
-        } else {
-          drawH = ch; drawW = ch * imgRatio;
-        }
-        drawX = (cw - drawW) / 2;
-        drawY = (ch - drawH) / 2;
-      } else {
-        // Mobile: zoomed contain-fit
-        const zoom = 1.15;
-        if (canvasRatio > imgRatio) {
-          drawH = ch * zoom; drawW = drawH * imgRatio;
-        } else {
-          drawW = cw * zoom; drawH = drawW / imgRatio;
-        }
-        drawX = (cw - drawW) / 2;
-        drawY = (ch - drawH) / 2;
-      }
-
-      ctx.drawImage(img, drawX, drawY, drawW, drawH);
-    }
-
-    function onAllFramesLoaded() {
-      loader.style.opacity = '0';
-      loader.style.transition = 'opacity 0.6s ease';
-      setTimeout(() => loader.style.display = 'none', 600);
-      drawFrame(0);
-      currentFrame = 0;
-    }
-
-    // Preload frames
-    for (let i = 1; i <= FRAME_COUNT; i++) {
-      const img = new Image();
-      img.src = `frames/frame_${String(i).padStart(4,'0')}.jpg`;
-      img.onload = () => {
-        loadedCount++;
-        loaderBar.style.width = (loadedCount / FRAME_COUNT * 100) + '%';
-        if (loadedCount === FRAME_COUNT) onAllFramesLoaded();
-      };
-      img.onerror = () => {
-        loadedCount++;
-        if (loadedCount === FRAME_COUNT) onAllFramesLoaded();
-      };
-      frames.push(img);
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    // LOADER — fermeture immédiate
+    // ─────────────────────────────────────────
+    (function() {
+      const loader = document.getElementById('loader');
+      const loaderBar = document.getElementById('loaderBar');
+      loaderBar.style.width = '100%';
+      setTimeout(() => {
+        loader.style.opacity = '0';
+        loader.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => loader.style.display = 'none', 500);
+      }, 400);
+    })();
 
     // ─────────────────────────────────────────
     // SCROLL PROGRESS BAR
@@ -1911,27 +2070,6 @@
       navbar.classList.toggle('nav-scrolled', window.scrollY > 80);
     }, { passive: true });
 
-    // ─────────────────────────────────────────
-    // SCROLL → FRAME MAPPING
-    // ─────────────────────────────────────────
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const section = document.querySelector('.scroll-animation');
-          const rect = section.getBoundingClientRect();
-          const scrollableH = section.offsetHeight - window.innerHeight;
-          const progress = Math.min(1, Math.max(0, -rect.top / scrollableH));
-          const frameIndex = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
-
-          if (frameIndex !== currentFrame) {
-            currentFrame = frameIndex;
-            drawFrame(frameIndex);
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }, { passive: true });
 
     // ─────────────────────────────────────────
     // SPECS COUNT-UP
@@ -2130,32 +2268,17 @@
     // CUSTOM CURSOR
     // ─────────────────────────────────────────
     (function() {
-      const dot  = document.getElementById('cursor-dot');
-      const ring = document.getElementById('cursor-ring');
-      if (!dot || !ring) return;
+      const cursor = document.getElementById('cursor');
+      if (!cursor) return;
 
-      let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-      let rx = mx, ry = my;
-
-      // Dot follows instantly
+      // Follows mouse directly — no lag, ultra-precise
       window.addEventListener('mousemove', e => {
-        mx = e.clientX; my = e.clientY;
-        dot.style.left = mx + 'px';
-        dot.style.top  = my + 'px';
-      });
-
-      // Ring follows via lerp — ultra-fluide
-      function lerp(a, b, t) { return a + (b - a) * t; }
-      (function animRing() {
-        rx = lerp(rx, mx, 0.13);
-        ry = lerp(ry, my, 0.13);
-        ring.style.left = rx.toFixed(1) + 'px';
-        ring.style.top  = ry.toFixed(1) + 'px';
-        requestAnimationFrame(animRing);
-      })();
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top  = e.clientY + 'px';
+      }, { passive: true });
 
       // Hover — éléments interactifs
-      const interactive = 'a, button, .bento-card, .spec-item, .browser-card, .team-card, .nav-cta, .btn-primary, .btn-secondary, .btn-dark';
+      const interactive = 'a:not(.dash-tab), button:not(.dash-tab), .spec-item, .team-card, .nav-cta, .btn-primary, .btn-secondary, .btn-dark';
       document.querySelectorAll(interactive).forEach(el => {
         el.style.cursor = 'none';
         el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
@@ -2167,129 +2290,304 @@
       window.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
 
       // Quitter / revenir
-      document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-      document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+      document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+      document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
     })();
 
     // ─────────────────────────────────────────
-    // WORD SPHERE
-    // ─────────────────────────────────────────
-    // WORD FLOAT — chaque mot dérive indépendamment
+    // HERO WIDGETS — dashboard + terminal
     // ─────────────────────────────────────────
     (function() {
-      const sphereEl = document.getElementById('word-sphere');
-      const inner    = document.getElementById('sphereInner');
-      if (!inner || !sphereEl) return;
+      // Dashboard count-up
+      function countUp(id, target) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        let v = 0;
+        const step = target / 40;
+        const t = setInterval(() => {
+          v = Math.min(v + step, target);
+          el.textContent = Math.round(v);
+          if (v >= target) clearInterval(t);
+        }, 28);
+      }
+      setTimeout(() => { countUp('ds1', 148); countUp('ds2', 32); countUp('ds3', 22); }, 800);
 
-      const BASE_WORDS = [
-        'Automatisation IA', 'Prospection', 'SAV automatisé',
-        'Sites web', 'Gestion interne', 'Branding',
-        'Lead generation', 'IA sur mesure', 'Webdesign',
-        'SEO local', 'Conversion', 'Croissance', 'Processus',
-        'Relances auto', 'Onboarding client', 'Rapports & analytics',
-        'Facturation auto', 'Support 24/7', 'Emails marketing',
-        'Qualification leads', 'Suivi commercial', 'Notifications'
+      // Terminal feed
+      const EVENTS = [
+        { delay: 600,  tag: 'detect', label: 'DETECT', msg: 'Nouveau prospect — <strong>Boulangerie Martin</strong>, Paris 11e' },
+        { delay: 1500, tag: 'send',   label: 'MAIL',   msg: 'Email personnalisé envoyé à <strong>martin@boulangerie.fr</strong>' },
+        { delay: 2600, tag: 'auto',   label: 'AUTO',   msg: 'Relance J+2 programmée automatiquement' },
+        { delay: 3700, tag: 'reply',  label: 'REPLY',  msg: '<strong>Réponse reçue</strong> — "Ça m\'intéresse, on se parle ?"' },
+        { delay: 4700, tag: 'rdv',    label: 'RDV',    msg: '<strong>RDV confirmé</strong> · Lundi 10h · Appel découverte' },
+        { delay: 5800, tag: 'detect', label: 'DETECT', msg: 'Nouveau prospect — <strong>Cabinet Leblanc</strong>, Bordeaux' },
+        { delay: 6700, tag: 'send',   label: 'MAIL',   msg: 'Séquence de 3 mails lancée pour <strong>Cabinet Leblanc</strong>' },
+        { delay: 7700, tag: 'auto',   label: 'AUTO',   msg: 'SAV automatique activé pour <strong>Boulangerie Martin</strong>' },
       ];
-      const WORDS = [...BASE_WORDS, ...BASE_WORDS]; // 44 instances
 
-      const seed = (n) => Math.abs(Math.sin(n * 127.1 + 311.7));
+      const feed = document.getElementById('wterm-feed');
+      if (!feed) return;
 
-      const words = WORDS.map((text, i) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'sphere-word-wrap';
-        const span = document.createElement('span');
-        span.className = 'sphere-word';
-        span.textContent = text;
-        wrap.appendChild(span);
-        inner.appendChild(wrap);
+      function launchFeed() {
+        const base = new Date();
+        function fmt(ms) {
+          const d = new Date(base.getTime() + ms);
+          return d.getHours().toString().padStart(2,'0') + ':' +
+                 d.getMinutes().toString().padStart(2,'0') + ':' +
+                 d.getSeconds().toString().padStart(2,'0');
+        }
+        EVENTS.forEach(ev => {
+          setTimeout(() => {
+            const el = document.createElement('div');
+            el.className = 'tentry';
+            el.innerHTML =
+              `<span class="ttime">${fmt(ev.delay)}</span>` +
+              `<span class="ttag ttag-${ev.tag}">${ev.label}</span>` +
+              `<span class="tmsg">${ev.msg}</span>`;
+            feed.appendChild(el);
+            requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+          }, ev.delay);
+        });
+        // Boucle
+        setTimeout(() => { feed.innerHTML = ''; launchFeed(); }, 10000);
+      }
+      launchFeed();
 
-        span.style.fontSize = (0.75 + seed(i * 43) * 0.55).toFixed(2) + 'rem';
-        span.style.opacity  = (0.35 + seed(i * 47) * 0.58).toFixed(2);
+      // ── SAV IA Chat animation ──
+      const chatMsgs = document.getElementById('wchat-msgs');
+      if (chatMsgs) {
+        const CHAT = [
+          { role: 'user', text: 'Bonjour, mon site est-il toujours actif ?' },
+          { role: 'ai',   text: 'Oui, tout fonctionne parfaitement ! Votre site est en ligne depuis 14 jours.' },
+          { role: 'user', text: 'Super, merci !' },
+          { role: 'ai',   text: 'Avec plaisir 😊 Je suis disponible 24h/24.' },
+        ];
 
-        const zBase = String(Math.floor(seed(i * 41) * 6) + 1);
-        wrap.style.zIndex = zBase;
-        span.addEventListener('mouseenter', () => { wrap.style.zIndex = '100'; });
-        span.addEventListener('mouseleave', () => { wrap.style.zIndex = zBase; });
+        function addBubble(msg, delay) {
+          setTimeout(() => {
+            // Remove typing indicator if present
+            const tw = chatMsgs.querySelector('.typing-wrap');
+            if (tw) tw.remove();
 
-        const angle = seed(i * 13) * Math.PI * 2;
-        const spd   = 0.15 + seed(i * 17) * 0.20;
+            const b = document.createElement('div');
+            b.className = 'chat-bubble ' + (msg.role === 'user' ? 'bubble-user' : 'bubble-ai');
+            b.textContent = msg.text;
+            chatMsgs.appendChild(b);
+            requestAnimationFrame(() => requestAnimationFrame(() => b.classList.add('show')));
+          }, delay);
+        }
 
-        return {
-          wrap,
-          x: 0, y: 0,
-          vx: Math.cos(angle) * spd,
-          vy: Math.sin(angle) * spd,
-          w: 0, h: 0,
-        };
+        function addTyping(delay) {
+          setTimeout(() => {
+            const tw = document.createElement('div');
+            tw.className = 'typing-wrap';
+            tw.innerHTML = '<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+            chatMsgs.appendChild(tw);
+          }, delay);
+        }
+
+        function launchChat() {
+          chatMsgs.innerHTML = '';
+          let t = 500;
+          CHAT.forEach((msg, i) => {
+            if (msg.role === 'ai') { addTyping(t); t += 800; }
+            addBubble(msg, t);
+            t += msg.role === 'user' ? 1000 : 1400;
+          });
+          setTimeout(() => launchChat(), t + 1200);
+        }
+        launchChat();
+      }
+
+      // ── Dashboard Gestion — tabs + animations ──
+      (function() {
+        const tabs   = document.querySelectorAll('.dash-tab');
+        const panels = document.querySelectorAll('.dash-panel');
+        const ORDER  = ['planning', 'facture', 'stocks'];
+        let autoIdx  = 0;
+
+        function activate(name) {
+          tabs.forEach(t => t.classList.toggle('active', t.dataset.panel === name));
+          panels.forEach(p => p.classList.toggle('active', p.id === 'dp-' + name));
+          if (name === 'facture') animateInvoice();
+          if (name === 'stocks')  animateStocks();
+        }
+        tabs.forEach(t => t.addEventListener('click', () => {
+          autoIdx = ORDER.indexOf(t.dataset.panel);
+          activate(t.dataset.panel);
+        }));
+
+        // Auto-rotate every 5.5s
+        setInterval(() => {
+          autoIdx = (autoIdx + 1) % ORDER.length;
+          activate(ORDER[autoIdx]);
+        }, 5500);
+
+        function typeInto(id, text, delay) {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.textContent = '';
+          setTimeout(() => {
+            let i = 0;
+            const iv = setInterval(() => { el.textContent += text[i++]; if (i >= text.length) clearInterval(iv); }, 38);
+          }, delay);
+        }
+        function animateInvoice() {
+          const status = document.getElementById('inv-status');
+          if (status) status.classList.remove('show');
+          typeInto('iv-client',  'Boulangerie Martin', 0);
+          typeInto('iv-service', 'Site web + SAV IA',  600);
+          typeInto('iv-montant', '1 490 €',            1200);
+          if (status) setTimeout(() => { status.textContent = '✓ Facture générée et envoyée'; status.classList.add('show'); }, 2000);
+        }
+        function animateStocks() {
+          document.querySelectorAll('.stk-fill').forEach(el => {
+            const w = el.dataset.w + '%';
+            el.style.width = '0';
+            setTimeout(() => { el.style.width = w; }, 60);
+          });
+        }
+        // Init stocks
+        animateStocks();
+      })();
+    })();
+
+    // ─────────────────────────────────────────
+    // STACK SCROLL — panneaux fixes qui montent sur les précédents
+    // Les sections plus hautes que 100vh scrollent leur contenu avant de laisser passer la suivante
+    // ─────────────────────────────────────────
+    (function() {
+      const PANEL_IDS = ['realisations', 'specs', 'features', 'cta', 'team', 'join'];
+      const panels = PANEL_IDS.map(id => document.getElementById(id)).filter(Boolean);
+      if (panels.length < 2) return;
+
+      const hero      = document.getElementById('hero');
+      const ENTER_DUR = 0.8; // fraction de vh pour l'animation d'entrée
+
+      // ── 1. Rendre les panneaux fixes (height:auto = hauteur naturelle du contenu) ──
+      panels.forEach((el, i) => {
+        el.classList.remove('stack-slide');
+        Object.assign(el.style, {
+          position:        'fixed',
+          top:             '0',
+          left:            '0',
+          width:           '100%',
+          height:          'auto',
+          minHeight:       '100vh',
+          overflow:        'hidden',
+          transformOrigin: 'center top',
+          willChange:      'transform, opacity',
+        });
+        // z-index via setProperty pour passer le !important des règles CSS existantes
+        el.style.setProperty('z-index', String(4 + i), 'important');
       });
 
-      // Mesure après layout puis lancement
-      requestAnimationFrame(() => {
-        const W = sphereEl.offsetWidth;
-        const H = sphereEl.offsetHeight;
-        words.forEach((w, i) => {
-          w.w = w.wrap.offsetWidth  || 120;
-          w.h = w.wrap.offsetHeight || 24;
-          w.x = seed(i * 3) * Math.max(0, W - w.w);
-          w.y = seed(i * 7) * Math.max(0, H - w.h);
+      // ── 2. Spacer pour la longueur de scroll ──────────────────────────────────────
+      const spacer = document.createElement('div');
+      spacer.id = 'stack-spacer';
+      spacer.style.pointerEvents = 'none';
+      document.body.appendChild(spacer);
+
+      let baseScroll = 0;
+      let panelData  = [];
+
+      function recalc() {
+        const vh = window.innerHeight;
+        // baseScroll = 0 → les panneaux commencent à monter dès le premier scroll
+        baseScroll = 0;
+
+        let cumulOffset = 0;
+        panelData = panels.map(el => {
+          // Hauteur réelle du contenu (sections > 100vh scrollent leur contenu)
+          const overflowH  = Math.max(0, el.offsetHeight - vh);
+          const enterSize  = ENTER_DUR * vh;
+          const totalSpace = enterSize + overflowH;
+          const d = { overflowH, enterSize, totalSpace, offset: cumulOffset };
+          cumulOffset += totalSpace;
+          return d;
         });
 
-        (function animate() {
-          const W = sphereEl.offsetWidth;
-          const H = sphereEl.offsetHeight;
-          words.forEach(w => {
-            w.x += w.vx;
-            w.y += w.vy;
-
-            // Rebond propre — pas de rotation
-            if (w.x <= 0)       { w.x = 0;       w.vx =  Math.abs(w.vx); }
-            if (w.x + w.w >= W) { w.x = W - w.w; w.vx = -Math.abs(w.vx); }
-            if (w.y <= 0)       { w.y = 0;        w.vy =  Math.abs(w.vy); }
-            if (w.y + w.h >= H) { w.y = H - w.h; w.vy = -Math.abs(w.vy); }
-
-            w.wrap.style.transform = `translate(${w.x.toFixed(1)}px,${w.y.toFixed(1)}px)`;
-          });
-          requestAnimationFrame(animate);
-        })();
-      });
-    })();
-
-    // ─────────────────────────────────────────
-    // STACK SCROLL — sections qui montent et s'empilent
-    // ─────────────────────────────────────────
-    (function() {
-      const slides = Array.from(document.querySelectorAll('.stack-slide'));
-      if (slides.length < 2) return;
+        // +vh pour que le dernier panneau ait le temps d'entrer complètement
+        spacer.style.height = (cumulOffset + vh) + 'px';
+      }
 
       function update() {
+        const sy = window.scrollY;
         const vh = window.innerHeight;
-        slides.forEach((el, i) => {
-          const next = slides[i + 1];
-          if (!next) {
-            el.style.transform = '';
-            el.style.opacity   = '1';
+
+        // Hero recule pendant que realisations monte
+        if (hero) {
+          const hp = Math.max(0, Math.min(1, (sy - baseScroll) / (ENTER_DUR * vh)));
+          hero.style.transform = hp > 0
+            ? `scale(${(1 - hp * 0.08).toFixed(4)}) translateY(${(-hp * 3).toFixed(2)}%)`
+            : '';
+          hero.style.opacity = '1';
+        }
+
+        panels.forEach((el, i) => {
+          const d          = panelData[i];
+          const enterStart = baseScroll + d.offset;
+          const enterEnd   = enterStart + d.enterSize;
+          const viewEnd    = enterEnd + d.overflowH;
+
+          const enterP = Math.max(0, Math.min(1, (sy - enterStart) / d.enterSize));
+
+          // Pas encore visible — caché en dessous du fold
+          if (enterP === 0) {
+            el.style.transform    = `translateY(${vh}px)`;
+            el.style.opacity      = '1';
+            el.style.borderRadius = '28px 28px 0 0';
             return;
           }
 
-          const nextTop = next.getBoundingClientRect().top;
-          // p : 0 = next pas visible, 1 = next a complètement recouvert current
-          const p = Math.max(0, Math.min(1, 1 - nextTop / vh));
+          // Phase d'entrée : monte de bas en haut
+          if (enterP < 1) {
+            const ty = (1 - enterP) * vh;
+            const br = (1 - enterP) * 28;
+            el.style.transform    = `translateY(${ty.toFixed(1)}px)`;
+            el.style.opacity      = '1';
+            el.style.borderRadius = `${br.toFixed(1)}px ${br.toFixed(1)}px 0 0`;
+            return;
+          }
 
-          // Section couverte : recule nettement + s'assombrit
-          const scale   = 1 - p * 0.12;
-          const ty      = -p * 40;           // monte de 40px vers le haut
-          const opacity = 1 - p * 0.45;
-          el.style.transform = `scale(${scale.toFixed(4)}) translateY(${ty.toFixed(1)}px)`;
-          el.style.opacity   = opacity.toFixed(3);
+          // Pleinement entré — scroll du contenu si la section dépasse 100vh
+          const viewProgress = Math.max(0, Math.min(d.overflowH, sy - enterEnd));
 
-          // Section entrante : coins arrondis en haut → plats à l'arrivée
-          const r = (1 - p) * 28;
-          next.style.borderRadius = `${r.toFixed(1)}px ${r.toFixed(1)}px 0 0`;
+          // Est-ce que le panneau suivant monte par-dessus ?
+          const nextD      = panelData[i + 1];
+          const coverStart = viewEnd;
+          const coverP     = nextD
+            ? Math.max(0, Math.min(1, (sy - coverStart) / nextD.enterSize))
+            : 0;
+
+          const baseTY = -viewProgress;
+
+          if (coverP === 0) {
+            el.style.transform    = baseTY !== 0 ? `translateY(${baseTY.toFixed(1)}px)` : '';
+            el.style.opacity      = '1';
+            el.style.borderRadius = '0';
+          } else {
+            const scale   = 1 - coverP * 0.06;
+            const coverTY = -coverP * vh * 0.03;
+            el.style.transform    = `scale(${scale.toFixed(4)}) translateY(${(baseTY + coverTY).toFixed(1)}px)`;
+            el.style.opacity      = '1';
+            el.style.borderRadius = '0';
+          }
         });
       }
 
+      // Mesurer les hauteurs après rendu (offsetHeight fiable uniquement après layout)
+      requestAnimationFrame(() => {
+        panels.forEach(el => {
+          el.style.transform    = `translateY(${window.innerHeight}px)`;
+          el.style.opacity      = '1';
+          el.style.borderRadius = '28px 28px 0 0';
+        });
+        recalc();
+        update();
+      });
+
       window.addEventListener('scroll', update, { passive: true });
-      update();
+      window.addEventListener('resize', () => { recalc(); update(); }, { passive: true });
     })();
 
     // ─────────────────────────────────────────
@@ -2319,10 +2617,72 @@
       applyTilt('.bento-card', 8, 12);
       // Spec cards: subtle 3D
       applyTilt('.spec-item.revealed', 5, 6);
-      // Portfolio cards: subtle
-      applyTilt('.browser-card', 4, 6);
+      // Portfolio cards: accentuated tilt
+      applyTilt('.browser-card', 11, 18);
       // Team cards: subtle
       applyTilt('.team-card', 4, 6);
+    })();
+
+    // ─────────────────────────────────────────
+    // PARTICLE BURST — dots on button hover
+    // ─────────────────────────────────────────
+    (function() {
+      const COLORS = ['#0071e3','#0071e3','#34aadc','#ffffff','#ffffff','#60b4ff'];
+
+      function spawnParticle(btn, cx, cy) {
+        const p = document.createElement('span');
+        p.className = 'particle';
+        const size = 3 + Math.random() * 6;
+        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 24 + Math.random() * 56;
+        const dx = Math.cos(angle) * dist;
+        const dy = Math.sin(angle) * dist;
+        const dur = 380 + Math.random() * 280;
+        Object.assign(p.style, {
+          left: cx + 'px', top: cy + 'px',
+          width: size + 'px', height: size + 'px',
+          background: color,
+          transition: `transform ${dur}ms cubic-bezier(0.16,1,0.3,1), opacity ${dur}ms ease`,
+          opacity: '1',
+        });
+        btn.appendChild(p);
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          p.style.transform = `translate(calc(-50% + ${dx.toFixed(1)}px), calc(-50% + ${dy.toFixed(1)}px)) scale(1)`;
+          p.style.opacity = '0';
+        }));
+        setTimeout(() => p.remove(), dur + 60);
+      }
+
+      function attachParticles(btn) {
+        let interval = null;
+        let lastX = 0, lastY = 0;
+
+        function burst(e) {
+          const rect = btn.getBoundingClientRect();
+          const x = e ? e.clientX - rect.left : Math.random() * rect.width;
+          const y = e ? e.clientY - rect.top  : Math.random() * rect.height;
+          lastX = x; lastY = y;
+          // spawn 3 at once for density
+          for (let i = 0; i < 3; i++) spawnParticle(btn, x, y);
+        }
+
+        btn.addEventListener('mouseenter', (e) => {
+          // initial burst
+          for (let i = 0; i < 10; i++) spawnParticle(btn,
+            Math.random() * btn.offsetWidth,
+            Math.random() * btn.offsetHeight
+          );
+          interval = setInterval(() => spawnParticle(btn, lastX, lastY), 40);
+        });
+        btn.addEventListener('mousemove', burst);
+        btn.addEventListener('mouseleave', () => {
+          clearInterval(interval);
+          interval = null;
+        });
+      }
+
+      document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta, .btn-dark').forEach(attachParticles);
     })();
   </script>
 </body>
