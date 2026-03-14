@@ -1171,6 +1171,32 @@
 
     /* ─── SECTION TAG (overrides) ─── */
     #join .section-title { color: var(--text); }
+
+    /* ─── STACK SCROLL ─── */
+    .stack-slide {
+      position: sticky; top: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      will-change: transform, opacity;
+      transform-origin: center top;
+    }
+    /* z-index : les sections s'empilent dans l'ordre */
+    #hero              { z-index: 2 !important; }
+    .scroll-animation  { z-index: 3 !important; }
+    #realisations      { z-index: 4 !important; }
+    #specs             { z-index: 5 !important; }
+    #features          { z-index: 6 !important; }
+    #cta               { z-index: 7 !important; }
+    #team              { z-index: 8 !important; }
+    #join              { z-index: 9 !important; }
+    /* Ombre sur le dessus des sections entrantes */
+    .stack-slide + .stack-slide::before,
+    .scroll-animation + .stack-slide::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 60px; z-index: 10; pointer-events: none;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, transparent 100%);
+    }
   </style>
 </head>
 <body>
@@ -1218,7 +1244,7 @@
   </nav>
 
   <!-- Hero -->
-  <section id="hero">
+  <section id="hero" class="stack-slide">
     <div class="hero-bg">
       <div class="orb orb-1"></div>
       <div class="orb orb-2"></div>
@@ -1250,7 +1276,7 @@
   </section>
 
   <!-- Réalisations -->
-  <section id="realisations">
+  <section id="realisations" class="stack-slide">
     <div class="real-header">
       <span class="real-eyebrow">Nos réalisations</span>
       <h2 class="real-title">Ce qu'on<br>construit.</h2>
@@ -1327,7 +1353,7 @@
   </section>
 
   <!-- Specs -->
-  <section id="specs">
+  <section id="specs" class="stack-slide">
     <div class="specs-inner">
       <div class="specs-header">
         <span class="specs-eyebrow">Ce que Nexxo apporte</span>
@@ -1355,7 +1381,7 @@
   </section>
 
   <!-- Features — Bento -->
-  <section id="features">
+  <section id="features" class="stack-slide">
     <div class="bento-header">
       <div class="bento-header-left">
         <span class="bento-eyebrow">Nos services</span>
@@ -1569,7 +1595,7 @@
   </section>
 
   <!-- CTA -->
-  <section id="cta">
+  <section id="cta" class="stack-slide">
     <div class="cta-orb"></div>
     <div class="cta-content">
       <span class="cta-eyebrow">On commence quand vous voulez</span>
@@ -1584,7 +1610,7 @@
 
 
   <!-- Team -->
-  <section id="team">
+  <section id="team" class="stack-slide">
     <div class="section-header">
       <span class="section-eyebrow">L'équipe</span>
       <h2 class="section-title">Notre équipe</h2>
@@ -1630,7 +1656,7 @@
   </section>
 
   <!-- Join -->
-  <section id="join">
+  <section id="join" class="stack-slide">
     <div class="join-inner">
       <div class="section-header">
         <span class="section-eyebrow">Carrières</span>
@@ -2169,6 +2195,39 @@
           requestAnimationFrame(animate);
         })();
       });
+    })();
+
+    // ─────────────────────────────────────────
+    // STACK SCROLL — cartes qui s'empilent
+    // ─────────────────────────────────────────
+    (function() {
+      const slides = Array.from(document.querySelectorAll('.stack-slide'));
+      if (slides.length < 2) return;
+
+      function update() {
+        const vh = window.innerHeight;
+        slides.forEach((el, i) => {
+          const next = slides[i + 1];
+          if (!next) { el.style.transform = ''; el.style.opacity = ''; return; }
+
+          const nextTop = next.getBoundingClientRect().top;
+          // p = 0 : next pas encore visible | p = 1 : next couvre complètement current
+          const p = Math.max(0, Math.min(1, 1 - nextTop / vh));
+
+          // Section couverte : recule légèrement et s'assombrit
+          const scale   = 1 - p * 0.05;
+          const opacity = 1 - p * 0.28;
+          el.style.transform = `scale(${scale.toFixed(4)})`;
+          el.style.opacity   = opacity.toFixed(3);
+
+          // Section entrante : coins arrondis en haut qui s'effacent
+          const r = (1 - p) * 22;
+          next.style.borderRadius = `${r.toFixed(1)}px ${r.toFixed(1)}px 0 0`;
+        });
+      }
+
+      window.addEventListener('scroll', update, { passive: true });
+      update();
     })();
 
     // ─────────────────────────────────────────
