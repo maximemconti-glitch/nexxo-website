@@ -1176,8 +1176,7 @@
     .stack-slide {
       position: sticky; top: 0;
       min-height: 100vh;
-      overflow: hidden;
-      will-change: transform, opacity;
+      clip-path: inset(0);       /* clip sans casser le sticky */
       transform-origin: center top;
     }
     /* z-index : les sections s'empilent dans l'ordre */
@@ -2256,7 +2255,7 @@
     })();
 
     // ─────────────────────────────────────────
-    // STACK SCROLL — cartes qui s'empilent
+    // STACK SCROLL — sections qui montent et s'empilent
     // ─────────────────────────────────────────
     (function() {
       const slides = Array.from(document.querySelectorAll('.stack-slide'));
@@ -2266,20 +2265,25 @@
         const vh = window.innerHeight;
         slides.forEach((el, i) => {
           const next = slides[i + 1];
-          if (!next) { el.style.transform = ''; el.style.opacity = ''; return; }
+          if (!next) {
+            el.style.transform = '';
+            el.style.opacity   = '1';
+            return;
+          }
 
           const nextTop = next.getBoundingClientRect().top;
-          // p = 0 : next pas encore visible | p = 1 : next couvre complètement current
+          // p : 0 = next pas visible, 1 = next a complètement recouvert current
           const p = Math.max(0, Math.min(1, 1 - nextTop / vh));
 
-          // Section couverte : recule légèrement et s'assombrit
-          const scale   = 1 - p * 0.05;
-          const opacity = 1 - p * 0.28;
-          el.style.transform = `scale(${scale.toFixed(4)})`;
+          // Section couverte : recule nettement + s'assombrit
+          const scale   = 1 - p * 0.12;
+          const ty      = -p * 40;           // monte de 40px vers le haut
+          const opacity = 1 - p * 0.45;
+          el.style.transform = `scale(${scale.toFixed(4)}) translateY(${ty.toFixed(1)}px)`;
           el.style.opacity   = opacity.toFixed(3);
 
-          // Section entrante : coins arrondis en haut qui s'effacent
-          const r = (1 - p) * 22;
+          // Section entrante : coins arrondis en haut → plats à l'arrivée
+          const r = (1 - p) * 28;
           next.style.borderRadius = `${r.toFixed(1)}px ${r.toFixed(1)}px 0 0`;
         });
       }
