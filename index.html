@@ -1382,6 +1382,7 @@
 
   <!-- Features — Bento -->
   <section id="features" class="stack-slide">
+    <canvas id="featuresStars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
     <div class="bento-header">
       <div class="bento-header-left">
         <span class="bento-eyebrow">Nos services</span>
@@ -1749,6 +1750,63 @@
       window.addEventListener('resize', resize);
       resize();
       animateStars();
+    })();
+
+    // ─────────────────────────────────────────
+    // FEATURES STARS — étoiles locales sur la section dark
+    // ─────────────────────────────────────────
+    (function() {
+      const canvas = document.getElementById('featuresStars');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const section = document.getElementById('features');
+      const N = 90; // nombre d'étoiles
+      let stars = [];
+
+      function resize() {
+        const dpr = window.devicePixelRatio || 1;
+        const w = section.offsetWidth;
+        const h = section.offsetHeight;
+        canvas.width  = w * dpr;
+        canvas.height = h * dpr;
+        ctx.scale(dpr, dpr);
+        stars = [];
+        for (let i = 0; i < N; i++) {
+          stars.push({
+            x:  Math.random() * w,
+            y:  Math.random() * h,
+            r:  Math.random() * 1.1 + 0.3,
+            baseOp:  Math.random() * 0.55 + 0.15,
+            dx: (Math.random() - 0.5) * 0.022,
+            dy: (Math.random() - 0.5) * 0.014,
+            ts: Math.random() * 0.0012 + 0.0004,
+            tp: Math.random() * Math.PI * 2,
+            w, h,
+          });
+        }
+      }
+
+      function draw() {
+        const w = section.offsetWidth;
+        const h = section.offsetHeight;
+        ctx.clearRect(0, 0, w, h);
+        const now = Date.now();
+        stars.forEach(s => {
+          s.x += s.dx; s.y += s.dy;
+          if (s.x < 0) s.x = w; if (s.x > w) s.x = 0;
+          if (s.y < 0) s.y = h; if (s.y > h) s.y = 0;
+          const op = Math.max(0, s.baseOp + Math.sin(now * s.ts + s.tp) * 0.3);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${op.toFixed(3)})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      draw();
     })();
 
     // ─────────────────────────────────────────
