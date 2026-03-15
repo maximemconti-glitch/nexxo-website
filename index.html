@@ -6,7 +6,7 @@
   <title>Nexxo — Automatisation IA & Sites Web</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Archivo:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -36,7 +36,7 @@
       --text-secondary: rgba(255,255,255,0.55);
       --card-bg: rgba(255,255,255,0.03);
       --card-border: rgba(255,255,255,0.06);
-      --font-head: 'Space Grotesk', sans-serif;
+      --font-head: 'Inter', sans-serif;
       --font-body: 'Archivo', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -189,7 +189,7 @@
         linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 60px 60px;
     }
-    .hero-content { position: relative; z-index: 2; width: 100%; max-width: calc(50vw - max(64px, 8vw) - 32px); }
+    .hero-content { position: relative; z-index: 2; width: 100%; max-width: none; text-align: left; }
     .hero-eyebrow {
       display: inline-flex; align-items: center;
       border: 1px solid rgba(255,255,255,0.22);
@@ -202,9 +202,10 @@
       background: rgba(255,255,255,0.04);
     }
     .hero-title {
-      font-family: var(--font-head); font-size: clamp(3.2rem, 7.5vw, 6.2rem);
-      font-weight: 700; line-height: 0.95; letter-spacing: -0.035em;
+      font-family: var(--font-head); font-size: clamp(3rem, 7.8vw, 9rem);
+      font-weight: 700; line-height: 1.0; letter-spacing: -0.035em;
       margin-bottom: clamp(16px, 2.5vh, 28px);
+      white-space: nowrap;
     }
     .hero-title em {
       font-family: 'Cormorant Garamond', Georgia, serif;
@@ -218,7 +219,7 @@
       font-family: var(--font-body); font-weight: 300;
       font-size: clamp(0.95rem, 1.3vw, 1.1rem);
       color: rgba(255,255,255,0.6); line-height: 1.7;
-      margin-bottom: clamp(24px, 3.5vh, 40px); max-width: 500px;
+      margin-bottom: clamp(24px, 3.5vh, 40px); max-width: 600px;
     }
     .hero-buttons {
       display: flex; gap: 16px; justify-content: flex-start; flex-wrap: wrap;
@@ -791,6 +792,290 @@
       .bento-title { font-size: clamp(2.2rem,8vw,3.5rem); }
     }
 
+    /* ─── PROCESS — pinned scroll (LIGHT/BEIGE) ─── */
+    #process {
+      position: relative; z-index: 2;
+      background: #f5f0e8;
+      padding: 0;
+    }
+    .process-panel {
+      height: 100vh;
+      display: flex; align-items: center;
+      gap: 72px;
+      padding: 0 max(48px, 7vw);
+      background: #f5f0e8;
+      position: relative;
+    }
+    .process-scroll-room { height: 400vh; }
+
+    /* Left */
+    .process-left { flex: 1; position: relative; z-index: 1; min-width: 0; }
+    .process-main-title {
+      font-family: var(--font-head); font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 700; color: #1d1d1f; line-height: 1.0;
+      letter-spacing: -0.04em; margin-bottom: 36px;
+    }
+    .ps-indicator {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 36px;
+    }
+    .ps-ind-track {
+      width: 2px; height: 80px; background: rgba(0,0,0,0.1);
+      border-radius: 2px; position: relative; flex-shrink: 0;
+    }
+    .ps-ind-fill {
+      position: absolute; top: 0; left: 0; width: 100%;
+      background: #0071e3; border-radius: 2px;
+      height: 20%; transition: height 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .ps-ind-dots { display: flex; flex-direction: column; gap: 10px; }
+    .ps-ind-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(0,0,0,0.15);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .ps-ind-dot.active { background: #0071e3; transform: scale(1.4); }
+    .ps-texts { position: relative; height: 160px; }
+    .ps-text {
+      position: absolute; top: 0; left: 0; width: 100%;
+      opacity: 0; transform: translateY(18px);
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      pointer-events: none;
+    }
+    .ps-text.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .ps-n {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      color: #0071e3; letter-spacing: 3px;
+      display: block; margin-bottom: 10px;
+    }
+    .ps-text h3 {
+      font-family: var(--font-head); font-weight: 700;
+      font-size: 1.35rem; color: #1d1d1f; margin-bottom: 10px;
+      letter-spacing: -0.03em;
+    }
+    .ps-text p {
+      font-size: 0.875rem; color: #6e6e73; line-height: 1.8;
+      max-width: 36ch;
+    }
+
+    /* Right */
+    .process-right { flex: 1; position: relative; z-index: 1; height: 460px; min-width: 0; }
+    .ps-illus {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: flex-start;
+      opacity: 0; transform: translateX(28px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+      pointer-events: none;
+    }
+    .ps-illus.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+
+    /* Dark frame with aurora effect */
+    .psi-frame {
+      position: relative;
+      border-radius: 28px;
+      background: #0d0d14;
+      padding: 18px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 0 16px 56px rgba(0,0,0,0.35), 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .psi-frame::before,
+    .psi-frame::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(45px);
+      z-index: 0;
+      pointer-events: none;
+      animation: auroraFloat 10s ease-in-out infinite alternate;
+    }
+    .psi-frame::before {
+      width: 200px; height: 180px;
+      background: radial-gradient(circle, rgba(99,102,241,0.55) 0%, transparent 70%);
+      top: -40px; left: -30px;
+    }
+    .psi-frame::after {
+      width: 180px; height: 160px;
+      background: radial-gradient(circle, rgba(16,185,129,0.4) 0%, transparent 70%);
+      bottom: -30px; right: -20px;
+      animation-delay: -5s;
+      animation-direction: alternate-reverse;
+    }
+    .psi-aurora-extra {
+      position: absolute;
+      width: 140px; height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(251,146,60,0.38) 0%, transparent 70%);
+      filter: blur(38px);
+      top: 35%; right: 15%;
+      z-index: 0;
+      pointer-events: none;
+      animation: auroraFloat 13s ease-in-out infinite alternate;
+      animation-delay: -3s;
+    }
+    @keyframes auroraFloat {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(18px, 12px) scale(1.18); }
+    }
+    .psi-frame > .psi-card,
+    .psi-frame > .psi-card.psi-card--dark {
+      position: relative; z-index: 1; max-width: none;
+    }
+
+    /* Illustration cards — white on beige */
+    .psi-card {
+      width: 100%; max-width: 460px;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 16px; padding: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .psi-card--dark {
+      background: #1a1a2e; border-color: rgba(255,255,255,0.08);
+    }
+    .psi-card-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
+    }
+    .psi-card-title {
+      font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; color: #1d1d1f;
+    }
+    .psi-card--dark .psi-card-title { color: #fff; }
+    .psi-card-sub {
+      font-size: 0.75rem; color: #6e6e73; margin-top: 2px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .psi-card--dark .psi-card-sub { color: rgba(255,255,255,0.4); }
+    .psi-live-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #28c840;
+      animation: pulse 1.5s infinite;
+    }
+    .psi-avatar-wrap { position: relative; flex-shrink: 0; }
+    .psi-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #0071e3, #a78bfa);
+    }
+    .psi-avatar-pulse {
+      position: absolute; inset: -4px; border-radius: 50%;
+      border: 1px solid rgba(0,113,227,0.3);
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .psi-timer {
+      margin-left: auto; font-family: var(--font-mono);
+      font-size: 0.8rem; color: #6e6e73;
+    }
+    .psi-checklist { display: flex; flex-direction: column; gap: 10px; }
+    .psi-cl-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; color: #ababab;
+    }
+    .psi-cl-done { color: #1d1d1f; }
+    .psi-cl-active { color: #1d1d1f; font-weight: 500; }
+    .psi-cl-icon {
+      width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+      background: #f5f5f7; border: 1px solid #e5e5e5;
+    }
+    .psi-cl-done .psi-cl-icon { background: #dcfce7; color: #16a34a; border-color: #bbf7d0; }
+    .psi-cl-active .psi-cl-icon { background: #dbeafe; color: #0071e3; border-color: #bfdbfe; }
+    .psi-badge {
+      font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 1px;
+      padding: 3px 10px; border-radius: 100px; margin-left: auto;
+    }
+    .psi-badge--blue { background: #dbeafe; color: #0071e3; border: 1px solid #bfdbfe; }
+    .psi-badge--green { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
+    .psi-badge--live { background: #f5f5f7; color: #6e6e73; border: 1px solid #e5e5e5; }
+    .psi-modules { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .psi-module {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px;
+      background: #f9f9f9; border: 1px solid #e5e5e5;
+    }
+    .psi-module svg { width: 16px; height: 16px; color: #9ca3af; flex-shrink: 0; }
+    .psi-module--on { background: #eff6ff; border-color: #bfdbfe; }
+    .psi-module--on svg { color: #0071e3; }
+    .psi-mod-name { font-size: 0.8rem; color: #1d1d1f; font-weight: 500; }
+    .psi-mod-sub { font-size: 0.7rem; color: #6e6e73; margin-top: 1px; }
+    .psi-mod-check {
+      margin-left: auto; width: 18px; height: 18px; border-radius: 50%;
+      background: #dcfce7; color: #16a34a;
+      display: flex; align-items: center; justify-content: center; font-size: 0.65rem;
+    }
+    .psi-mod-check--pending { background: #f5f5f7; color: #9ca3af; }
+    .psi-timeline-bar {
+      height: 3px; background: #e5e5e5; border-radius: 2px; overflow: hidden; margin-bottom: 6px;
+    }
+    .psi-tl-fill {
+      height: 100%; background: #0071e3; border-radius: 2px;
+      width: 0; animation: psi-tl-fill 1.2s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    @keyframes psi-tl-fill { to { width: 85%; } }
+    .psi-tl-label { font-size: 0.72rem; color: #6e6e73; font-family: var(--font-mono); }
+    .psi-term-topbar {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 14px; padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .psi-dot-r { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; display: inline-block; }
+    .psi-dot-y { width: 10px; height: 10px; border-radius: 50%; background: #febc2e; display: inline-block; }
+    .psi-dot-g { width: 10px; height: 10px; border-radius: 50%; background: #28c840; display: inline-block; }
+    .psi-term-title {
+      font-family: var(--font-mono); font-size: 0.7rem; color: rgba(255,255,255,0.4);
+      margin-left: 6px; flex: 1;
+    }
+    .psi-term-body {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      color: rgba(255,255,255,0.65); line-height: 1.9; min-height: 160px;
+    }
+    .psi-term-line { display: flex; gap: 8px; }
+    .psi-term-line.ok .psi-term-pfx { color: #4ade80; }
+    .psi-term-line.run .psi-term-pfx { color: #60a5fa; }
+    .psi-term-pfx { flex-shrink: 0; }
+    .psi-browser-topbar {
+      display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
+    }
+    .psi-browser-url {
+      flex: 1; font-family: var(--font-mono); font-size: 0.7rem;
+      color: #6e6e73; text-align: center;
+      background: #f5f5f7; border-radius: 4px; padding: 2px 8px;
+    }
+    .psi-browser-preview {
+      background: #f5f5f7; border-radius: 8px; padding: 10px; margin-bottom: 14px;
+      border: 1px solid #e5e5e5;
+    }
+    .psi-bp-nav { height: 10px; background: #e5e5e5; border-radius: 3px; margin-bottom: 8px; }
+    .psi-bp-hero { padding: 12px 0 8px; }
+    .psi-bp-h1 { height: 10px; width: 70%; background: #d1d5db; border-radius: 3px; margin-bottom: 6px; }
+    .psi-bp-h2 { height: 7px; width: 50%; background: #e5e7eb; border-radius: 3px; margin-bottom: 10px; }
+    .psi-bp-btn { height: 22px; width: 90px; background: #0071e3; border-radius: 100px; }
+    .psi-bp-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+    .psi-bp-card { height: 36px; background: #e5e7eb; border-radius: 5px; }
+    .psi-delivery-stats {
+      display: flex; gap: 16px; font-size: 0.75rem; color: #6e6e73;
+    }
+    .psi-metrics-row { display: flex; gap: 12px; margin-bottom: 16px; }
+    .psi-metric {
+      flex: 1; background: #f9f9f9; border: 1px solid #e5e5e5;
+      border-radius: 10px; padding: 12px;
+    }
+    .psi-metric-val {
+      font-family: var(--font-head); font-size: 1.4rem; font-weight: 700;
+      color: #1d1d1f; letter-spacing: -0.03em;
+    }
+    .psi-metric-lbl { font-size: 0.7rem; color: #6e6e73; margin-top: 2px; }
+    .psi-activity { display: flex; flex-direction: column; gap: 8px; }
+    .psi-act-row {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; color: #6e6e73;
+    }
+    .psi-act-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .psi-act-time { margin-left: auto; color: #ababab; font-size: 0.72rem; }
+
     /* ─── CTA (DARK) ─── */
     #cta {
       position: relative; z-index: 2;
@@ -835,6 +1120,23 @@
     .cta-note {
       display: block; margin-top: 20px;
       font-size: 0.8rem; color: rgba(255,255,255,0.35);
+    }
+    /* CTA value list */
+    .cta-value-list {
+      list-style: none; padding: 0; margin: 0 0 44px;
+      display: flex; flex-direction: column; gap: 16px;
+      text-align: left; display: inline-flex;
+    }
+    .cta-value-list li {
+      font-size: 1rem; color: rgba(255,255,255,0.72);
+      display: flex; align-items: flex-start; gap: 14px; line-height: 1.6;
+    }
+    .cta-check {
+      width: 22px; height: 22px; flex-shrink: 0;
+      background: rgba(0,113,227,0.22); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #60a5fa; font-size: 0.68rem; font-weight: 800;
+      margin-top: 2px;
     }
     .author-role {
       display: block; font-size: 0.8rem; color: var(--text-secondary);
@@ -889,39 +1191,25 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    #hero::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 200px; z-index: 10; pointer-events: none;
-      /* Fog only on the left side, over the buttons — right side stays clear */
-      background: linear-gradient(to bottom, transparent 0%, #ffffff 100%);
-      -webkit-mask: linear-gradient(to right, black 0%, black 44%, transparent 56%);
-      mask: linear-gradient(to right, black 0%, black 44%, transparent 56%);
-    }
     #hero .hero-subtitle { color: #6e6e73; }
     #hero .scroll-hint { color: #6e6e73; }
     #hero .scroll-arrow { background: linear-gradient(to bottom, var(--accent), transparent); }
     #hero .btn-secondary { color: #1d1d1f; border-color: rgba(0,0,0,0.15); }
     #hero .btn-secondary:hover { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.28); }
 
-    /* ─── HERO WIDGETS ─── */
-    #hero-widgets {
-      position: absolute;
-      right: 32px; top: 120px; bottom: 80px;
-      width: calc(50% - 32px);
+    /* ─── WIDGETS GRID (section réalisations) ─── */
+    .widgets-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 8px;
-      z-index: 1;
-      background: rgba(0,0,0,0.04);
-      border-radius: 26px;
-      padding: 8px;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 16px;
+      flex: 1;
+      min-height: 0;
     }
-    @media (max-width: 1100px) { #hero-widgets { display: none; } }
 
     .widget-card {
-      flex: 1; min-width: 0;
+      width: 100%; height: 100%;
+      min-width: 0; min-height: 0;
       background: #ffffff;
       border-radius: 20px;
       overflow: hidden;
@@ -933,12 +1221,14 @@
       opacity: 0; transform: translateY(12px);
       animation: cardIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
     }
-    #hero-widgets .widget-card:nth-child(1) { animation-delay: 0.15s; }
-    #hero-widgets .widget-card:nth-child(2) { animation-delay: 0.23s; }
-    #hero-widgets .widget-card:nth-child(3) { animation-delay: 0.31s; }
-    #hero-widgets .widget-card:nth-child(4) { animation-delay: 0.39s; }
+    .widgets-grid .widget-card:nth-child(1) { animation-delay: 0.08s; }
+    .widgets-grid .widget-card:nth-child(2) { animation-delay: 0.14s; }
+    .widgets-grid .widget-card:nth-child(3) { animation-delay: 0.20s; }
+    .widgets-grid .widget-card:nth-child(4) { animation-delay: 0.26s; }
+    .widgets-grid .widget-card:nth-child(5) { animation-delay: 0.32s; }
+    .widgets-grid .widget-card:nth-child(6) { animation-delay: 0.38s; }
     @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
-    #hero-widgets:has(.widget-card:hover) .widget-card:not(:hover) {
+    .widgets-grid:has(.widget-card:hover) .widget-card:not(:hover) {
       transform: scale(0.97);
       filter: brightness(0.94);
     }
@@ -1013,17 +1303,18 @@
     .dash-live-txt { font-size: 0.6rem; color: #8e8e93; }
 
     /* ── Terminal ── */
-    .term-body { padding: 10px 12px 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-    .term-feed { flex: 1; overflow: hidden; }
+    .term-body { padding: 8px 12px 8px; flex: 1; overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
+    .term-feed { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
     .tentry {
-      display: flex; gap: 6px; align-items: flex-start;
-      padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
-      font-size: 0.63rem;
-      opacity: 0; transform: translateY(4px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      display: flex; gap: 6px; align-items: center;
+      padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+      font-size: 0.63rem; flex-shrink: 0;
+      overflow: hidden; min-width: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
-    .tentry.show { opacity: 1; transform: translateY(0); }
-    .ttime { color: #c7c7cc; font-family: 'Menlo', monospace; flex-shrink: 0; font-size: 0.57rem; padding-top: 1px; }
+    .tentry.show { opacity: 1; }
+    .ttime { color: #c7c7cc; font-family: 'Menlo', monospace; flex-shrink: 0; font-size: 0.57rem; }
     .ttag {
       padding: 1px 6px; border-radius: 4px; font-size: 0.55rem;
       font-weight: 600; flex-shrink: 0; font-family: 'Menlo', monospace;
@@ -1033,11 +1324,11 @@
     .ttag-reply  { background: rgba(0,113,227,0.07); color: #0071e3; }
     .ttag-rdv    { background: rgba(0,113,227,0.13); color: #005bb5; }
     .ttag-auto   { background: rgba(0,0,0,0.06);     color: #6e6e73; }
-    .tmsg { color: #3d3d3d; line-height: 1.4; }
+    .tmsg { color: #3d3d3d; line-height: 1.4; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .tmsg strong { color: #1d1d1f; font-weight: 500; }
     .term-input {
       display: flex; align-items: center; gap: 6px;
-      margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.06); flex-shrink: 0;
+      padding: 5px 0 0; border-top: 1px solid rgba(0,0,0,0.06); flex-shrink: 0;
     }
     .tprompt { color: #0071e3; font-family: 'Menlo', monospace; font-size: 0.7rem; font-weight: 700; }
     .tcursor { width: 6px; height: 12px; background: #0071e3; animation: tblink 1s step-end infinite; }
@@ -1121,24 +1412,67 @@
     /* ─── RÉALISATIONS ─── */
     #realisations {
       background: #ffffff;
-      padding: 120px 32px;
+      padding: 80px max(28px, 5vw) 64px;
       position: relative; z-index: 2;
+      display: flex; flex-direction: column;
+      height: 100vh; overflow: hidden;
+      box-sizing: border-box;
     }
-    .real-header { max-width: 1200px; margin: 0 auto 64px; }
+    /* Merged section layout */
+    .merged-wrap { max-width: 1280px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .merged-header { margin-bottom: 28px; }
     .real-eyebrow {
       font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
       color: #6e6e73; font-family: var(--font-mono);
       display: block; margin-bottom: 16px;
     }
-    .real-title {
+    .merged-title {
       font-family: var(--font-head); font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 700; color: #1d1d1f; line-height: 1.1;
-      letter-spacing: -0.03em; margin-bottom: 20px;
+      letter-spacing: -0.03em; margin-bottom: 18px;
     }
-    .real-sub {
+    .merged-sub {
       font-size: 1rem; color: #6e6e73;
       max-width: 56ch; line-height: 1.7;
     }
+    .merged-body {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: start;
+    }
+    /* Service list */
+    .svc-list { display: flex; flex-direction: column; gap: 40px; }
+    .svc-item { display: flex; gap: 18px; align-items: flex-start; }
+    .svc-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: #f0f0f5; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: #0071e3;
+    }
+    .svc-icon svg { width: 20px; height: 20px; }
+    .svc-text h3 {
+      font-family: var(--font-head); font-weight: 600;
+      font-size: 1rem; color: #1d1d1f; margin-bottom: 6px;
+    }
+    .svc-text p {
+      font-size: 0.875rem; color: #6e6e73; line-height: 1.65; margin-bottom: 10px;
+    }
+    .svc-pts { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+    .svc-pts li {
+      font-size: 0.78rem; color: #6e6e73;
+      padding-left: 18px; position: relative; line-height: 1.6;
+    }
+    .svc-pts li::before {
+      content: '→'; position: absolute; left: 0; color: #0071e3; font-size: 0.72rem;
+    }
+    /* Portfolio compact */
+    .real-grid--compact { display: flex; flex-direction: column; gap: 14px; }
+    .real-grid--compact .browser-img { height: 155px; }
+    @media (max-width: 960px) {
+      .merged-body { grid-template-columns: 1fr; gap: 56px; }
+      .real-grid--compact { display: grid; grid-template-columns: repeat(3,1fr); }
+      .real-grid--compact .browser-img { height: 120px; }
+    }
+    /* Legacy — keep for compatibility */
     .real-grid {
       display: grid; grid-template-columns: repeat(3,1fr);
       gap: 28px; max-width: 1200px; margin: 0 auto;
@@ -1183,6 +1517,39 @@
     @media (max-width: 900px) { .real-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 580px) { .real-grid { grid-template-columns: 1fr; } }
 
+    /* ── Site web widget ── */
+    .site-body { padding: 10px 12px 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
+    .sbm { background: #f0f0f5; border-radius: 8px; overflow: hidden; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .sbm-nav { height: 22px; background: #e2e2e8; flex-shrink: 0; display: flex; align-items: center; padding: 0 8px; gap: 4px; }
+    .sbm-nav::before { content: ''; display: block; height: 6px; width: 40%; background: #cbcbd2; border-radius: 3px; }
+    .sbm-content { padding: 8px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+    .sbm-h1 { height: 10px; background: #cacad0; border-radius: 3px; width: 65%; }
+    .sbm-h2 { height: 7px; background: #dcdce0; border-radius: 3px; width: 45%; }
+    .sbm-btn { height: 16px; background: #0071e3; border-radius: 5px; width: 70px; margin-top: 3px; }
+    .sbm-cards { display: flex; gap: 5px; margin-top: 5px; flex: 1; }
+    .sbm-card { flex: 1; background: #e2e2e8; border-radius: 5px; }
+    .site-stats { display: flex; gap: 6px; flex-shrink: 0; }
+    .site-stat { flex: 1; background: #f5f5f8; border-radius: 8px; padding: 7px 6px; text-align: center; }
+    .site-stat-val { font-size: 0.88rem; font-weight: 700; color: #0071e3; display: block; letter-spacing: -0.02em; }
+    .site-stat-lbl { font-size: 0.52rem; color: #8e8e93; display: block; margin-top: 2px; }
+
+    /* ── Prospection auto widget ── */
+    .prosp-body { padding: 10px 12px 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 6px; }
+    .prosp-funnel { flex: 1; display: flex; flex-direction: column; gap: 5px; justify-content: center; }
+    .pf-step {
+      border-radius: 7px; padding: 6px 10px;
+      display: flex; align-items: center; justify-content: space-between;
+      color: white; flex-shrink: 0;
+    }
+    .pf-step:nth-child(1) { background: linear-gradient(90deg,#0071e3,#34aadc); margin: 0 0%; }
+    .pf-step:nth-child(2) { background: linear-gradient(90deg,#2a84f4,#5ab8ff); margin: 0 6%; }
+    .pf-step:nth-child(3) { background: linear-gradient(90deg,#5ac8fa,#34aadc); margin: 0 14%; }
+    .pf-step:nth-child(4) { background: linear-gradient(90deg,#28c840,#30d158); margin: 0 22%; }
+    .pf-label { font-size: 0.59rem; opacity: 0.9; }
+    .pf-val { font-size: 0.78rem; font-weight: 700; }
+    .prosp-rate { font-size: 0.6rem; color: #8e8e93; text-align: center; padding-top: 5px; border-top: 1px solid rgba(0,0,0,0.05); flex-shrink: 0; }
+    .prosp-rate strong { color: #28c840; }
+
     /* ─── TEAM (WHITE) ─── */
     #team {
       position: relative; z-index: 2;
@@ -1192,8 +1559,8 @@
     #team .section-title { color: #1d1d1f; }
     #team .section-eyebrow { color: var(--accent); }
     .team-grid {
-      display: grid; grid-template-columns: repeat(4,1fr);
-      gap: 20px; max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 20px; max-width: 520px; margin: 0 auto;
     }
     .team-card {
       background: #ffffff;
@@ -1277,10 +1644,6 @@
     }
 
     /* ─── SECTION TRANSITIONS ─── */
-    /* Dark section coming after white gets a clean cut with extra depth */
-    #features {
-      box-shadow: 0 -1px 0 rgba(255,255,255,0.06);
-    }
     /* Join (dark) section gets stronger visual separation */
     #join {
       position: relative; z-index: 2;
@@ -1316,13 +1679,14 @@
     }
     /* z-index : les sections s'empilent dans l'ordre */
     #hero              { z-index: 2 !important; }
+    #process           { z-index: 3 !important; }
     #realisations      { z-index: 4 !important; }
-    #specs             { z-index: 5 !important; }
-    #features          { z-index: 6 !important; }
-    #cta               { z-index: 7 !important; }
-    #team              { z-index: 8 !important; }
-    #join              { z-index: 9 !important; }
+    #team              { z-index: 5 !important; }
+    #join              { z-index: 6 !important; }
   </style>
+  <!-- Calendly popup widget -->
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 </head>
 <body>
 
@@ -1358,11 +1722,11 @@
         <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
       </a>
       <div class="nav-links">
-        <a href="#realisations">Réalisations</a>
-        <a href="#features">Services</a>
-        <a href="#team">Notre équipe</a>
-        <a href="#join">Nous rejoindre</a>
-        <a href="mailto:contact@nexxo.systems" class="nav-cta">Réserver un appel</a>
+        <a href="#" onclick="event.preventDefault();scrollToSection('process')">Process</a>
+        <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">Services</a>
+        <a href="#" onclick="event.preventDefault();scrollToSection('team')">Notre équipe</a>
+        <a href="#" onclick="event.preventDefault();scrollToSection('join')">Nous rejoindre</a>
+        <a href="#" class="nav-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Réserver un appel</a>
       </div>
     </div>
   </nav>
@@ -1374,18 +1738,17 @@
       <div class="orb orb-2"></div>
     </div>
     <div class="hero-content">
-      <span class="hero-eyebrow">Automatisation IA &amp; Sites Web — Paris</span>
       <h1 class="hero-title">L'IA qui automatise<br><em>votre entreprise.</em></h1>
       <p class="hero-subtitle">
         Nexxo automatise vos process métier sur mesure — prospection, SAV, gestion interne.
         Et conçoit des sites web qui convertissent. Tout construit pour vous, sans technique de votre côté.
       </p>
       <div class="hero-buttons">
-        <a href="mailto:contact@nexxo.systems" class="btn-primary" id="hero-cta">Réserver un appel →</a>
-        <a href="#features" class="btn-secondary">Voir les services</a>
+        <a href="#" class="btn-primary" id="hero-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Réserver un appel →</a>
+        <a href="#" class="btn-secondary" onclick="event.preventDefault();scrollToSection('realisations')">Voir les services</a>
       </div>
     </div>
-    <div id="hero-widgets" aria-hidden="true">
+    <div id="hero-widgets" aria-hidden="true" style="display:none">
 
       <!-- Dashboard -->
       <div class="widget-card" id="wc-dash">
@@ -1396,9 +1759,9 @@
         </div>
         <div class="dash-body">
           <div class="dash-stats">
-            <div class="ds"><div class="ds-val" id="ds1">0</div><div class="ds-label">Leads ce mois</div></div>
-            <div class="ds"><div class="ds-val" id="ds2">0</div><div class="ds-label">RDV obtenus</div></div>
-            <div class="ds"><div class="ds-val"><span id="ds3">0</span><em>%</em></div><div class="ds-label">Taux conv.</div></div>
+            <div class="ds"><div class="ds-val">0</div><div class="ds-label">Leads ce mois</div></div>
+            <div class="ds"><div class="ds-val">0</div><div class="ds-label">RDV obtenus</div></div>
+            <div class="ds"><div class="ds-val"><span>0</span><em>%</em></div><div class="ds-label">Taux conv.</div></div>
           </div>
           <div class="dash-recent">
             <div class="drecent-row"><span class="dr-dot" style="background:#0071e3"></span><span class="dr-text">Mail envoyé · Boulangerie Martin</span><span class="dr-time">14:32</span></div>
@@ -1420,7 +1783,7 @@
           <div class="wlive"><div class="wlive-dot"></div> En ligne</div>
         </div>
         <div class="term-body">
-          <div class="term-feed" id="wterm-feed"></div>
+          <div class="term-feed"></div>
           <div class="term-input">
             <span class="tprompt">›</span>
             <span class="tinput-lbl">Automatisation en cours...</span>
@@ -1436,7 +1799,7 @@
           <span class="wbar-title">SAV IA — Assistant 24/7</span>
         </div>
         <div class="chat-body">
-          <div class="chat-msgs" id="wchat-msgs"></div>
+          <div class="chat-msgs"></div>
           <div class="chat-foot">Répond en &lt;3s · 247 conversations ce mois</div>
         </div>
       </div>
@@ -1483,11 +1846,11 @@
           <!-- Facture -->
           <div class="dash-panel" id="dp-facture">
             <div class="inv-form">
-              <div class="inv-row"><span class="inv-lbl">Client</span><span class="inv-val" id="iv-client"></span></div>
-              <div class="inv-row"><span class="inv-lbl">Service</span><span class="inv-val" id="iv-service"></span></div>
-              <div class="inv-row"><span class="inv-lbl">Montant</span><span class="inv-val" id="iv-montant"></span></div>
+              <div class="inv-row"><span class="inv-lbl">Client</span><span class="inv-val"></span></div>
+              <div class="inv-row"><span class="inv-lbl">Service</span><span class="inv-val"></span></div>
+              <div class="inv-row"><span class="inv-lbl">Montant</span><span class="inv-val"></span></div>
             </div>
-            <div class="inv-status" id="inv-status"></div>
+            <div class="inv-status"></div>
           </div>
           <!-- Stocks -->
           <div class="dash-panel" id="dp-stocks">
@@ -1505,344 +1868,364 @@
   </section>
 
 
-  <!-- Réalisations -->
-  <section id="realisations" class="stack-slide">
-    <div class="real-header">
-      <span class="real-eyebrow">Nos réalisations</span>
-      <h2 class="real-title">Ce qu'on<br>construit.</h2>
-      <p class="real-sub">Du restaurant gastronomique au cabinet médical — des sites pensés pour chaque secteur, chaque audience, chaque objectif.</p>
-    </div>
-    <div class="real-grid">
-      <div class="browser-card">
-        <div class="browser-bar">
-          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-          <span class="browser-url">restaurant-jules.fr</span>
-        </div>
-        <img class="browser-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=80&fit=crop" alt="Restaurant">
-        <div class="browser-footer">
-          <span class="browser-name">Le Jules — Restaurant</span>
-          <span class="browser-tag">Restauration</span>
-        </div>
-      </div>
-      <div class="browser-card">
-        <div class="browser-bar">
-          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-          <span class="browser-url">elise-paris.fr</span>
-        </div>
-        <img class="browser-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80&fit=crop" alt="Mode">
-        <div class="browser-footer">
-          <span class="browser-name">Élise Paris — Mode</span>
-          <span class="browser-tag">Boutique</span>
-        </div>
-      </div>
-      <div class="browser-card">
-        <div class="browser-bar">
-          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-          <span class="browser-url">martin-plombier.fr</span>
-        </div>
-        <img class="browser-img" src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=700&q=80&fit=crop" alt="Plombier">
-        <div class="browser-footer">
-          <span class="browser-name">Martin — Plombier</span>
-          <span class="browser-tag">Artisan</span>
-        </div>
-      </div>
-      <div class="browser-card">
-        <div class="browser-bar">
-          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-          <span class="browser-url">shop-nova.fr</span>
-        </div>
-        <img class="browser-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=700&q=80&fit=crop" alt="E-commerce">
-        <div class="browser-footer">
-          <span class="browser-name">Shop Nova — E-commerce</span>
-          <span class="browser-tag">E-commerce</span>
-        </div>
-      </div>
-      <div class="browser-card">
-        <div class="browser-bar">
-          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-          <span class="browser-url">cabinet-moreau.fr</span>
-        </div>
-        <img class="browser-img" src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=700&q=80&fit=crop" alt="Médical">
-        <div class="browser-footer">
-          <span class="browser-name">Cabinet Moreau</span>
-          <span class="browser-tag">Médical</span>
-        </div>
-      </div>
-      <div class="browser-card">
-        <div class="browser-bar">
-          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-          <span class="browser-url">coach-elite.fr</span>
-        </div>
-        <img class="browser-img" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=700&q=80&fit=crop" alt="Coach">
-        <div class="browser-footer">
-          <span class="browser-name">Coach Élite</span>
-          <span class="browser-tag">Consultant</span>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- Process — pinned scroll -->
+  <section id="process" class="stack-slide" data-pinned="true">
+    <!-- Sticky panel: stays at top while scroll room provides scroll space -->
+    <div class="process-panel">
 
-  <!-- Specs -->
-  <section id="specs" class="stack-slide">
-    <div class="specs-inner">
-      <div class="specs-header">
-        <span class="specs-eyebrow">Ce que Nexxo apporte</span>
-        <h2 class="specs-title">Les chiffres<br>qui parlent.</h2>
-      </div>
-      <div class="specs-grid">
-        <div class="spec-item" data-target="48" data-suffix="h">
-          <span class="spec-number">0</span>
-          <span class="spec-label">Délai de livraison moyen — site en ligne en 2 jours</span>
-        </div>
-        <div class="spec-item" data-target="2" data-suffix="h">
-          <span class="spec-number">0</span>
-          <span class="spec-label">par jour récupérées en moyenne grâce à l'automatisation</span>
-        </div>
-        <div class="spec-item" data-target="1" data-suffix="">
-          <span class="spec-number">0</span>
-          <span class="spec-label">identité visuelle unique conçue pour vous<br><span style="opacity:0.5;font-size:0.75rem">(logo · couleurs · typographie · iconographie · charte)</span></span>
-        </div>
-        <div class="spec-item" data-target="100" data-suffix="%">
-          <span class="spec-number">0</span>
-          <span class="spec-label">personnalisé pour votre entreprise et vos besoins</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features — Bento -->
-  <section id="features" class="stack-slide">
-    <canvas id="featuresStars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
-    <div class="bento-header">
-      <div class="bento-header-left">
-        <span class="bento-eyebrow">Nos services</span>
-        <h2 class="bento-title">Automatisation<br>sans limites.</h2>
-      </div>
-      <div class="bento-header-right">
-      </div>
-    </div>
-
-    <div class="bento-grid">
-
-      <!-- Card 1 — Prospection (large left) -->
-      <div class="bento-card">
-        <div class="bento-card-ui">
-          <div class="workflow-ui">
-            <div class="wf-pipeline">
-              <!-- Stage 1 -->
-              <div class="wf-stage">
-                <span class="wf-stage-label">Détectés</span>
-                <div class="wf-item wf-item--1">
-                  <div class="wf-item-dot" style="background:#4ade80"></div>
-                  <div>
-                    <div class="wf-item-name">Boulangerie Martin</div>
-                    <div class="wf-item-sub">Paris 11ème</div>
-                  </div>
-                  <div class="wf-item-score">92</div>
-                </div>
-                <div class="wf-item wf-item--2">
-                  <div class="wf-item-dot" style="background:#60a5fa"></div>
-                  <div>
-                    <div class="wf-item-name">Plombier Dupont</div>
-                    <div class="wf-item-sub">Lyon</div>
-                  </div>
-                  <div class="wf-item-score">87</div>
-                </div>
-                <div class="wf-item wf-item--3">
-                  <div class="wf-item-dot" style="background:#a78bfa"></div>
-                  <div>
-                    <div class="wf-item-name">Cabinet Leblanc</div>
-                    <div class="wf-item-sub">Bordeaux</div>
-                  </div>
-                  <div class="wf-item-score">94</div>
-                </div>
-              </div>
-              <div class="wf-arrow">→</div>
-              <!-- Stage 2 -->
-              <div class="wf-stage">
-                <span class="wf-stage-label">Contactés</span>
-                <div class="wf-item">
-                  <div class="wf-item-dot" style="background:#f59e0b"></div>
-                  <div>
-                    <div class="wf-item-name">Coiffeur Delorme</div>
-                    <div class="wf-item-sub">Nice · Mail J+2</div>
-                  </div>
-                  <span class="wf-badge">J+2</span>
-                </div>
-                <div class="wf-item">
-                  <div class="wf-item-dot" style="background:#34d399"></div>
-                  <div>
-                    <div class="wf-item-name">Resto Le Jardin</div>
-                    <div class="wf-item-sub">Paris 6ème · Relance</div>
-                  </div>
-                  <span class="wf-badge">J+5</span>
-                </div>
-              </div>
-              <div class="wf-arrow">→</div>
-              <!-- Stage 3 -->
-              <div class="wf-stage">
-                <span class="wf-stage-label">RDV</span>
-                <div class="wf-item wf-item--closing">
-                  <div class="wf-item-dot" style="background:#0071e3"></div>
-                  <div>
-                    <div class="wf-item-name">Pharmacie Morin</div>
-                    <div class="wf-item-sub">Appel demain 10h</div>
-                  </div>
-                  <span class="wf-badge wf-badge--blue">Confirmé</span>
-                </div>
-              </div>
-            </div>
-            <div class="wf-bottom-bar">
-              <span class="wf-stat"><span class="wf-stat-val">148</span> leads qualifiés ce mois</span>
-              <span class="wf-stat wf-stat-green"><span class="wf-stat-val">32</span> RDV obtenus</span>
-            </div>
+      <!-- Left: fixed title + changing step text -->
+      <div class="process-left">
+        <h2 class="process-main-title">Notre<br>process.</h2>
+        <!-- Step progress indicator -->
+        <div class="ps-indicator">
+          <div class="ps-ind-track">
+            <div class="ps-ind-fill" id="ps-ind-fill"></div>
+          </div>
+          <div class="ps-ind-dots">
+            <span class="ps-ind-dot active" data-step="0"></span>
+            <span class="ps-ind-dot" data-step="1"></span>
+            <span class="ps-ind-dot" data-step="2"></span>
+            <span class="ps-ind-dot" data-step="3"></span>
+            <span class="ps-ind-dot" data-step="4"></span>
           </div>
         </div>
-        <div class="bento-card-footer">
-          <h3>Prospection automatisée</h3>
-          <p>L'IA détecte, qualifie et contacte vos prospects — pendant que vous dormez.</p>
+        <!-- Step texts (one active at a time) -->
+        <div class="ps-texts">
+          <div class="ps-text active" data-step="0">
+            <span class="ps-n">01</span>
+            <h3>Découverte</h3>
+            <p>Un appel de 15 minutes pour comprendre votre activité, vos outils existants et ce qui vous freine au quotidien.</p>
+          </div>
+          <div class="ps-text" data-step="1">
+            <span class="ps-n">02</span>
+            <h3>Stratégie sur mesure</h3>
+            <p>On conçoit la solution adaptée — site, automatisations, SAV. Rien de générique, tout pensé pour vous.</p>
+          </div>
+          <div class="ps-text" data-step="2">
+            <span class="ps-n">03</span>
+            <h3>Développement</h3>
+            <p>On construit tout de A à Z. Vous suivez l'avancement et validez chaque étape en temps réel.</p>
+          </div>
+          <div class="ps-text" data-step="3">
+            <span class="ps-n">04</span>
+            <h3>Livraison en 48h</h3>
+            <p>Site en ligne ou automatisations actives sous 48h. Formation et prise en main incluses.</p>
+          </div>
+          <div class="ps-text" data-step="4">
+            <span class="ps-n">05</span>
+            <h3>Suivi continu</h3>
+            <p>Support, ajustements et améliorations après la livraison — on reste disponibles.</p>
+          </div>
         </div>
       </div>
 
-      <!-- Card 2 — SAV Chat (small right top) -->
-      <div class="bento-card">
-        <div class="bento-card-ui bento-card-ui--chat">
-          <div class="chat-ui">
-            <div class="chat-topbar">
-              <div class="chat-avatar"></div>
+      <!-- Right: illustration per step -->
+      <div class="process-right">
+
+        <!-- Step 0 — Découverte: discovery call card -->
+        <div class="ps-illus active" data-step="0">
+          <div class="psi-frame"><div class="psi-aurora-extra"></div>
+          <div class="psi-card">
+            <div class="psi-card-header">
+              <div class="psi-avatar-wrap">
+                <div class="psi-avatar"></div>
+                <div class="psi-avatar-pulse"></div>
+              </div>
               <div>
-                <div class="chat-name">Assistant Nexxo</div>
-                <div class="chat-status"><span class="chat-dot"></span>En ligne · répond en &lt;3s</div>
+                <div class="psi-card-title">Appel découverte</div>
+                <div class="psi-card-sub"><span class="psi-live-dot"></span>En cours · 15 min</div>
+              </div>
+              <div class="psi-timer" id="psi-timer">15:00</div>
+            </div>
+            <div class="psi-checklist">
+              <div class="psi-cl-item psi-cl-done"><span class="psi-cl-icon">✓</span>Activité analysée</div>
+              <div class="psi-cl-item psi-cl-done"><span class="psi-cl-icon">✓</span>Outils cartographiés</div>
+              <div class="psi-cl-item psi-cl-active"><span class="psi-cl-icon">→</span>Points de friction</div>
+              <div class="psi-cl-item"><span class="psi-cl-icon">○</span>Plan d'action défini</div>
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <!-- Step 1 — Stratégie: plan document -->
+        <div class="ps-illus" data-step="1">
+          <div class="psi-frame"><div class="psi-aurora-extra"></div>
+          <div class="psi-card">
+            <div class="psi-card-header">
+              <div>
+                <div class="psi-card-title">Solution Nexxo</div>
+                <div class="psi-card-sub">Cabinet Moreau · Sur mesure</div>
+              </div>
+              <span class="psi-badge psi-badge--blue">Validé</span>
+            </div>
+            <div class="psi-modules">
+              <div class="psi-module psi-module--on">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="3" width="16" height="11" rx="2"/><path d="M7 17h6M10 14v3"/></svg>
+                <div><div class="psi-mod-name">Site vitrine</div><div class="psi-mod-sub">SEO + Prise de RDV</div></div>
+                <div class="psi-mod-check">✓</div>
+              </div>
+              <div class="psi-module psi-module--on">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M17 12a2 2 0 0 1-2 2H5l-3 3V4a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2z"/></svg>
+                <div><div class="psi-mod-name">SAV IA 24h/7j</div><div class="psi-mod-sub">Réponse auto</div></div>
+                <div class="psi-mod-check">✓</div>
+              </div>
+              <div class="psi-module">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="4" width="14" height="13" rx="2"/><path d="M3 9h14M8 2v4M12 2v4"/></svg>
+                <div><div class="psi-mod-name">Planning IA</div><div class="psi-mod-sub">Agenda automatisé</div></div>
+                <div class="psi-mod-check psi-mod-check--pending">+</div>
               </div>
             </div>
-            <div class="chat-messages">
-              <div class="chat-msg chat-msg--user chat-msg--anim-1">Bonjour, c'est quoi vos horaires ?</div>
-              <div class="chat-msg chat-msg--bot chat-msg--anim-2">Bonjour ! Nous sommes ouverts du lundi au samedi de 9h à 19h. Comment puis-je vous aider ?</div>
-              <div class="chat-msg chat-msg--user chat-msg--anim-3">Vous livrez à domicile ?</div>
-              <div class="chat-msg chat-msg--bot chat-msg--anim-4">Oui, dans un rayon de 15 km. Livraison offerte dès 50€. Souhaitez-vous passer une commande ?</div>
+            <div class="psi-timeline-bar">
+              <div class="psi-tl-fill"></div>
             </div>
-            <div class="chat-input-bar">
-              <span class="chat-input-placeholder">Votre message...</span>
-              <div class="chat-send-btn">→</div>
+            <div class="psi-tl-label">Livraison estimée : 48h</div>
+          </div>
+          </div>
+        </div>
+
+        <!-- Step 2 — Développement: terminal -->
+        <div class="ps-illus" data-step="2">
+          <div class="psi-frame"><div class="psi-aurora-extra"></div>
+          <div class="psi-card psi-card--dark">
+            <div class="psi-term-topbar">
+              <span class="psi-dot-r"></span><span class="psi-dot-y"></span><span class="psi-dot-g"></span>
+              <span class="psi-term-title">nexxo-build · live</span>
+              <span class="psi-badge psi-badge--live">● running</span>
+            </div>
+            <div class="psi-term-body" id="psi-term"></div>
+          </div>
+          </div>
+        </div>
+
+        <!-- Step 3 — Livraison: browser live -->
+        <div class="ps-illus" data-step="3">
+          <div class="psi-frame"><div class="psi-aurora-extra"></div>
+          <div class="psi-card">
+            <div class="psi-browser-topbar">
+              <span class="psi-dot-r"></span><span class="psi-dot-y"></span><span class="psi-dot-g"></span>
+              <span class="psi-browser-url">cabinet-moreau.fr</span>
+              <span class="psi-badge psi-badge--green">● En ligne</span>
+            </div>
+            <div class="psi-browser-preview">
+              <div class="psi-bp-nav"></div>
+              <div class="psi-bp-hero">
+                <div class="psi-bp-h1"></div>
+                <div class="psi-bp-h2"></div>
+                <div class="psi-bp-btn"></div>
+              </div>
+              <div class="psi-bp-cards">
+                <div class="psi-bp-card"></div>
+                <div class="psi-bp-card"></div>
+                <div class="psi-bp-card"></div>
+              </div>
+            </div>
+            <div class="psi-delivery-stats">
+              <span>⚡ Mis en ligne en 47h</span>
+              <span>📈 Score SEO 94/100</span>
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <!-- Step 4 — Suivi: dashboard -->
+        <div class="ps-illus" data-step="4">
+          <div class="psi-frame"><div class="psi-aurora-extra"></div>
+          <div class="psi-card">
+            <div class="psi-card-header">
+              <div>
+                <div class="psi-card-title">Tableau de bord</div>
+                <div class="psi-card-sub">Suivi mensuel</div>
+              </div>
+              <span class="psi-badge psi-badge--green">● Actif</span>
+            </div>
+            <div class="psi-metrics-row">
+              <div class="psi-metric">
+                <div class="psi-metric-val" id="psi-m1">0</div>
+                <div class="psi-metric-lbl">Requêtes SAV</div>
+              </div>
+              <div class="psi-metric">
+                <div class="psi-metric-val" id="psi-m2">0h</div>
+                <div class="psi-metric-lbl">Libérées / sem.</div>
+              </div>
+              <div class="psi-metric">
+                <div class="psi-metric-val" id="psi-m3">0%</div>
+                <div class="psi-metric-lbl">Uptime</div>
+              </div>
+            </div>
+            <div class="psi-activity">
+              <div class="psi-act-row"><span class="psi-act-dot" style="background:#28c840"></span><span>Mise à jour déployée</span><span class="psi-act-time">Aujourd'hui</span></div>
+              <div class="psi-act-row"><span class="psi-act-dot" style="background:#0071e3"></span><span>Nouveau module ajouté</span><span class="psi-act-time">J−3</span></div>
+              <div class="psi-act-row"><span class="psi-act-dot" style="background:#a78bfa"></span><span>Rapport mensuel envoyé</span><span class="psi-act-time">J−7</span></div>
+            </div>
+          </div>
+          </div>
+        </div>
+
+      </div><!-- /process-right -->
+    </div><!-- /process-panel -->
+
+    <!-- Scroll room: 4 extra 100vh for 5 steps -->
+    <div class="process-scroll-room"></div>
+  </section>
+
+  <!-- Services & Réalisations — merged -->
+  <section id="realisations" class="stack-slide" data-dwell="1.5">
+    <div class="merged-wrap">
+      <div class="merged-header">
+        <h2 class="merged-title">Ce qu'on construit<br>pour vous.</h2>
+      </div>
+      <div class="widgets-grid">
+
+        <!-- 1 — Dashboard Prospection -->
+        <div class="widget-card" id="wc-prosp-dash">
+          <div class="wbar">
+            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+            <span class="wbar-title">Prospection Dashboard</span>
+            <div class="wlive"><div class="wlive-dot"></div> Live</div>
+          </div>
+          <div class="dash-body">
+            <div class="dash-stats">
+              <div class="ds"><div class="ds-val" id="ds1">0</div><div class="ds-label">Leads ce mois</div></div>
+              <div class="ds"><div class="ds-val" id="ds2">0</div><div class="ds-label">RDV obtenus</div></div>
+              <div class="ds"><div class="ds-val"><span id="ds3">0</span><em>%</em></div><div class="ds-label">Taux conv.</div></div>
+            </div>
+            <div class="dash-recent">
+              <div class="drecent-row"><span class="dr-dot" style="background:#0071e3"></span><span class="dr-text">Mail envoyé · Boulangerie Martin</span><span class="dr-time">14:32</span></div>
+              <div class="drecent-row"><span class="dr-dot" style="background:#28c840"></span><span class="dr-text">RDV confirmé · Pharmacie Morin</span><span class="dr-time">13:08</span></div>
+              <div class="drecent-row"><span class="dr-dot" style="background:#0071e3"></span><span class="dr-text">Prospect détecté · Cabinet Leblanc</span><span class="dr-time">11:55</span></div>
+            </div>
+            <div class="dash-live">
+              <div class="dpulse"></div>
+              <span class="dash-live-txt">3 automatisations actives</span>
             </div>
           </div>
         </div>
-        <div class="bento-card-footer">
-          <h3>SAV 24h/7j</h3>
-          <p>Vos clients ont toujours une réponse — même à 3h du matin.</p>
-        </div>
-      </div>
 
-      <!-- Card 3 — Dashboard (small left bottom) -->
-      <div class="bento-card">
-        <div class="bento-card-ui">
-          <div class="dash-ui">
-            <div class="dash-title">Performance mensuelle</div>
-            <div class="dash-chart">
-              <div class="dash-bars">
-                <div class="dash-bar-wrap">
-                  <div class="dash-bar" style="--h:45%"></div>
-                  <div class="dash-bar-label">Jan</div>
-                </div>
-                <div class="dash-bar-wrap">
-                  <div class="dash-bar" style="--h:62%"></div>
-                  <div class="dash-bar-label">Fév</div>
-                </div>
-                <div class="dash-bar-wrap">
-                  <div class="dash-bar" style="--h:55%"></div>
-                  <div class="dash-bar-label">Mar</div>
-                </div>
-                <div class="dash-bar-wrap">
-                  <div class="dash-bar" style="--h:78%"></div>
-                  <div class="dash-bar-label">Avr</div>
-                </div>
-                <div class="dash-bar-wrap">
-                  <div class="dash-bar" style="--h:88%"></div>
-                  <div class="dash-bar-label">Mai</div>
-                </div>
-                <div class="dash-bar-wrap">
-                  <div class="dash-bar dash-bar--highlight" style="--h:100%"></div>
-                  <div class="dash-bar-label dash-bar-label--hl">Juin</div>
-                </div>
+        <!-- 2 — Terminal nexxo-agent -->
+        <div class="widget-card" id="wc-term">
+          <div class="wbar">
+            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+            <span class="wbar-title">nexxo-agent · live</span>
+            <div class="wlive"><div class="wlive-dot"></div> En ligne</div>
+          </div>
+          <div class="term-body">
+            <div class="term-feed" id="wterm-feed"></div>
+            <div class="term-input">
+              <span class="tprompt">›</span>
+              <span class="tinput-lbl">Automatisation en cours...</span>
+              <div class="tcursor"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 — SAV IA Chat -->
+        <div class="widget-card" id="wc-chat">
+          <div class="wbar">
+            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+            <span class="wbar-title">SAV IA — Assistant 24/7</span>
+          </div>
+          <div class="chat-body">
+            <div class="chat-msgs" id="wchat-msgs"></div>
+            <div class="chat-foot">Répond en &lt;3s · 247 conversations ce mois</div>
+          </div>
+        </div>
+
+        <!-- 4 — Gestion interne -->
+        <div class="widget-card" id="wc-mgmt">
+          <div class="wbar">
+            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+            <span class="wbar-title">Gestion interne</span>
+          </div>
+          <div class="dash-tabs">
+            <button class="dash-tab active" data-panel="planning">Planning</button>
+            <button class="dash-tab" data-panel="facture">Facture</button>
+            <button class="dash-tab" data-panel="stocks">Stocks</button>
+          </div>
+          <div class="dash-body">
+            <div class="dash-panel active" id="dp-planning">
+              <div class="cal-week">
+                <div class="cal-day"><div class="cal-day-label">Lun</div><div class="cal-event" style="background:#dbeafe;color:#1e40af">10h — Moreau</div><div class="cal-event" style="background:#f3f4f6;color:#374151">15h — Factures</div></div>
+                <div class="cal-day"><div class="cal-day-label">Mar</div><div class="cal-event" style="background:#f3f4f6;color:#374151">11h — Relances</div></div>
+                <div class="cal-day"><div class="cal-day-label">Mer</div><div class="cal-event" style="background:#dcfce7;color:#166534">14h — Livraison</div><div class="cal-event" style="background:#dbeafe;color:#1e40af">16h — Démo</div></div>
+                <div class="cal-day"><div class="cal-day-label">Jeu</div><div class="cal-event" style="background:#fef9c3;color:#92400e">09h — Prospect</div></div>
+                <div class="cal-day"><div class="cal-day-label">Ven</div><div class="cal-event" style="background:#f3f4f6;color:#374151">10h — Réunion</div></div>
               </div>
             </div>
-            <div class="dash-metrics">
-              <div class="dash-metric">
-                <span class="dash-metric-val">+34%</span>
-                <span class="dash-metric-label">Temps économisé</span>
+            <div class="dash-panel" id="dp-facture">
+              <div class="inv-form">
+                <div class="inv-row"><span class="inv-lbl">Client</span><span class="inv-val" id="iv-client"></span></div>
+                <div class="inv-row"><span class="inv-lbl">Service</span><span class="inv-val" id="iv-service"></span></div>
+                <div class="inv-row"><span class="inv-lbl">Montant</span><span class="inv-val" id="iv-montant"></span></div>
               </div>
-              <div class="dash-metric">
-                <span class="dash-metric-val">2.1h</span>
-                <span class="dash-metric-label">Libérées / jour</span>
+              <div class="inv-status" id="inv-status"></div>
+            </div>
+            <div class="dash-panel" id="dp-stocks">
+              <div class="stk-list">
+                <div class="stk-row"><span class="stk-name">Licences IA</span><div class="stk-bar"><div class="stk-fill" data-w="82" style="background:#34d399"></div></div><span class="stk-num">82</span></div>
+                <div class="stk-row"><span class="stk-name">Crédits mail</span><div class="stk-bar"><div class="stk-fill" data-w="45" style="background:#fbbf24"></div></div><span class="stk-num">45%</span></div>
+                <div class="stk-row"><span class="stk-name">Serveurs</span><div class="stk-bar"><div class="stk-fill" data-w="91" style="background:#34d399"></div></div><span class="stk-num">91%</span></div>
+                <div class="stk-row"><span class="stk-name">API calls</span><div class="stk-bar"><div class="stk-fill" data-w="18" style="background:#f87171"></div></div><span class="stk-num">18%</span></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="bento-card-footer">
-          <h3>Gestion interne</h3>
-          <p>Factures, stocks, planning — vos opérations automatisées de A à Z.</p>
-        </div>
-      </div>
 
-      <!-- Card 4 — Website mockup (large right) -->
-      <div class="bento-card bento-card--glow">
-        <div class="bento-card-ui">
-          <div class="browser-mockup">
-            <div class="bm-bar">
-              <div class="bm-dots">
-                <span style="background:#ff5f57"></span>
-                <span style="background:#febc2e"></span>
-                <span style="background:#28c840"></span>
+        <!-- 5 — Site web -->
+        <div class="widget-card" id="wc-site">
+          <div class="wbar">
+            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+            <span class="wbar-title">Site web — Livraison 48h</span>
+            <div class="wlive"><div class="wlive-dot"></div> En ligne</div>
+          </div>
+          <div class="site-body">
+            <div class="sbm">
+              <div class="sbm-nav"></div>
+              <div class="sbm-content">
+                <div class="sbm-h1"></div>
+                <div class="sbm-h2"></div>
+                <div class="sbm-btn"></div>
+                <div class="sbm-cards">
+                  <div class="sbm-card"></div>
+                  <div class="sbm-card"></div>
+                  <div class="sbm-card"></div>
+                </div>
               </div>
-              <div class="bm-url">votresite.fr</div>
             </div>
-            <div class="bm-content">
-              <div class="bm-nav">
-                <div class="bm-nav-logo"></div>
-                <div class="bm-nav-links"><div></div><div></div><div></div></div>
-                <div class="bm-nav-cta"></div>
-              </div>
-              <div class="bm-hero-area">
-                <div class="bm-hero-title"></div>
-                <div class="bm-hero-sub"></div>
-                <div class="bm-hero-btn"></div>
-              </div>
-              <div class="bm-cards-row">
-                <div class="bm-mini-card"></div>
-                <div class="bm-mini-card"></div>
-                <div class="bm-mini-card"></div>
-              </div>
+            <div class="site-stats">
+              <div class="site-stat"><span class="site-stat-val">48h</span></div>
+              <div class="site-stat"><span class="site-stat-val">94 SEO</span></div>
+              <div class="site-stat"><span class="site-stat-val">100%</span></div>
             </div>
           </div>
         </div>
-        <div class="bento-card-footer">
-          <h3>Sites qui convertissent</h3>
-          <p>Design sur mesure, SEO intégré, livré en 48 heures. Pensé pour votre client.</p>
-        </div>
-      </div>
 
+        <!-- 6 — Prospection automatique -->
+        <div class="widget-card" id="wc-prosp-auto">
+          <div class="wbar">
+            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+            <span class="wbar-title">Prospection automatique</span>
+            <div class="wlive"><div class="wlive-dot"></div> Actif</div>
+          </div>
+          <div class="prosp-body">
+            <div class="prosp-funnel">
+              <div class="pf-step"><span class="pf-label">Leads détectés</span><span class="pf-val">1 240</span></div>
+              <div class="pf-step"><span class="pf-label">Qualifiés</span><span class="pf-val">387</span></div>
+              <div class="pf-step"><span class="pf-label">Contactés</span><span class="pf-val">142</span></div>
+              <div class="pf-step"><span class="pf-label">RDV obtenus</span><span class="pf-val">28</span></div>
+            </div>
+            <div class="prosp-rate">Taux de conversion moyen : <strong>19%</strong></div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section id="cta" class="stack-slide">
-    <div class="cta-orb"></div>
-    <div class="cta-content">
-      <span class="cta-eyebrow">On commence quand vous voulez</span>
-      <h2>Prêt à automatiser<br>ce qui vous ralentit ?</h2>
-      <p>Un appel de 15 minutes suffit. On analyse votre activité, on identifie ce qu'on peut automatiser — et on le construit pour vous.</p>
-      <a href="mailto:contact@nexxo.systems" class="btn-dark btn-large" id="main-cta">
-        Réserver un appel gratuit →
-      </a>
-      <span class="cta-note">Gratuit · Sans engagement · Réponse sous 24h</span>
-    </div>
-  </section>
 
 
   <!-- Team -->
   <section id="team" class="stack-slide">
     <div class="section-header">
-      <span class="section-eyebrow">L'équipe</span>
       <h2 class="section-title">Notre équipe</h2>
     </div>
     <div class="team-grid">
@@ -1864,24 +2247,6 @@
           <span class="team-role">Co-fondateur · UX Designer</span>
         </div>
       </div>
-      <div class="team-card">
-        <div class="team-photo">
-          <img src="images/team/emma.png" alt="Emma">
-        </div>
-        <div class="team-body">
-          <span class="team-name">Emma</span>
-          <span class="team-role">Directrice Artistique</span>
-        </div>
-      </div>
-      <div class="team-card">
-        <div class="team-photo">
-          <img src="images/team/moussa.png" alt="Moussa">
-        </div>
-        <div class="team-body">
-          <span class="team-name">Moussa</span>
-          <span class="team-role">Stratégie & Opérations</span>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1889,7 +2254,6 @@
   <section id="join" class="stack-slide">
     <div class="join-inner">
       <div class="section-header">
-        <span class="section-eyebrow">Carrières</span>
         <h2 class="section-title">Rejoindre Nexxo</h2>
       </div>
       <p class="join-text">Nous construisons quelque chose de sérieux. Si vous êtes passionné par l'IA, le web et les nouvelles technologies — et que vous voulez avoir un impact réel sur des projets concrets — nous voulons vous rencontrer.</p>
@@ -1910,10 +2274,10 @@
         <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
       </div>
       <div class="footer-links">
-        <a href="#features">Services</a>
-        <a href="#team">Notre équipe</a>
-        <a href="#join">Nous rejoindre</a>
-        <a href="#specs">Résultats</a>
+        <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">Services</a>
+        <a href="#" onclick="event.preventDefault();scrollToSection('team')">Notre équipe</a>
+        <a href="#" onclick="event.preventDefault();scrollToSection('join')">Nous rejoindre</a>
+        <a href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Prendre rendez-vous</a>
         <a href="mailto:contact@nexxo.systems">contact@nexxo.systems</a>
       </div>
       <p class="footer-copy">&copy; 2026 Nexxo. Tous droits réservés. — Agence IA &amp; Web, Paris.</p>
@@ -2278,7 +2642,7 @@
       }, { passive: true });
 
       // Hover — éléments interactifs
-      const interactive = 'a:not(.dash-tab), button:not(.dash-tab), .spec-item, .team-card, .nav-cta, .btn-primary, .btn-secondary, .btn-dark';
+      const interactive = 'a:not(.dash-tab), button:not(.dash-tab), .team-card, .nav-cta, .btn-primary, .btn-secondary, .btn-dark';
       document.querySelectorAll(interactive).forEach(el => {
         el.style.cursor = 'none';
         el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
@@ -2335,8 +2699,11 @@
                  d.getMinutes().toString().padStart(2,'0') + ':' +
                  d.getSeconds().toString().padStart(2,'0');
         }
+        const MAX_ROWS = 4;
         EVENTS.forEach(ev => {
           setTimeout(() => {
+            // Supprimer la plus ancienne si on dépasse MAX_ROWS
+            while (feed.children.length >= MAX_ROWS) feed.removeChild(feed.firstChild);
             const el = document.createElement('div');
             el.className = 'tentry';
             el.innerHTML =
@@ -2398,6 +2765,105 @@
         launchChat();
       }
 
+      // ── Process pinned scroll ──
+      (function() {
+        const section = document.getElementById('process');
+        if (!section) return;
+
+        const N = 5;
+        const texts    = document.querySelectorAll('.ps-text');
+        const illus    = document.querySelectorAll('.ps-illus');
+        const dots     = document.querySelectorAll('.ps-ind-dot');
+        const fill     = document.getElementById('ps-ind-fill');
+        let current    = 0;
+        let termTimer  = null;
+
+        // ── Terminal animation (step 2) ──
+        const TERM_LINES = [
+          { cls: 'run',  pfx: '▶',  txt: 'Building cabinet-moreau.fr...' },
+          { cls: 'ok',   pfx: '✓',  txt: 'Dependencies resolved' },
+          { cls: 'run',  pfx: '▶',  txt: 'Compiling assets...' },
+          { cls: 'ok',   pfx: '✓',  txt: 'CSS optimized (14kb)' },
+          { cls: 'ok',   pfx: '✓',  txt: 'SEO meta generated' },
+          { cls: 'run',  pfx: '▶',  txt: 'Deploying to production...' },
+          { cls: 'ok',   pfx: '✓',  txt: 'DNS propagated' },
+          { cls: 'ok',   pfx: '✓',  txt: 'Site live — 0 errors' },
+        ];
+        function startTerminal() {
+          const el = document.getElementById('psi-term');
+          if (!el) return;
+          el.innerHTML = '';
+          let i = 0;
+          function addLine() {
+            if (i >= TERM_LINES.length) return;
+            const l = TERM_LINES[i++];
+            const div = document.createElement('div');
+            div.className = 'psi-term-line ' + l.cls;
+            div.innerHTML = `<span class="psi-term-pfx">${l.pfx}</span><span>${l.txt}</span>`;
+            el.appendChild(div);
+            termTimer = setTimeout(addLine, 420);
+          }
+          addLine();
+        }
+        function stopTerminal() {
+          clearTimeout(termTimer);
+        }
+
+        // ── Counter animation (step 4) ──
+        function animateCounters() {
+          function count(id, target, suffix, dur) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const start = performance.now();
+            function tick(now) {
+              const p = Math.min((now - start) / dur, 1);
+              const v = Math.floor(p * target);
+              el.textContent = v + suffix;
+              if (p < 1) requestAnimationFrame(tick);
+              else el.textContent = target + suffix;
+            }
+            requestAnimationFrame(tick);
+          }
+          count('psi-m1', 312, '', 1400);
+          count('psi-m2', 8,   'h', 1200);
+          count('psi-m3', 99,  '%', 1000);
+        }
+
+        // ── Step switcher ──
+        function setStep(idx) {
+          if (idx === current) return;
+
+          const prev = current;
+          current = idx;
+
+          // Out
+          texts[prev].classList.remove('active');
+          illus[prev].classList.remove('active');
+          if (prev === 2) stopTerminal();
+
+          // In
+          texts[idx].classList.add('active');
+          illus[idx].classList.add('active');
+
+          // Dots
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+
+          // Progress bar fill
+          if (fill) fill.style.height = ((idx + 1) / N * 100) + '%';
+
+          // Side effects
+          if (idx === 2) setTimeout(startTerminal, 300);
+          if (idx === 4) setTimeout(animateCounters, 400);
+        }
+
+        // ── Scroll tracking via pinscroll event from stack scroll ──
+        section.addEventListener('pinscroll', (e) => {
+          const progress = e.detail.progress;
+          const idx = Math.min(Math.floor(progress * N), N - 1);
+          setStep(idx);
+        });
+      })();
+
       // ── Dashboard Gestion — tabs + animations ──
       (function() {
         const tabs   = document.querySelectorAll('.dash-tab');
@@ -2456,12 +2922,13 @@
     // Les sections plus hautes que 100vh scrollent leur contenu avant de laisser passer la suivante
     // ─────────────────────────────────────────
     (function() {
-      const PANEL_IDS = ['realisations', 'specs', 'features', 'cta', 'team', 'join'];
+      const PANEL_IDS = ['process', 'realisations', 'team', 'join'];
       const panels = PANEL_IDS.map(id => document.getElementById(id)).filter(Boolean);
       if (panels.length < 2) return;
 
       const hero      = document.getElementById('hero');
       const ENTER_DUR = 0.8; // fraction de vh pour l'animation d'entrée
+      const DWELL_DUR = 0.7; // pause de lecture avant que la section suivante commence à monter
 
       // ── 1. Rendre les panneaux fixes (height:auto = hauteur naturelle du contenu) ──
       panels.forEach((el, i) => {
@@ -2492,7 +2959,6 @@
 
       function recalc() {
         const vh = window.innerHeight;
-        // baseScroll = 0 → les panneaux commencent à monter dès le premier scroll
         baseScroll = 0;
 
         let cumulOffset = 0;
@@ -2500,13 +2966,13 @@
           // Hauteur réelle du contenu (sections > 100vh scrollent leur contenu)
           const overflowH  = Math.max(0, el.offsetHeight - vh);
           const enterSize  = ENTER_DUR * vh;
-          const totalSpace = enterSize + overflowH;
-          const d = { overflowH, enterSize, totalSpace, offset: cumulOffset };
+          const dwellSize  = parseFloat(el.dataset.dwell || DWELL_DUR) * vh;
+          const totalSpace = enterSize + overflowH + dwellSize;
+          const d = { overflowH, enterSize, dwellSize, totalSpace, offset: cumulOffset };
           cumulOffset += totalSpace;
           return d;
         });
 
-        // +vh pour que le dernier panneau ait le temps d'entrer complètement
         spacer.style.height = (cumulOffset + vh) + 'px';
       }
 
@@ -2520,7 +2986,7 @@
           hero.style.transform = hp > 0
             ? `scale(${(1 - hp * 0.08).toFixed(4)}) translateY(${(-hp * 3).toFixed(2)}%)`
             : '';
-          hero.style.opacity = '1';
+          hero.style.opacity = Math.max(0, 1 - Math.pow(hp, 0.8) * 0.95).toFixed(3);
         }
 
         panels.forEach((el, i) => {
@@ -2554,12 +3020,30 @@
 
           // Est-ce que le panneau suivant monte par-dessus ?
           const nextD      = panelData[i + 1];
-          const coverStart = viewEnd;
+          const coverStart = viewEnd + d.dwellSize;
           const coverP     = nextD
             ? Math.max(0, Math.min(1, (sy - coverStart) / nextD.enterSize))
             : 0;
 
           const baseTY = -viewProgress;
+
+          // Pinned sections: don't scroll content, expose progress via event
+          if (el.dataset.pinned) {
+            const pinProgress = d.overflowH > 0 ? viewProgress / d.overflowH : 0;
+            el.dispatchEvent(new CustomEvent('pinscroll', { detail: { progress: pinProgress } }));
+            if (coverP === 0) {
+              el.style.transform    = '';
+              el.style.opacity      = '1';
+              el.style.borderRadius = '0';
+            } else {
+              const scale   = 1 - coverP * 0.06;
+              const coverTY = -coverP * vh * 0.03;
+              el.style.transform    = `scale(${scale.toFixed(4)}) translateY(${coverTY.toFixed(1)}px)`;
+              el.style.opacity      = Math.max(0, 1 - Math.pow(coverP, 0.8) * 0.95).toFixed(3);
+              el.style.borderRadius = '0';
+            }
+            return;
+          }
 
           if (coverP === 0) {
             el.style.transform    = baseTY !== 0 ? `translateY(${baseTY.toFixed(1)}px)` : '';
@@ -2569,7 +3053,7 @@
             const scale   = 1 - coverP * 0.06;
             const coverTY = -coverP * vh * 0.03;
             el.style.transform    = `scale(${scale.toFixed(4)}) translateY(${(baseTY + coverTY).toFixed(1)}px)`;
-            el.style.opacity      = '1';
+            el.style.opacity      = Math.max(0, 1 - coverP * 1.4).toFixed(3);
             el.style.borderRadius = '0';
           }
         });
@@ -2588,6 +3072,16 @@
 
       window.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', () => { recalc(); update(); }, { passive: true });
+
+      // Expose scroll-to-section for nav links
+      window.scrollToSection = function(id) {
+        const idx = PANEL_IDS.indexOf(id);
+        if (idx === -1) return;
+        const d = panelData[idx];
+        if (!d) return;
+        const target = baseScroll + d.offset + d.enterSize;
+        window.scrollTo({ top: target, behavior: 'smooth' });
+      };
     })();
 
     // ─────────────────────────────────────────
@@ -2613,10 +3107,6 @@
         });
       }
 
-      // Bento cards: strong 3D
-      applyTilt('.bento-card', 8, 12);
-      // Spec cards: subtle 3D
-      applyTilt('.spec-item.revealed', 5, 6);
       // Portfolio cards: accentuated tilt
       applyTilt('.browser-card', 11, 18);
       // Team cards: subtle
