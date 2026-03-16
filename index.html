@@ -2492,7 +2492,7 @@
     // ─────────────────────────────────────────
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
-      navbar.classList.toggle('nav-scrolled', window.scrollY > 80);
+      navbar.classList.toggle('nav-scrolled', window.scrollY > 10);
     }, { passive: true });
 
 
@@ -3008,11 +3008,11 @@
         // Hero recule pendant que realisations monte
         if (hero) {
           const hp = Math.max(0, Math.min(1, (sy - baseScroll - HERO_DWELL * vh) / (ENTER_DUR * vh)));
-          const hpe = easeOut(hp);
+          const hpe = -(Math.cos(Math.PI * hp) - 1) / 2; // easeInOutSine — synced with section entry
           hero.style.transform = hp > 0
             ? `scale(${(1 - hpe * 0.08).toFixed(4)}) translateY(${(-hpe * 3).toFixed(2)}%)`
             : '';
-          hero.style.opacity = Math.max(0, 1 - Math.pow(hpe, 3.5)).toFixed(3);
+          hero.style.opacity = Math.max(0, 1 - Math.pow(hpe, 2)).toFixed(3);
         }
 
         panels.forEach((el, i) => {
@@ -3035,7 +3035,7 @@
           // Phase d'entrée : monte de bas en haut
           if (enterP < 1) {
             if (el.dataset.pinned) window._processVisible = true;
-            const ep = easeOut(enterP);
+            const ep = -(Math.cos(Math.PI * enterP) - 1) / 2; // easeInOutSine — perçu sur toute la hauteur
             const ty = (1 - ep) * vh;
             const br = (1 - ep) * 28;
             el.style.transform    = `translateY(${ty.toFixed(1)}px)`;
@@ -3066,10 +3066,11 @@
               el.style.opacity      = '1';
               el.style.borderRadius = '0';
             } else {
-              const scale   = 1 - coverP * 0.06;
-              const coverTY = -coverP * vh * 0.03;
+              const coverPe = -(Math.cos(Math.PI * coverP) - 1) / 2; // easeInOutSine — synced with entry
+              const scale   = 1 - coverPe * 0.06;
+              const coverTY = -coverPe * vh * 0.03;
               el.style.transform    = `scale(${scale.toFixed(4)}) translateY(${coverTY.toFixed(1)}px)`;
-              el.style.opacity      = Math.max(0, 1 - Math.pow(coverP, 0.8) * 0.95).toFixed(3);
+              el.style.opacity      = Math.max(0, 1 - Math.pow(coverPe, 2)).toFixed(3);
               el.style.borderRadius = '0';
             }
             return;
@@ -3080,10 +3081,11 @@
             el.style.opacity      = '1';
             el.style.borderRadius = '0';
           } else {
-            const scale   = 1 - coverP * 0.06;
-            const coverTY = -coverP * vh * 0.03;
+            const coverPe = -(Math.cos(Math.PI * coverP) - 1) / 2; // easeInOutSine — synced with entry
+            const scale   = 1 - coverPe * 0.06;
+            const coverTY = -coverPe * vh * 0.03;
             el.style.transform    = `scale(${scale.toFixed(4)}) translateY(${(baseTY + coverTY).toFixed(1)}px)`;
-            el.style.opacity      = Math.max(0, 1 - coverP * 1.4).toFixed(3);
+            el.style.opacity      = Math.max(0, 1 - Math.pow(coverPe, 2)).toFixed(3);
             el.style.borderRadius = '0';
           }
         });
@@ -3100,7 +3102,12 @@
         update();
       });
 
-      window.addEventListener('scroll', update, { passive: true });
+      let _rafPending = false;
+      window.addEventListener('scroll', () => {
+        if (_rafPending) return;
+        _rafPending = true;
+        requestAnimationFrame(() => { _rafPending = false; update(); });
+      }, { passive: true });
       window.addEventListener('resize', () => { recalc(); update(); }, { passive: true });
 
       // ── Auto-transition (scroll-triggered, time-based) ──
@@ -3191,20 +3198,37 @@
           for (const p of up) {
             if (prev >= p.trigger && sy < p.trigger) best = p;
           }
-          if (best) { _snapTo(best.target, -1); return; }
+          if (best) {
+            if (best.target === 0) document.getElementById('navbar').classList.remove('nav-scrolled');
+            _snapTo(best.target, -1);
+            return;
+          }
         }
       }, { passive: true });
 
-      // Expose scroll-to-section for nav links (utilise notre snap pour éviter les conflits)
+      // Expose scroll-to-section for nav links — saut direct, sans passer par les sections intermédiaires
       window.scrollToSection = function(id) {
         const idx = PANEL_IDS.indexOf(id);
-        if (idx === -1) return;
+        if (idx === -1) {
+          // Hero : revenir en haut directement
+          if (id === 'hero') {
+            _snapping = false;
+            if (_snapRaf) cancelAnimationFrame(_snapRaf);
+            window.scrollTo(0, 0);
+            _prevSY = 0;
+            update();
+          }
+          return;
+        }
         const d = panelData[idx];
         if (!d) return;
         const target = baseScroll + d.offset + d.enterSize;
-        const dir = target > window.scrollY ? 1 : -1;
-        _snapping = false; // forcer même si un snap est en cours
-        _snapTo(target, dir);
+        // Saut instantané — aucune section intermédiaire visible
+        _snapping = false;
+        if (_snapRaf) cancelAnimationFrame(_snapRaf);
+        window.scrollTo(0, target);
+        _prevSY = target;
+        update();
       };
     })();
 
