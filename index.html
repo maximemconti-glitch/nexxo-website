@@ -65,15 +65,7 @@
       z-index: 0; pointer-events: none; opacity: 0.6;
     }
 
-    /* ─── SCROLL PROGRESS ─── */
-    #scrollProgress {
-      position: fixed; top: 0; left: 0;
-      height: 3px; width: 0%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-      z-index: 10000; transition: width 0.1s linear;
-    }
-
-    /* ─── LOADER ─── */
+/* ─── LOADER ─── */
     #loader {
       position: fixed; inset: 0;
       background: var(--bg);
@@ -1798,8 +1790,6 @@
   <!-- Confetti canvas -->
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- Scroll progress -->
-  <div id="scrollProgress"></div>
 
   <!-- Loader -->
   <div id="loader">
@@ -2479,14 +2469,6 @@
     })();
 
     // ─────────────────────────────────────────
-    // SCROLL PROGRESS BAR
-    // ─────────────────────────────────────────
-    const scrollProgress = document.getElementById('scrollProgress');
-    window.addEventListener('scroll', () => {
-      const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-      scrollProgress.style.width = pct + '%';
-    }, { passive: true });
-
     // ─────────────────────────────────────────
     // NAVBAR PILL
     // ─────────────────────────────────────────
