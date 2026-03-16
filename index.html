@@ -101,6 +101,7 @@
     #navbar {
       position: fixed; top: 12px; left: 0; right: 0;
       z-index: 1000;
+      transform-origin: center top;
       transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
     }
     .nav-inner {
@@ -795,7 +796,7 @@
       background: #f5f0e8;
       position: relative;
     }
-    .process-scroll-room { height: 540vh; }
+    .process-scroll-room { height: 375vh; }
 
     /* Left */
     .process-left { flex: 1; position: relative; z-index: 1; min-width: 0; }
@@ -1640,6 +1641,153 @@
     .prosp-rate { font-size: 0.6rem; color: #8e8e93; text-align: center; padding-top: 5px; border-top: 1px solid rgba(0,0,0,0.05); flex-shrink: 0; }
     .prosp-rate strong { color: #28c840; }
 
+    /* ─── CAROUSEL SERVICES ─── */
+    #realisations { --radius: 510px; padding-top: 80px; padding-bottom: 20px; }
+    #realisations .merged-title { font-size: clamp(1.2rem, 2vw, 1.6rem); margin-bottom: 0; line-height: 1.2; }
+    #realisations .merged-header { flex-shrink: 0; margin-bottom: 6px; }
+    #realisations .carousel-zone {
+      flex: 1; min-height: 0; display: flex;
+      align-items: center; justify-content: center; position: relative;
+    }
+    #realisations .carousel-container {
+      perspective: 1200px; perspective-origin: 50% 50%;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    #realisations .carousel {
+      transform-style: preserve-3d;
+      transform: rotateY(var(--rotation));
+      transition: transform 0.85s cubic-bezier(0.25, 0.1, 0.25, 1);
+      position: relative; width: 0; height: 0;
+    }
+    #realisations .screen {
+      position: absolute; transform-style: preserve-3d;
+      left: 50%; top: 50%; margin-left: -130px; margin-top: -170px;
+      transition: opacity 0.6s ease;
+    }
+    #realisations .screen:nth-child(1)  { transform: rotateY(0deg)   translateZ(var(--radius)); }
+    #realisations .screen:nth-child(2)  { transform: rotateY(30deg)  translateZ(var(--radius)); }
+    #realisations .screen:nth-child(3)  { transform: rotateY(60deg)  translateZ(var(--radius)); }
+    #realisations .screen:nth-child(4)  { transform: rotateY(90deg)  translateZ(var(--radius)); }
+    #realisations .screen:nth-child(5)  { transform: rotateY(120deg) translateZ(var(--radius)); }
+    #realisations .screen:nth-child(6)  { transform: rotateY(150deg) translateZ(var(--radius)); }
+    #realisations .screen:nth-child(7)  { transform: rotateY(180deg) translateZ(var(--radius)); }
+    #realisations .screen:nth-child(8)  { transform: rotateY(210deg) translateZ(var(--radius)); }
+    #realisations .screen:nth-child(9)  { transform: rotateY(240deg) translateZ(var(--radius)); }
+    #realisations .screen:nth-child(10) { transform: rotateY(270deg) translateZ(var(--radius)); }
+    #realisations .screen:nth-child(11) { transform: rotateY(300deg) translateZ(var(--radius)); }
+    #realisations .screen:nth-child(12) { transform: rotateY(330deg) translateZ(var(--radius)); }
+    #realisations .screen-card {
+      width: 260px; height: 340px; background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.06); border-radius: 20px;
+      overflow: hidden; position: relative; display: flex; flex-direction: column;
+      will-change: transform; backface-visibility: hidden;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.13),
+        0 4px 32px rgba(0,0,0,0.12), 0 8px 64px rgba(0,0,0,0.10),
+        0 12px 96px rgba(var(--accent-rgb),0.08);
+      animation: scFloat var(--float-dur, 4s) var(--float-delay, 0s) ease-in-out infinite;
+      cursor: pointer; transition: box-shadow 0.4s ease;
+    }
+    #realisations .screen-card:hover {
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.07), 0 2px 14px rgba(0,0,0,0.15),
+        0 6px 36px rgba(0,0,0,0.13), 0 10px 72px rgba(0,0,0,0.11),
+        0 16px 100px rgba(var(--accent-rgb),0.09);
+    }
+    #realisations .screen.active .screen-card {
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08), 0 2px 16px rgba(0,0,0,0.16),
+        0 6px 40px rgba(0,0,0,0.14), 0 12px 80px rgba(0,0,0,0.12),
+        0 20px 120px rgba(var(--accent-rgb),0.10);
+      border-color: rgba(0,0,0,0.08);
+    }
+    @keyframes scFloat {
+      0%,100% { transform: translateY(0); } 30% { transform: translateY(-7px); } 70% { transform: translateY(-3px); }
+    }
+    @keyframes scFloat-b {
+      0%,100% { transform: translateY(0) rotate(1.2deg); } 30% { transform: translateY(-6px) rotate(1.2deg); } 70% { transform: translateY(-2px) rotate(1.2deg); }
+    }
+    @keyframes scFloat-c {
+      0%,100% { transform: translateY(0) rotate(-1deg); } 30% { transform: translateY(-8px) rotate(-1deg); } 70% { transform: translateY(-4px) rotate(-1deg); }
+    }
+    @keyframes scFloat-d {
+      0%,100% { transform: translateY(0) rotate(0.6deg); } 30% { transform: translateY(-5px) rotate(0.6deg); } 70% { transform: translateY(-2px) rotate(0.6deg); }
+    }
+    #realisations .screen:nth-child(4n+1) .screen-card { animation-name: scFloat; }
+    #realisations .screen:nth-child(4n+2) .screen-card { animation-name: scFloat-b; }
+    #realisations .screen:nth-child(4n+3) .screen-card { animation-name: scFloat-c; }
+    #realisations .screen:nth-child(4n+4) .screen-card { animation-name: scFloat-d; }
+    #realisations .card-head { display: flex; align-items: center; gap: 10px; padding: 16px 18px 0; position: relative; z-index: 5; }
+    #realisations .card-num {
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 800; letter-spacing: -0.03em;
+      background: linear-gradient(90deg, #0071e3 0%, #34aadc 35%, #a8d8ff 50%, #34aadc 65%, #0071e3 100%);
+      background-size: 250% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; animation: scShimmer 3.5s linear infinite;
+    }
+    @keyframes scShimmer { 0% { background-position: 0% center; } 100% { background-position: 250% center; } }
+    #realisations .card-body { padding: 0 18px 16px; display: flex; flex-direction: column; flex: 1; gap: 8px; }
+    #realisations .card-visual {
+      display: block; flex: none; height: 130px; margin: 0 -18px 4px;
+      width: calc(100% + 36px); overflow: hidden; position: relative; border: none;
+      box-shadow: inset 0 -20px 40px -20px rgba(var(--accent-rgb),0.06), inset 0 1px 0 0 rgba(255,255,255,0.5);
+    }
+    #realisations .card-visual::before { content: ''; position: absolute; border-radius: 50%; pointer-events: none; z-index: 2; }
+    #realisations .card-visual::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; z-index: 3;
+      background: linear-gradient(90deg, transparent 0%, rgba(var(--accent-rgb),0.12) 15%, rgba(var(--accent-rgb),0.3) 50%, rgba(var(--accent-rgb),0.12) 85%, transparent 100%);
+    }
+    #realisations .screen:nth-child(6n+1) .card-visual { background: radial-gradient(ellipse at 20% 15%, rgba(59,130,246,0.22) 0%, transparent 50%), radial-gradient(ellipse at 85% 80%, rgba(99,102,241,0.16) 0%, transparent 45%), radial-gradient(ellipse at 55% 0%, rgba(147,197,253,0.28) 0%, transparent 55%), linear-gradient(135deg, #eef2ff 0%, #dbeafe 50%, #e0e7ff 100%); }
+    #realisations .screen:nth-child(6n+1) .card-visual::before { width: 160px; height: 160px; bottom: -50px; right: -25px; border: 1.5px solid rgba(59,130,246,0.18); background: radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%); box-shadow: 0 0 0 20px rgba(59,130,246,0.03); }
+    #realisations .screen:nth-child(6n+2) .card-visual { background: radial-gradient(ellipse at 70% 15%, rgba(45,212,191,0.18) 0%, transparent 50%), radial-gradient(ellipse at 10% 85%, rgba(56,189,248,0.2) 0%, transparent 45%), repeating-linear-gradient(-55deg, transparent, transparent 14px, rgba(255,255,255,0.1) 14px, rgba(255,255,255,0.1) 15px), linear-gradient(140deg, #dff5f2 0%, #dbeafe 50%, #e0f2fe 100%); }
+    #realisations .screen:nth-child(6n+2) .card-visual::before { width: 120px; height: 120px; top: -40px; right: 25px; border: 1.5px solid rgba(45,212,191,0.22); }
+    #realisations .screen:nth-child(6n+3) .card-visual { background: radial-gradient(circle at 50% 45%, rgba(99,102,241,0.2) 0%, transparent 40%), radial-gradient(ellipse at 5% 25%, rgba(129,140,248,0.14) 0%, transparent 50%), radial-gradient(ellipse at 95% 75%, rgba(165,180,252,0.16) 0%, transparent 45%), linear-gradient(155deg, #e0e7ff 0%, #ddd6fe 40%, #ede9fe 100%); }
+    #realisations .screen:nth-child(6n+3) .card-visual::before { width: 190px; height: 190px; top: -65px; left: -35px; border: 1.5px solid rgba(99,102,241,0.15); background: radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 60%); }
+    #realisations .screen:nth-child(6n+4) .card-visual { background: radial-gradient(circle at 80% 20%, rgba(56,189,248,0.22) 0%, transparent 40%), radial-gradient(circle at 15% 75%, rgba(96,165,250,0.14) 0%, transparent 45%), linear-gradient(120deg, #e0f2fe 0%, #dbeafe 40%, #eff6ff 100%); }
+    #realisations .screen:nth-child(6n+4) .card-visual::before { width: 90px; height: 90px; bottom: -18px; left: 30px; border: 1.5px solid rgba(56,189,248,0.2); box-shadow: 0 0 0 16px rgba(56,189,248,0.05), 0 0 0 32px rgba(56,189,248,0.025); }
+    #realisations .screen:nth-child(6n+5) .card-visual { background: radial-gradient(ellipse at 75% 20%, rgba(139,92,246,0.2) 0%, transparent 50%), radial-gradient(ellipse at 20% 80%, rgba(59,130,246,0.14) 0%, transparent 50%), radial-gradient(circle at 90% 90%, rgba(167,139,250,0.1) 0%, transparent 35%), linear-gradient(160deg, #ede9fe 0%, #e0e7ff 50%, #dbeafe 100%); }
+    #realisations .screen:nth-child(6n+5) .card-visual::before { width: 140px; height: 140px; bottom: -40px; right: 15px; background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, rgba(139,92,246,0.02) 50%, transparent 70%); box-shadow: 0 0 30px rgba(139,92,246,0.08); }
+    #realisations .screen:nth-child(6n+6) .card-visual { background: radial-gradient(ellipse at 35% 10%, rgba(34,211,238,0.18) 0%, transparent 45%), radial-gradient(ellipse at 85% 85%, rgba(59,130,246,0.2) 0%, transparent 50%), radial-gradient(circle at 5% 55%, rgba(96,165,250,0.1) 0%, transparent 40%), repeating-linear-gradient(65deg, transparent, transparent 18px, rgba(255,255,255,0.07) 18px, rgba(255,255,255,0.07) 19px), linear-gradient(135deg, #e0f7fa 0%, #dbeafe 45%, #e0e7ff 100%); }
+    #realisations .screen:nth-child(6n+6) .card-visual::before { width: 200px; height: 200px; top: -75px; left: 50%; margin-left: -100px; border: 1.5px solid rgba(34,211,238,0.13); background: radial-gradient(circle, rgba(34,211,238,0.04) 0%, transparent 55%); }
+    /* Mini widgets */
+    #realisations .sv-widget {
+      position: absolute; background: #fff; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.05), 0 0 0 0.5px rgba(0,0,0,0.03);
+      font-family: 'Inter', sans-serif; z-index: 5; padding: 7px 9px;
+    }
+    #realisations .sv-wlabel { font-size: 0.38rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(0,0,0,0.3); margin-bottom: 3px; }
+    #realisations .sv-wvalue { font-size: 0.78rem; font-weight: 700; color: #0a0a14; letter-spacing: -0.02em; }
+    #realisations .sv-wsub { font-size: 0.36rem; color: rgba(0,0,0,0.28); margin-top: 1px; }
+    #realisations .sv-bars { display: flex; align-items: flex-end; gap: 2px; height: 18px; margin-top: 3px; }
+    #realisations .sv-bar { width: 4px; border-radius: 1.5px; background: rgba(var(--accent-rgb),0.18); }
+    #realisations .sv-bar.hi { background: rgba(var(--accent-rgb),0.55); }
+    #realisations .sv-bubble { padding: 4px 8px; border-radius: 7px; font-size: 0.36rem; line-height: 1.35; max-width: 82%; }
+    #realisations .sv-bubble.out { background: var(--accent); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+    #realisations .sv-bubble.in { background: rgba(0,0,0,0.04); color: rgba(0,0,0,0.5); align-self: flex-start; border-bottom-left-radius: 2px; }
+    #realisations .sv-bdots { width: 4px; height: 4px; border-radius: 50%; background: rgba(0,0,0,0.12); box-shadow: 7px 0 0 rgba(0,0,0,0.12), 14px 0 0 rgba(0,0,0,0.12); margin-bottom: 6px; }
+    #realisations .sv-skel { height: 2.5px; background: rgba(0,0,0,0.06); border-radius: 2px; }
+    #realisations .sv-pill { display: inline-block; padding: 1.5px 6px; border-radius: 4px; font-size: 0.32rem; font-weight: 600; letter-spacing: 0.04em; }
+    #realisations .sv-pill.green { background: rgba(34,197,94,0.12); color: rgba(34,197,94,0.8); }
+    #realisations .sv-pill.blue { background: rgba(var(--accent-rgb),0.1); color: var(--accent); }
+    #realisations .sv-pipe { display: flex; align-items: center; justify-content: center; gap: 0; }
+    #realisations .sv-pstep { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    #realisations .sv-pdot { width: 22px; height: 22px; border-radius: 50%; background: rgba(var(--accent-rgb),0.08); display: flex; align-items: center; justify-content: center; font-size: 0.34rem; font-weight: 700; color: var(--accent); }
+    #realisations .sv-pdot.filled { background: var(--accent); color: white; }
+    #realisations .sv-plbl { font-size: 0.3rem; color: rgba(0,0,0,0.3); font-weight: 500; }
+    #realisations .sv-pline { width: 14px; height: 1px; background: rgba(var(--accent-rgb),0.2); align-self: center; margin-top: -10px; }
+    /* Card text — Attio style */
+    #realisations .card-text { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: rgba(0,0,0,0.45); line-height: 1.6; letter-spacing: -0.01em; flex: 1; }
+    #realisations .card-text strong { font-weight: 700; color: #0a0a14; letter-spacing: -0.02em; }
+    /* Dots — flex item under carousel-zone, pas absolu */
+    #realisations .sc-dots { display: flex; justify-content: center; gap: 7px; flex-shrink: 0; padding: 6px 0 4px; }
+    #realisations .sc-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,0.15); border: none; cursor: pointer; transition: all 0.3s ease; }
+    #realisations .sc-dot.active { background: var(--accent); box-shadow: 0 0 6px rgba(var(--accent-rgb),0.4); transform: scale(1.35); }
+    /* Arrows */
+    #realisations .sc-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 20; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.85); color: var(--accent); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; backdrop-filter: blur(8px); box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    #realisations .sc-arrow:hover { border-color: rgba(var(--accent-rgb),0.3); background: #fff; box-shadow: 0 4px 20px rgba(var(--accent-rgb),0.15); }
+    #realisations .sc-arrow-l { left: 0; }
+    #realisations .sc-arrow-r { right: 0; }
+    /* Floor */
+    #realisations .floor-glow { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 900px; height: 80px; background: radial-gradient(ellipse at center bottom, rgba(var(--accent-rgb),0.07) 0%, transparent 70%); pointer-events: none; }
+    #realisations .floor-line { position: absolute; bottom: 68px; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb),0.15), transparent); pointer-events: none; }
+
     /* ─── TEAM (WHITE) ─── */
     #team {
       padding: 100px 32px 120px;
@@ -1807,7 +1955,7 @@
   <!-- Navbar -->
   <nav id="navbar">
     <div class="nav-inner">
-      <a class="nav-logo" href="#">
+      <a class="nav-logo" href="#" onclick="event.preventDefault();scrollToSection('hero')">
         <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
       </a>
       <div class="nav-links">
@@ -2179,150 +2327,297 @@
       <div class="merged-header">
         <h2 class="merged-title">Ce qu'on construit<br>pour vous.</h2>
       </div>
-      <div class="widgets-grid">
+      <div class="carousel-zone" id="carouselZoneReal">
+        <div class="carousel-container">
+          <div class="carousel" id="carouselReal">
 
-        <!-- 1 — Dashboard Prospection -->
-        <div class="widget-card" id="wc-prosp-dash">
-          <div class="wbar">
-            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
-            <span class="wbar-title">Prospection Dashboard</span>
-            <div class="wlive"><div class="wlive-dot"></div> Live</div>
-          </div>
-          <div class="dash-body">
-            <div class="dash-stats">
-              <div class="ds"><div class="ds-val" id="ds1">0</div><div class="ds-label">Leads ce mois</div></div>
-              <div class="ds"><div class="ds-val" id="ds2">0</div><div class="ds-label">RDV obtenus</div></div>
-              <div class="ds"><div class="ds-val"><span id="ds3">0</span><em>%</em></div><div class="ds-label">Taux conv.</div></div>
-            </div>
-            <div class="dash-recent">
-              <div class="drecent-row"><span class="dr-dot" style="background:#0071e3"></span><span class="dr-text">Mail envoyé · Boulangerie Martin</span><span class="dr-time">14:32</span></div>
-              <div class="drecent-row"><span class="dr-dot" style="background:#28c840"></span><span class="dr-text">RDV confirmé · Pharmacie Morin</span><span class="dr-time">13:08</span></div>
-              <div class="drecent-row"><span class="dr-dot" style="background:#0071e3"></span><span class="dr-text">Prospect détecté · Cabinet Leblanc</span><span class="dr-time">11:55</span></div>
-            </div>
-            <div class="dash-live">
-              <div class="dpulse"></div>
-              <span class="dash-live-txt">3 automatisations actives</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2 — Terminal nexxo-agent -->
-        <div class="widget-card" id="wc-term">
-          <div class="wbar">
-            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
-            <span class="wbar-title">nexxo-agent · live</span>
-            <div class="wlive"><div class="wlive-dot"></div> En ligne</div>
-          </div>
-          <div class="term-body">
-            <div class="term-feed" id="wterm-feed"></div>
-            <div class="term-input">
-              <span class="tprompt">›</span>
-              <span class="tinput-lbl">Automatisation en cours...</span>
-              <div class="tcursor"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3 — SAV IA Chat -->
-        <div class="widget-card" id="wc-chat">
-          <div class="wbar">
-            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
-            <span class="wbar-title">SAV IA — Assistant 24/7</span>
-          </div>
-          <div class="chat-body">
-            <div class="chat-msgs" id="wchat-msgs"></div>
-            <div class="chat-foot">Répond en &lt;3s · 247 conversations ce mois</div>
-          </div>
-        </div>
-
-        <!-- 4 — Gestion interne -->
-        <div class="widget-card" id="wc-mgmt">
-          <div class="wbar">
-            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
-            <span class="wbar-title">Gestion interne</span>
-          </div>
-          <div class="dash-tabs">
-            <button class="dash-tab active" data-panel="planning">Planning</button>
-            <button class="dash-tab" data-panel="facture">Facture</button>
-            <button class="dash-tab" data-panel="stocks">Stocks</button>
-          </div>
-          <div class="dash-body">
-            <div class="dash-panel active" id="dp-planning">
-              <div class="cal-week">
-                <div class="cal-day"><div class="cal-day-label">Lun</div><div class="cal-event" style="background:#dbeafe;color:#1e40af">10h — Moreau</div><div class="cal-event" style="background:#f3f4f6;color:#374151">15h — Factures</div></div>
-                <div class="cal-day"><div class="cal-day-label">Mar</div><div class="cal-event" style="background:#f3f4f6;color:#374151">11h — Relances</div></div>
-                <div class="cal-day"><div class="cal-day-label">Mer</div><div class="cal-event" style="background:#dcfce7;color:#166534">14h — Livraison</div><div class="cal-event" style="background:#dbeafe;color:#1e40af">16h — Démo</div></div>
-                <div class="cal-day"><div class="cal-day-label">Jeu</div><div class="cal-event" style="background:#fef9c3;color:#92400e">09h — Prospect</div></div>
-                <div class="cal-day"><div class="cal-day-label">Ven</div><div class="cal-event" style="background:#f3f4f6;color:#374151">10h — Réunion</div></div>
-              </div>
-            </div>
-            <div class="dash-panel" id="dp-facture">
-              <div class="inv-form">
-                <div class="inv-row"><span class="inv-lbl">Client</span><span class="inv-val" id="iv-client"></span></div>
-                <div class="inv-row"><span class="inv-lbl">Service</span><span class="inv-val" id="iv-service"></span></div>
-                <div class="inv-row"><span class="inv-lbl">Montant</span><span class="inv-val" id="iv-montant"></span></div>
-              </div>
-              <div class="inv-status" id="inv-status"></div>
-            </div>
-            <div class="dash-panel" id="dp-stocks">
-              <div class="stk-list">
-                <div class="stk-row"><span class="stk-name">Licences IA</span><div class="stk-bar"><div class="stk-fill" data-w="82" style="background:#34d399"></div></div><span class="stk-num">82</span></div>
-                <div class="stk-row"><span class="stk-name">Crédits mail</span><div class="stk-bar"><div class="stk-fill" data-w="45" style="background:#fbbf24"></div></div><span class="stk-num">45%</span></div>
-                <div class="stk-row"><span class="stk-name">Serveurs</span><div class="stk-bar"><div class="stk-fill" data-w="91" style="background:#34d399"></div></div><span class="stk-num">91%</span></div>
-                <div class="stk-row"><span class="stk-name">API calls</span><div class="stk-bar"><div class="stk-fill" data-w="18" style="background:#f87171"></div></div><span class="stk-num">18%</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 5 — Site web -->
-        <div class="widget-card" id="wc-site">
-          <div class="wbar">
-            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
-            <span class="wbar-title">Site web — Délai réduit</span>
-            <div class="wlive"><div class="wlive-dot"></div> En ligne</div>
-          </div>
-          <div class="site-body">
-            <div class="sbm">
-              <div class="sbm-nav"></div>
-              <div class="sbm-content">
-                <div class="sbm-h1"></div>
-                <div class="sbm-h2"></div>
-                <div class="sbm-btn"></div>
-                <div class="sbm-cards">
-                  <div class="sbm-card"></div>
-                  <div class="sbm-card"></div>
-                  <div class="sbm-card"></div>
+            <div class="screen" data-index="0" style="--float-dur:4.0s;--float-delay:-0.2s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">01</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:16px;left:18px;right:18px;bottom:16px">
+                      <div class="sv-bdots"></div>
+                      <div class="sv-skel" style="width:45%;margin-bottom:7px"></div>
+                      <div style="display:flex;gap:6px">
+                        <div style="width:30%;height:30px;background:rgba(var(--accent-rgb),0.06);border-radius:4px"></div>
+                        <div style="flex:1;padding-top:3px">
+                          <div class="sv-skel" style="width:85%"></div>
+                          <div class="sv-skel" style="width:60%;margin-top:4px"></div>
+                          <div class="sv-skel" style="width:75%;margin-top:4px"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Présence web.</strong> Un site professionnel, rapide et responsive — conçu sur mesure pour votre activité.</p>
                 </div>
               </div>
             </div>
-            <div class="site-stats">
-              <div class="site-stat"><span class="site-stat-val">Rapide</span></div>
-              <div class="site-stat"><span class="site-stat-val">94 SEO</span></div>
-              <div class="site-stat"><span class="site-stat-val">100%</span></div>
+
+            <div class="screen" data-index="1" style="--float-dur:4.3s;--float-delay:-1.0s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">02</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:16px;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:5px;justify-content:center">
+                      <div class="sv-bubble in">Bonjour, comment puis-je vous aider ?</div>
+                      <div class="sv-bubble out">Je cherche un devis rapide</div>
+                      <div class="sv-bubble in">Bien sûr ! Quel est votre secteur ?</div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Chatbot IA.</strong> Un assistant virtuel entraîné sur votre contenu, qui répond 24h/24 en langage naturel.</p>
+                </div>
+              </div>
             </div>
+
+            <div class="screen" data-index="2" style="--float-dur:3.8s;--float-delay:-0.6s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">03</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:18px;left:18px">
+                      <div class="sv-wlabel">POSITION GOOGLE</div>
+                      <div class="sv-wvalue">#1</div>
+                      <div class="sv-wsub">coiffeur Lyon 3e</div>
+                    </div>
+                    <div class="sv-widget" style="bottom:18px;right:18px">
+                      <div class="sv-wlabel">TRAFIC ORGANIQUE</div>
+                      <div class="sv-bars">
+                        <div class="sv-bar" style="height:5px"></div>
+                        <div class="sv-bar" style="height:8px"></div>
+                        <div class="sv-bar" style="height:7px"></div>
+                        <div class="sv-bar" style="height:11px"></div>
+                        <div class="sv-bar hi" style="height:15px"></div>
+                        <div class="sv-bar hi" style="height:18px"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Optimisation SEO.</strong> Être trouvé sur Google quand un client cherche votre activité — sans payer de publicité.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen" data-index="3" style="--float-dur:4.1s;--float-delay:-1.5s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">04</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:22px;left:18px;right:18px">
+                      <div class="sv-pipe">
+                        <div class="sv-pstep"><div class="sv-pdot filled">1</div><div class="sv-plbl">Détection</div></div>
+                        <div class="sv-pline"></div>
+                        <div class="sv-pstep"><div class="sv-pdot filled">2</div><div class="sv-plbl">Contact</div></div>
+                        <div class="sv-pline"></div>
+                        <div class="sv-pstep"><div class="sv-pdot">3</div><div class="sv-plbl">Client</div></div>
+                      </div>
+                    </div>
+                    <div class="sv-widget" style="bottom:16px;right:18px">
+                      <div class="sv-wlabel">CONVERSION</div>
+                      <div class="sv-wvalue" style="color:var(--accent)">+34%</div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Automatisation marketing.</strong> De la détection d'un prospect à sa conversion en client — sans lever le petit doigt.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen" data-index="4" style="--float-dur:4.4s;--float-delay:-0.8s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">05</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:16px;left:18px;right:60px">
+                      <div style="display:flex;align-items:center;gap:4px;margin-bottom:4px">
+                        <span class="sv-pill green">RÉSOLU</span>
+                        <span style="font-size:0.32rem;color:rgba(0,0,0,0.25)">il y a 2 min</span>
+                      </div>
+                      <div style="font-size:0.38rem;color:rgba(0,0,0,0.45);line-height:1.4">Problème de livraison résolu automatiquement</div>
+                    </div>
+                    <div class="sv-widget" style="bottom:16px;right:18px">
+                      <div class="sv-wlabel">TEMPS DE RÉPONSE</div>
+                      <div class="sv-wvalue">&lt; 2min</div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>SAV automatisé.</strong> L'IA lit chaque demande client, la classe et la redirige — ou répond directement.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen" data-index="5" style="--float-dur:3.9s;--float-delay:-2.1s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">06</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:16px;left:18px">
+                      <div class="sv-wlabel">STOCK ACTUEL</div>
+                      <div class="sv-wvalue">847</div>
+                      <div class="sv-wsub">unités en stock</div>
+                    </div>
+                    <div class="sv-widget" style="bottom:16px;right:18px">
+                      <div style="display:flex;align-items:center;gap:4px">
+                        <span style="width:5px;height:5px;border-radius:50%;background:rgba(245,158,11,0.6);display:inline-block"></span>
+                        <span style="font-size:0.36rem;color:rgba(0,0,0,0.4);font-weight:500">Réappro dans 3j</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Gestion des stocks IA.</strong> Suivi en temps réel, anticipation des ruptures, commandes automatiques.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen" data-index="6" style="--float-dur:4.2s;--float-delay:-0.4s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">07</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:18px;left:18px;right:18px;display:flex;gap:6px">
+                      <div style="flex:1;text-align:center"><div class="sv-wlabel">REVENUE</div><div class="sv-wvalue" style="font-size:0.65rem">12.4K</div></div>
+                      <div style="width:1px;background:rgba(0,0,0,0.06)"></div>
+                      <div style="flex:1;text-align:center"><div class="sv-wlabel">CLIENTS</div><div class="sv-wvalue" style="font-size:0.65rem">89</div></div>
+                      <div style="width:1px;background:rgba(0,0,0,0.06)"></div>
+                      <div style="flex:1;text-align:center"><div class="sv-wlabel">TAUX</div><div class="sv-wvalue" style="font-size:0.65rem;color:var(--accent)">94%</div></div>
+                    </div>
+                    <div class="sv-widget" style="bottom:16px;left:18px;right:18px">
+                      <div class="sv-bars" style="justify-content:space-between">
+                        <div class="sv-bar" style="height:8px;width:12px;border-radius:2px"></div>
+                        <div class="sv-bar" style="height:12px;width:12px;border-radius:2px"></div>
+                        <div class="sv-bar hi" style="height:16px;width:12px;border-radius:2px"></div>
+                        <div class="sv-bar" style="height:10px;width:12px;border-radius:2px"></div>
+                        <div class="sv-bar hi" style="height:18px;width:12px;border-radius:2px"></div>
+                        <div class="sv-bar" style="height:14px;width:12px;border-radius:2px"></div>
+                        <div class="sv-bar hi" style="height:16px;width:12px;border-radius:2px"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Dashboard & données.</strong> Un tableau de bord intelligent qui compile vos chiffres et KPI en temps réel.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen" data-index="7" style="--float-dur:4.5s;--float-delay:-1.3s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">08</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:16px;left:18px">
+                      <div class="sv-wlabel">PORTÉE MENSUELLE</div>
+                      <div class="sv-wvalue">12.4K</div>
+                      <div class="sv-wsub">vues ce mois</div>
+                    </div>
+                    <div class="sv-widget" style="bottom:16px;right:18px">
+                      <div class="sv-wlabel">ENGAGEMENT</div>
+                      <div class="sv-wvalue" style="color:var(--accent)">+23%</div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Présence média.</strong> Audit et optimisation de votre visibilité digitale — site, réseaux, avis en ligne.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen" data-index="8" style="--float-dur:3.7s;--float-delay:-1.8s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">09</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:16px;left:18px;right:18px;bottom:16px">
+                      <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
+                        <span class="sv-pill blue">PDF</span>
+                        <span style="font-size:0.34rem;color:rgba(0,0,0,0.25)">facture_0847.pdf</span>
+                      </div>
+                      <div class="sv-skel" style="width:90%;margin-bottom:3px"></div>
+                      <div class="sv-skel" style="width:70%;margin-bottom:3px"></div>
+                      <div style="height:3px;background:rgba(var(--accent-rgb),0.15);border-radius:2px;width:80%;margin-bottom:3px"></div>
+                      <div class="sv-skel" style="width:60%"></div>
+                      <div style="margin-top:6px;font-size:0.32rem;color:var(--accent);font-weight:600">Montant extrait : 2 340 €</div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Automatisation documents.</strong> Lecture, extraction et classification automatique de vos factures et contrats.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen" data-index="9" style="--float-dur:4.0s;--float-delay:-0.9s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">10</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:16px;left:18px">
+                      <div class="sv-wlabel">COMMANDES</div>
+                      <div class="sv-wvalue">156</div>
+                      <div class="sv-wsub">ce mois</div>
+                    </div>
+                    <div class="sv-widget" style="bottom:16px;right:18px">
+                      <div class="sv-wlabel">REVENUE</div>
+                      <div class="sv-bars">
+                        <div class="sv-bar" style="height:6px"></div>
+                        <div class="sv-bar" style="height:9px"></div>
+                        <div class="sv-bar hi" style="height:14px"></div>
+                        <div class="sv-bar" style="height:11px"></div>
+                        <div class="sv-bar hi" style="height:18px"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>E-commerce automatisé.</strong> Fiches produits IA, analyse des avis clients, gestion automatique des retours.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen" data-index="10" style="--float-dur:4.3s;--float-delay:-2.4s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">11</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:16px;left:18px;right:18px;bottom:16px">
+                      <div class="sv-wlabel">TENDANCES</div>
+                      <div class="sv-bars" style="height:40px;gap:3px;margin-top:5px">
+                        <div class="sv-bar" style="height:30%;width:8px;border-radius:2px"></div>
+                        <div class="sv-bar" style="height:55%;width:8px;border-radius:2px"></div>
+                        <div class="sv-bar hi" style="height:75%;width:8px;border-radius:2px"></div>
+                        <div class="sv-bar" style="height:45%;width:8px;border-radius:2px"></div>
+                        <div class="sv-bar hi" style="height:90%;width:8px;border-radius:2px"></div>
+                        <div class="sv-bar" style="height:60%;width:8px;border-radius:2px"></div>
+                        <div class="sv-bar hi" style="height:100%;width:8px;border-radius:2px"></div>
+                        <div class="sv-bar" style="height:70%;width:8px;border-radius:2px"></div>
+                      </div>
+                      <div class="sv-wsub" style="margin-top:4px">+18% vs mois précédent</div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Automatisation data.</strong> Vos données brutes collectées, analysées et présentées en dashboards actionnables.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen" data-index="11" style="--float-dur:3.8s;--float-delay:-1.6s">
+              <div class="screen-card">
+                <div class="card-head"><span class="card-num">12</span></div>
+                <div class="card-body">
+                  <div class="card-visual">
+                    <div class="sv-widget" style="top:20px;left:18px;right:18px">
+                      <div class="sv-pipe">
+                        <div class="sv-pstep"><div class="sv-pdot" style="width:26px;height:26px;font-size:0.4rem">CRM</div><div class="sv-plbl">Source</div></div>
+                        <div class="sv-pline" style="width:18px"></div>
+                        <div class="sv-pstep"><div class="sv-pdot filled" style="width:26px;height:26px;font-size:0.4rem">IA</div><div class="sv-plbl">Traitement</div></div>
+                        <div class="sv-pline" style="width:18px"></div>
+                        <div class="sv-pstep"><div class="sv-pdot" style="width:26px;height:26px;font-size:0.4rem">ERP</div><div class="sv-plbl">Action</div></div>
+                      </div>
+                    </div>
+                    <div class="sv-widget" style="bottom:16px;left:50%;transform:translateX(-50%)">
+                      <div style="font-size:0.34rem;color:rgba(0,0,0,0.35);font-weight:500;white-space:nowrap">Vos outils, connectés</div>
+                    </div>
+                  </div>
+                  <p class="card-text"><strong>Automatisations sur mesure.</strong> Tout processus répétitif peut être automatisé. Décrivez-le — on construit.</p>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-
-        <!-- 6 — Prospection automatique -->
-        <div class="widget-card" id="wc-prosp-auto">
-          <div class="wbar">
-            <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
-            <span class="wbar-title">Prospection automatique</span>
-            <div class="wlive"><div class="wlive-dot"></div> Actif</div>
-          </div>
-          <div class="prosp-body">
-            <div class="prosp-funnel">
-              <div class="pf-step"><span class="pf-label">Leads détectés</span><span class="pf-val">1 240</span></div>
-              <div class="pf-step"><span class="pf-label">Qualifiés</span><span class="pf-val">387</span></div>
-              <div class="pf-step"><span class="pf-label">Contactés</span><span class="pf-val">142</span></div>
-              <div class="pf-step"><span class="pf-label">RDV obtenus</span><span class="pf-val">28</span></div>
-            </div>
-            <div class="prosp-rate">Taux de conversion moyen : <strong>19%</strong></div>
-          </div>
-        </div>
-
+        <div class="floor-glow"></div>
+        <div class="floor-line"></div>
+        <button class="sc-arrow sc-arrow-l" id="scArrowL">&#8249;</button>
+        <button class="sc-arrow sc-arrow-r" id="scArrowR">&#8250;</button>
       </div>
+      <div class="sc-dots" id="scDots"></div>
     </div>
   </section>
 
@@ -2473,9 +2768,7 @@
     // NAVBAR PILL
     // ─────────────────────────────────────────
     const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('nav-scrolled', window.scrollY > 10);
-    }, { passive: true });
+    // nav-scrolled est géré par le système de snap (voir _snapTo)
 
 
     // ─────────────────────────────────────────
@@ -2732,7 +3025,6 @@
       ];
 
       const feed = document.getElementById('wterm-feed');
-      if (!feed) return;
 
       function launchFeed() {
         const base = new Date();
@@ -2760,7 +3052,7 @@
         // Boucle
         setTimeout(() => { feed.innerHTML = ''; launchFeed(); }, 10000);
       }
-      launchFeed();
+      if (feed) launchFeed();
 
       // ── SAV IA Chat animation ──
       const chatMsgs = document.getElementById('wchat-msgs');
@@ -2823,6 +3115,21 @@
         let mbEntered = false;
         let _prevProgress = 0;
         window._mbPendingEnter = false;
+        window._mbScrollReset = function() {
+          mbEntered = false;
+          _prevProgress = 0;
+          // Reset step UI to 0 so setStep(0) on re-entry is a no-op
+          if (current !== 0) {
+            texts[current].classList.remove('active');
+            descs[current].classList.remove('active');
+            current = 0;
+            texts[0].classList.add('active');
+            descs[0].classList.add('active');
+            dots.forEach((d, i) => d.classList.toggle('active', i === 0));
+            if (fill) fill.style.width = (1 / N * 100) + '%';
+            if (stepNum) stepNum.textContent = '01';
+          }
+        };
 
         // ── Step switcher ──
         function setStep(idx) {
@@ -2848,13 +3155,9 @@
         section.addEventListener('pinscroll', (e) => {
           const progress = e.detail.progress;
           window._processVisible = true;
-          // Reset mbEntered quand on revient au début (depuis le hero)
-          if (progress < 0.01) mbEntered = false;
-          if (!mbEntered && progress > 0.01) {
-            mbEntered = true;
-            window._mbPendingEnter = true;
-            if (window._mbEnter) window._mbEnter();
-          }
+          // _mbPendingEnter : fallback si le modèle n'était pas encore chargé
+          if (!mbEntered && progress < 0.01) mbEntered = false;
+          if (!mbEntered) { mbEntered = true; window._mbPendingEnter = true; }
           const breaks = [0, 0.222, 0.407, 0.593, 0.778, 1.0];
           const raw = breaks.findIndex((b, i) => i < N && progress < breaks[i + 1]);
           const idx = raw === -1 ? N - 1 : raw;
@@ -2995,6 +3298,16 @@
             ? `scale(${(1 - hpe * 0.08).toFixed(4)}) translateY(${(-hpe * 3).toFixed(2)}%)`
             : '';
           hero.style.opacity = Math.max(0, 1 - Math.pow(hpe, 2)).toFixed(3);
+
+          // Navbar suit le scale du hero avant de passer en bandeau
+          const navEl = document.getElementById('navbar');
+          if (navEl && !navEl.classList.contains('nav-scrolled')) {
+            navEl.style.transform = hp > 0
+              ? `scale(${(1 - hpe * 0.08).toFixed(4)})`
+              : '';
+          } else if (navEl && navEl.classList.contains('nav-scrolled')) {
+            navEl.style.transform = '';
+          }
         }
 
         panels.forEach((el, i) => {
@@ -3007,7 +3320,7 @@
 
           // Pas encore visible — caché en dessous du fold
           if (enterP === 0) {
-            if (el.dataset.pinned) window._processVisible = false;
+            if (el.dataset.pinned) { window._processVisible = false; el._mbTriggered = false; }
             el.style.transform    = `translateY(${vh}px)`;
             el.style.opacity      = '1';
             el.style.borderRadius = '28px 28px 0 0';
@@ -3026,7 +3339,14 @@
             return;
           }
 
-          // Pleinement entré — scroll du contenu si la section dépasse 100vh
+          // Pleinement entré — ouvrir le MacBook dès la première frame
+          if (el.dataset.pinned && !el._mbTriggered) {
+            el._mbTriggered = true;
+            if (window._mbEnter) window._mbEnter();
+            if (window._mbReopen) window._mbReopen();
+          }
+
+          // Scroll du contenu si la section dépasse 100vh
           const viewProgress = Math.max(0, Math.min(d.overflowH, sy - enterEnd));
 
           // Est-ce que le panneau suivant monte par-dessus ?
@@ -3108,6 +3428,8 @@
       function _snapTo(targetY, dir) {
         if (_snapping || (Date.now() < _snapUntil && dir === _lastSnapDir)) return;
         _snapping = true;
+        // Retour vers hero → enlever le bandeau immédiatement
+        if (targetY === 0) document.getElementById('navbar').classList.remove('nav-scrolled');
         if (_snapRaf) cancelAnimationFrame(_snapRaf);
         const from = window.scrollY;
         const dist = targetY - from;
@@ -3117,10 +3439,18 @@
         const speedRef = dir > 0 ? SNAP_SPEED * 2 : SNAP_SPEED;
         const snapMs = Math.min(2200, Math.max(400, Math.abs(dist) / window.innerHeight * speedRef));
         const t0 = performance.now();
+        let _navToggled = false;
         (function tick(now) {
           const t = Math.min(1, (now - t0) / snapMs);
           const ease = -(Math.cos(Math.PI * t) - 1) / 2; // easeInOutSine (same both directions)
           window.scrollTo(0, from + dist * ease);
+          // Bandeau : apparaît quand le bord supérieur de la section montante touche la navbar
+          const _navH = document.getElementById('navbar').offsetHeight;
+          const _navThreshold = targetY * (1 - _navH / window.innerHeight);
+          if (targetY > 0 && !_navToggled && window.scrollY >= _navThreshold) {
+            document.getElementById('navbar').classList.add('nav-scrolled');
+            _navToggled = true;
+          }
           if (t < 1) _snapRaf = requestAnimationFrame(tick);
           else {
             window.scrollTo(0, targetY);
@@ -3128,8 +3458,31 @@
             _snapUntil   = Date.now() + SNAP_COOL; // ← cooldown anti-inertie
             _lastSnapDir = dir;
             _snapping    = false;
+            // Reset MacBook quand on retourne au hero
+            if (targetY === 0 && panelData.length > 0 && window._mbReset) window._mbReset();
           }
         })(performance.now());
+      }
+
+      // Pause brève au franchissement d'une sous-section du process
+      // Verrouille scrollTo chaque frame pour résister à l'inertie du trackpad
+      function _processDwell(targetY) {
+        if (_snapping) return;
+        _snapping = true;
+        const lockUntil = Date.now() + 450;
+        let _dwellRaf = null;
+        function lock() {
+          window.scrollTo(0, targetY);
+          if (Date.now() < lockUntil) {
+            _dwellRaf = requestAnimationFrame(lock);
+          } else {
+            _prevSY = targetY;
+            _snapping = false;
+            _snapUntil = Date.now() + SNAP_COOL;
+            _lastSnapDir = 0;
+          }
+        }
+        lock();
       }
 
       window.addEventListener('scroll', function() {
@@ -3139,6 +3492,20 @@
         const prev   = _prevSY;
         _prevSY = sy;
         const goDown = sy > prev;
+
+        // ── Dwell sous-sections process ──
+        if (panelData.length > 0) {
+          const procD = panelData[0];
+          const procEnterEnd = baseScroll + procD.offset + procD.enterSize;
+          const procBreaks = [0.222, 0.407, 0.593, 0.778];
+          for (const frac of procBreaks) {
+            const bp = procEnterEnd + frac * procD.overflowH;
+            if ((goDown && prev < bp && sy >= bp) || (!goDown && prev > bp && sy <= bp)) {
+              _processDwell(bp);
+              return;
+            }
+          }
+        }
 
         // ── Points de franchissement ──
         const down = []; // franchir vers le bas → lancer transition suivante
@@ -3181,7 +3548,6 @@
             if (prev >= p.trigger && sy < p.trigger) best = p;
           }
           if (best) {
-            if (best.target === 0) document.getElementById('navbar').classList.remove('nav-scrolled');
             _snapTo(best.target, -1);
             return;
           }
@@ -3198,6 +3564,8 @@
             if (_snapRaf) cancelAnimationFrame(_snapRaf);
             window.scrollTo(0, 0);
             _prevSY = 0;
+            document.getElementById('navbar').classList.remove('nav-scrolled');
+            if (window._mbReset) window._mbReset();
             update();
           }
           return;
@@ -3321,7 +3689,7 @@ else {
   let macGroup, lidGroup, bottomGroup;
   let floatingTl, laptopOpeningTl, screenOnTl;
   let currentSlideIdx = 0, slideTextures = [];
-  let mbEntered = false, mbSpinning = false, mbClosed = false;
+  let mbEntered = false, mbSpinning = false, mbClosed = false, mbOpening = false;
 
   // ── Live animated slide 0 ──
   const W0 = 588, H0 = 400;
@@ -3604,57 +3972,230 @@ else {
       .to([lidGroup.position,bottomGroup.position],{duration:1.8,y:'-=1.4',ease:'power1.inOut'})
       .play(); // start floating immediately
 
+    // Legacy timelines (kept for reference, no longer used by _mbEnter)
     screenOnTl = gsap.timeline({paused:true})
       .to(screenMaterial,{duration:.2,opacity:.96},0)
       .to(screenLight,{duration:.2,intensity:1.2},0);
+    laptopOpeningTl = gsap.timeline({paused:true});
 
-    laptopOpeningTl = gsap.timeline({paused:true})
-      .from(lidGroup.position,{duration:.75,z:'+=.5'},0)
-      .to(lidGroup.rotation,{duration:1.2,x:-.12*Math.PI,ease:'power2.out'},0)
-      .to(screenOnTl,{duration:.06,progress:1},.08);
+    // ── MacBook animation lifecycle ──
+    // Track active timeline to kill it explicitly (killTweensOf misses timeline children)
+    let _mbTl = null;
+    let _closeTl = null;
+
+    function _killAll() {
+      if (_mbTl) { _mbTl.kill(); _mbTl = null; }
+      if (_closeTl) { _closeTl.kill(); _closeTl = null; }
+      // Belt-and-suspenders: also kill any orphaned tweens per target
+      gsap.killTweensOf(lidGroup.rotation);
+      gsap.killTweensOf(macGroup.rotation);
+      gsap.killTweensOf(screenMaterial);
+      gsap.killTweensOf(screenLight);
+    }
 
     window._mbEnter = function() {
-      if (mbEntered) return; mbEntered = true;
-      gsap.timeline()
-        .to(macGroup.rotation,{duration:1.1,y:0.0,x:0.04*Math.PI,ease:'power3.out'},0)
-        .to(laptopOpeningTl,{duration:1.1,progress:1,ease:'power2.out'},.25);
+      if (mbEntered) return;
+      mbEntered = true;
+      mbOpening = true;
+      _killAll();
+
+      // Detect state:
+      //   First load  → y ≈ -1.0 (set in initScene) — animate turn + lid open
+      //   Re-entry    → y ≈  0   (set by _mbReset)  — just open lid
+      //   Interrupted → any other value              — snap to 0, then open lid
+      const y = macGroup.rotation.y;
+      const isFirstLoad = (y < -0.5);
+
+      if (!isFirstLoad) {
+        // Snap any stale rotation to neutral — synchronous, no GSAP delay
+        macGroup.rotation.y = 0;
+        macGroup.rotation.z = 0;
+      }
+
+      _mbTl = gsap.timeline({ onComplete: () => { mbOpening = false; _mbTl = null; } });
+
+      if (isFirstLoad) {
+        // Original dramatic reveal: rotate to face camera + open lid
+        _mbTl
+          .to(macGroup.rotation, {duration:1.1, y:0.0, x:0.04*Math.PI, ease:'power3.out'}, 0)
+          .to(lidGroup.rotation, {duration:1.2, x:-0.12*Math.PI, ease:'power2.out'}, 0.25)
+          .to(screenMaterial,    {duration:0.2, opacity:0.96, ease:'power2.out'}, 1.1)
+          .to(screenLight,       {duration:0.2, intensity:1.2, ease:'power2.out'}, 1.1);
+      } else {
+        // Re-entry: already facing forward, just open lid
+        _mbTl
+          .to(macGroup.rotation, {duration:0.6, x:0.04*Math.PI, ease:'power3.out'}, 0)
+          .to(lidGroup.rotation, {duration:1.2, x:-0.12*Math.PI, ease:'power2.out'}, 0.25)
+          .to(screenMaterial,    {duration:0.2, opacity:0.96, ease:'power2.out'}, 1.1)
+          .to(screenLight,       {duration:0.2, intensity:1.2, ease:'power2.out'}, 1.1);
+      }
     };
 
     window._mbStep = function(idx) {
-      if (idx===currentSlideIdx) return;
+      if (idx === currentSlideIdx) return;
+      // No spin while opening or not fully entered — just swap texture
+      if (mbOpening || !mbEntered) { _swapSlide(idx); return; }
       if (mbSpinning) { _swapSlide(idx); return; }
       mbSpinning = true;
-      const startY = macGroup.rotation.y;
-      gsap.timeline({onComplete:()=>{ mbSpinning=false; }})
-        .to(macGroup.rotation,{duration:.32,y:startY-Math.PI,ease:'power2.in'},0)
-        .add(()=>_swapSlide(idx),.30)
-        .to(macGroup.rotation,{duration:.32,y:startY-Math.PI*2,ease:'power2.out'},.32)
-        .set(macGroup.rotation,{y:startY});
+      if (_mbTl) { _mbTl.kill(); _mbTl = null; }
+      // Always start spin from y=0 (prevents accumulation from interrupted spins)
+      macGroup.rotation.y = 0;
+      _mbTl = gsap.timeline({
+        onComplete: () => { mbSpinning = false; macGroup.rotation.y = 0; _mbTl = null; }
+      })
+        .to(macGroup.rotation, {duration:.32, y:-Math.PI, ease:'power2.in'}, 0)
+        .add(() => _swapSlide(idx), .30)
+        .to(macGroup.rotation, {duration:.32, y:-Math.PI*2, ease:'power2.out'}, .32);
     };
 
     window._mbClose = function() {
-      if (mbClosed) return; mbClosed = true;
-      laptopOpeningTl.kill();
-      gsap.timeline()
+      if (mbClosed) return;
+      mbClosed = true;
+      // Kill main animation if still running — close takes priority
+      if (_mbTl) { _mbTl.kill(); _mbTl = null; mbOpening = false; }
+      if (_closeTl) { _closeTl.kill(); _closeTl = null; }
+      _closeTl = gsap.timeline({ onComplete: () => { _closeTl = null; } })
         .to(screenMaterial, {duration:.2, opacity:0, ease:'power2.in', overwrite:'auto'}, 0)
         .to(screenLight,    {duration:.2, intensity:0, ease:'power2.in', overwrite:'auto'}, 0)
         .to(lidGroup.rotation, {duration:0.7, x:0.505*Math.PI, ease:'power2.inOut', overwrite:'auto'}, 0.1);
     };
 
     window._mbReopen = function() {
-      if (!mbClosed) return; mbClosed = false;
-      gsap.timeline()
-        .fromTo(lidGroup.rotation, {x:0.505*Math.PI}, {duration:0.7, x:-0.12*Math.PI, ease:'power2.out', overwrite:'auto'}, 0)
-        .fromTo(screenMaterial,    {opacity:0},       {duration:.25, opacity:.96, ease:'power2.out', overwrite:'auto'}, 0.55)
-        .fromTo(screenLight,       {intensity:0},     {duration:.25, intensity:1.2, ease:'power2.out', overwrite:'auto'}, 0.55);
+      if (!mbClosed) return;
+      mbClosed = false;
+      if (_closeTl) { _closeTl.kill(); _closeTl = null; }
+      // Use .to() with overwrite (not fromTo) — don't assume current lid angle
+      _closeTl = gsap.timeline({ onComplete: () => { _closeTl = null; } })
+        .to(lidGroup.rotation,  {duration:0.7, x:-0.12*Math.PI, ease:'power2.out', overwrite:'auto'}, 0)
+        .to(screenMaterial, {duration:.25, opacity:.96, ease:'power2.out', overwrite:'auto'}, 0.55)
+        .to(screenLight,    {duration:.25, intensity:1.2, ease:'power2.out', overwrite:'auto'}, 0.55);
+    };
+
+    window._mbReset = function() {
+      // Kill ALL active animations
+      _killAll();
+      // Reset all flags
+      mbEntered = false;
+      mbClosed = false;
+      mbSpinning = false;
+      mbOpening = false;
+      // Reset 3D state — direct property assignment (synchronous)
+      lidGroup.rotation.x = 0.5 * Math.PI;
+      macGroup.rotation.x = 0.05 * Math.PI;
+      macGroup.rotation.y = 0;
+      macGroup.rotation.z = 0;
+      screenMaterial.opacity = 0;
+      screenLight.intensity = 0;
+      // Reset slide
+      currentSlideIdx = 0;
+      _swapSlide(0);
+      // Reset scroll handler state (step UI + flags)
+      if (window._mbScrollReset) window._mbScrollReset();
+      // Reset panel trigger so _mbEnter fires on next entry
+      const processEl = document.getElementById('process');
+      if (processEl) processEl._mbTriggered = false;
     };
 
     function _swapSlide(idx) {
-      currentSlideIdx=idx;
-      screenMaterial.map=slideTextures[idx];
-      screenMaterial.needsUpdate=true;
+      currentSlideIdx = idx;
+      screenMaterial.map = slideTextures[idx];
+      screenMaterial.needsUpdate = true;
     }
   }
+
+  // ── Services Carousel ──
+  (function() {
+    const TOTAL = 12, ANGLE_PER = 30, HOVER_DELAY = 450, AUTO_INTERVAL = 3500;
+    const carousel = document.getElementById('carouselReal');
+    const zone     = document.getElementById('carouselZoneReal');
+    const dotsWrap = document.getElementById('scDots');
+    if (!carousel || !zone || !dotsWrap) return;
+
+    const screens = Array.from(carousel.querySelectorAll('.screen'));
+    let currentIndex = 0, currentAngle = 0;
+    let autoTimer = null, hoverTimer = null, autoResumeTimer = null, isAutoTransitioning = false;
+
+    // Créer les dots
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('button');
+      d.className = 'sc-dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => { stopAll(); rotateTo(i); autoResumeTimer = setTimeout(startAuto, 1500); });
+      dotsWrap.appendChild(d);
+    }
+    const dots = Array.from(dotsWrap.children);
+
+    function setAngle(angle) {
+      // Utilise style.transform direct pour bypasser les conflits CSS variables
+      carousel.style.transform = 'rotateY(' + angle + 'deg)';
+    }
+
+    function rotateTo(index, fromAuto) {
+      const target = -index * ANGLE_PER;
+      let diff = ((target - currentAngle + 180) % 360 + 360) % 360 - 180;
+      currentAngle += diff;
+      currentIndex = index;
+      if (fromAuto) {
+        isAutoTransitioning = true;
+        setTimeout(function() { isAutoTransitioning = false; }, 900);
+      }
+      setAngle(currentAngle);
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === currentIndex); });
+      screens.forEach(function(s, i) {
+        var d2 = Math.abs(((i - currentIndex) % TOTAL + TOTAL) % TOTAL);
+        s.classList.toggle('active', Math.min(d2, TOTAL - d2) === 0);
+      });
+    }
+
+    function startAuto() {
+      stopAuto();
+      autoTimer = setInterval(function() { rotateTo((currentIndex + 1) % TOTAL, true); }, AUTO_INTERVAL);
+    }
+    function stopAuto() { clearInterval(autoTimer); autoTimer = null; }
+    function stopAll() { clearTimeout(hoverTimer); clearTimeout(autoResumeTimer); stopAuto(); }
+
+    // Events par carte
+    screens.forEach(function(s) {
+      var idx = parseInt(s.dataset.index);
+      s.addEventListener('mouseenter', function() {
+        if (isAutoTransitioning) return;
+        clearTimeout(autoResumeTimer);
+        stopAuto();
+        hoverTimer = setTimeout(function() { rotateTo(idx); }, HOVER_DELAY);
+      });
+      s.addEventListener('mouseleave', function() {
+        clearTimeout(hoverTimer);
+        autoResumeTimer = setTimeout(startAuto, 400);
+      });
+      s.addEventListener('click', function() {
+        stopAll();
+        rotateTo(idx);
+        autoResumeTimer = setTimeout(startAuto, 1500);
+      });
+    });
+
+    // Quand la souris quitte la zone entière → reprendre auto
+    zone.addEventListener('mouseleave', function() {
+      clearTimeout(hoverTimer);
+      clearTimeout(autoResumeTimer);
+      startAuto();
+    });
+
+    // Flèches
+    document.getElementById('scArrowL').addEventListener('click', function() {
+      stopAll();
+      rotateTo(((currentIndex - 1) % TOTAL + TOTAL) % TOTAL);
+      autoResumeTimer = setTimeout(startAuto, 1500);
+    });
+    document.getElementById('scArrowR').addEventListener('click', function() {
+      stopAll();
+      rotateTo((currentIndex + 1) % TOTAL);
+      autoResumeTimer = setTimeout(startAuto, 1500);
+    });
+
+    // Init
+    setAngle(0);
+    setTimeout(startAuto, 800);
+  })();
 
   function render() {
     if (!document.hidden && window._processVisible !== false) {
