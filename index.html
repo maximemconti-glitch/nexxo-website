@@ -34,8 +34,6 @@
       --bg: #000000;
       --text: #ffffff;
       --text-secondary: rgba(255,255,255,0.55);
-      --card-bg: rgba(255,255,255,0.03);
-      --card-border: rgba(255,255,255,0.06);
       --font-head: 'Inter', sans-serif;
       --font-body: 'Archivo', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -161,7 +159,7 @@
 
     /* ─── HERO ─── */
     #hero {
-      position: relative; min-height: 100svh;
+      position: sticky; top: 0; min-height: 100svh;
       display: flex; align-items: center; justify-content: flex-start;
       text-align: left; overflow: clip; z-index: 1;
       padding: clamp(80px, 10vh, 120px) max(64px, 8vw) clamp(48px, 6vh, 80px);
@@ -387,7 +385,6 @@
       background: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(var(--accent-rgb),0.05) 0%, transparent 65%);
       pointer-events: none;
     }
-    #featuresStars { display: none; }
     #features .bento-title { color: #1d1d1f; }
     #features .bento-sub   { color: #6e6e73; }
     #features .bento-card  {
@@ -800,13 +797,13 @@
     }
     .process-panel {
       height: 100vh;
-      display: flex; align-items: center;
+      display: flex; align-items: flex-start;
       gap: 72px;
-      padding: 0 max(48px, 7vw);
+      padding: 20vh max(48px, 7vw) 0;
       background: #f5f0e8;
       position: relative;
     }
-    .process-scroll-room { height: 400vh; }
+    .process-scroll-room { height: 540vh; }
 
     /* Left */
     .process-left { flex: 1; position: relative; z-index: 1; min-width: 0; }
@@ -814,60 +811,162 @@
       font-family: var(--font-head); font-size: clamp(2.8rem, 5vw, 4.5rem);
       font-weight: 700; color: #1d1d1f; line-height: 1.0;
       letter-spacing: -0.04em; margin-bottom: 36px;
+      white-space: nowrap;
     }
     .ps-indicator {
-      display: flex; align-items: center; gap: 14px;
+      display: flex; flex-direction: column; gap: 10px;
       margin-bottom: 36px;
     }
     .ps-ind-track {
-      width: 2px; height: 80px; background: rgba(0,0,0,0.1);
-      border-radius: 2px; position: relative; flex-shrink: 0;
+      width: 150px; height: 2px; background: rgba(0,0,0,0.1);
+      border-radius: 2px; position: relative;
     }
     .ps-ind-fill {
-      position: absolute; top: 0; left: 0; width: 100%;
+      position: absolute; top: 0; left: 0; height: 100%;
       background: #0071e3; border-radius: 2px;
-      height: 20%; transition: height 0.5s cubic-bezier(0.16,1,0.3,1);
+      width: 20%; transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
     }
-    .ps-ind-dots { display: flex; flex-direction: column; gap: 10px; }
+    .ps-ind-dots { display: flex; flex-direction: row; justify-content: space-between; width: 150px; }
     .ps-ind-dot {
-      width: 6px; height: 6px; border-radius: 50%;
+      width: 7px; height: 7px; border-radius: 50%;
       background: rgba(0,0,0,0.15);
       transition: background 0.3s ease, transform 0.3s ease;
     }
     .ps-ind-dot.active { background: #0071e3; transform: scale(1.4); }
-    .ps-texts { position: relative; height: 160px; }
+    .ps-step-num {
+      font-family: var(--font-head); font-size: clamp(3rem, 5vw, 4.5rem);
+      font-weight: 800; color: #0071e3; line-height: 1;
+      letter-spacing: -0.04em; margin-top: 18px;
+      opacity: 0; transform: translateY(8px) scale(0.92);
+      transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .ps-step-num.active { opacity: 1; transform: translateY(0) scale(1); }
+    .ps-desc-banner {
+      position: absolute; bottom: 17vh; left: 0; right: 0;
+      display: flex; justify-content: center;
+      padding: 0 max(48px, 7vw);
+    }
+    .ps-desc {
+      position: absolute;
+      max-width: 560px;
+      font-size: 0.9rem; color: #48484a; line-height: 1.75;
+      font-weight: 400; letter-spacing: 0.01em;
+      text-align: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(0,0,0,0.12);
+      opacity: 0; transform: translateY(12px); filter: blur(4px);
+      transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1) 0.18s,
+                  transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.18s,
+                  filter 0.5s cubic-bezier(0.16,1,0.3,1) 0.18s;
+    }
+    .ps-desc.active { opacity: 1; transform: translateY(0); filter: blur(0); }
+    .ps-texts { position: relative; height: 72px; margin-top: 12px; max-width: 360px; }
     .ps-text {
       position: absolute; top: 0; left: 0; width: 100%;
-      opacity: 0; transform: translateY(18px);
-      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      opacity: 0; transform: translateX(14px);
+      transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1) 0.07s,
+                  transform 0.4s cubic-bezier(0.16,1,0.3,1) 0.07s;
       pointer-events: none;
     }
-    .ps-text.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    .ps-n {
-      font-family: var(--font-mono); font-size: 0.68rem;
-      color: #0071e3; letter-spacing: 3px;
-      display: block; margin-bottom: 10px;
-    }
+    .ps-text.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
     .ps-text h3 {
       font-family: var(--font-head); font-weight: 700;
-      font-size: 1.35rem; color: #1d1d1f; margin-bottom: 10px;
+      font-size: 1.25rem; color: #1d1d1f;
       letter-spacing: -0.03em;
+      margin: 0;
     }
     .ps-text p {
-      font-size: 0.875rem; color: #6e6e73; line-height: 1.8;
+      font-size: 0.875rem; color: #6e6e73; line-height: 1.6;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-top: 6px;
       max-width: 36ch;
     }
 
     /* Right */
-    .process-right { flex: 1; position: relative; z-index: 1; height: 460px; min-width: 0; }
-    .ps-illus {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: flex-start;
-      opacity: 0; transform: translateX(28px);
-      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
-      pointer-events: none;
+    .process-right { flex: 1; position: relative; z-index: 1; height: 640px; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: visible; }
+
+    /* ─── MACBOOK 3D ─── */
+    .mb-viewport {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      perspective: 900px; perspective-origin: 50% 42%;
     }
-    .ps-illus.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+    .mb-scene {
+      transform-style: preserve-3d;
+      transform: rotateX(-8deg) rotateY(-65deg) translateX(-20px);
+      position: relative;
+    }
+    .mb-body { transform-style: preserve-3d; width: 400px; position: relative; }
+    .mb-lid {
+      width: 400px; height: 254px;
+      transform-style: preserve-3d;
+      transform-origin: bottom center;
+      transform: rotateX(-108deg);
+      position: relative;
+    }
+    .mb-lid-front {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #e2e5e9 0%, #c8cdd4 50%, #a8adb4 100%);
+      border-radius: 12px 12px 0 0;
+      backface-visibility: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1);
+    }
+    .mb-bezel {
+      position: absolute; inset: 7px 7px 0 7px;
+      background: #171717; border-radius: 7px 7px 0 0; overflow: hidden;
+    }
+    .mb-notch {
+      position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 72px; height: 15px;
+      background: #171717; border-radius: 0 0 8px 8px; z-index: 5;
+    }
+    .mb-screen {
+      position: absolute; inset: 4px 4px 0 4px;
+      border-radius: 4px 4px 0 0; overflow: hidden; background: #fff;
+    }
+    .mb-slide {
+      position: absolute; inset: 0;
+      opacity: 0; transition: opacity 0.2s ease;
+      overflow: hidden;
+    }
+    .mb-slide.active { opacity: 1; }
+    .mb-lid-back {
+      position: absolute; inset: 0;
+      background: linear-gradient(170deg, #e2e5e9 0%, #c8cdd4 50%, #a8adb4 100%);
+      border-radius: 12px 12px 0 0;
+      transform: rotateY(180deg); backface-visibility: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mb-base-wrap { transform-style: preserve-3d; position: relative; width: 400px; }
+    .mb-base-top {
+      background: linear-gradient(180deg, #c8cdd4 0%, #b0b5bc 100%);
+      padding: 8px 18px 6px;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .mb-kbd-row { display: flex; gap: 2px; justify-content: center; }
+    .mb-key {
+      height: 15px;
+      background: linear-gradient(180deg, #2e2e33 0%, #252529 100%);
+      border-radius: 2px; flex: 1;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+    }
+    .mb-key.fn { height: 11px; }
+    .mb-key.wide { flex: 1.5; }
+    .mb-key.wider { flex: 2; }
+    .mb-key.space { flex: 5; }
+    .mb-trackpad {
+      width: 105px; height: 28px;
+      background: linear-gradient(180deg, #38383c 0%, #2c2c30 100%);
+      border-radius: 4px; margin: 3px auto 0;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+    }
+    .mb-base-front {
+      height: 7px;
+      background: linear-gradient(180deg, #a8adb4 0%, #888d94 100%);
+      border-radius: 0 0 5px 5px;
+    }
 
     /* Dark frame with aurora effect */
     .psi-frame {
@@ -1384,7 +1483,6 @@
     .stk-num { font-size: 0.58rem; font-weight: 600; color: #1d1d1f; width: 26px; text-align: right; flex-shrink: 0; }
 
     /* ─── HERO ORBS ─── */
-    .hero-orb { display: none; }
     .hero-cursor-glow {
       position: absolute; pointer-events: none;
       width: 380px; height: 380px; border-radius: 50%;
@@ -1552,7 +1650,6 @@
 
     /* ─── TEAM (WHITE) ─── */
     #team {
-      position: relative; z-index: 2;
       padding: 100px 32px 120px;
       background: #f5f5f7;
     }
@@ -1687,6 +1784,8 @@
   <!-- Calendly popup widget -->
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
   <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <!-- GSAP for MacBook animation -->
+  <script src="macbook-assets/gsap.min.js"></script>
 </head>
 <body>
 
@@ -1875,7 +1974,7 @@
 
       <!-- Left: fixed title + changing step text -->
       <div class="process-left">
-        <h2 class="process-main-title">Notre<br>process.</h2>
+        <h2 class="process-main-title">Notre process.</h2>
         <!-- Step progress indicator -->
         <div class="ps-indicator">
           <div class="ps-ind-track">
@@ -1889,179 +1988,195 @@
             <span class="ps-ind-dot" data-step="4"></span>
           </div>
         </div>
-        <!-- Step texts (one active at a time) -->
+        <!-- Step number -->
+        <div class="ps-step-num active" id="ps-step-num">01</div>
+        <!-- Step title -->
         <div class="ps-texts">
-          <div class="ps-text active" data-step="0">
-            <span class="ps-n">01</span>
-            <h3>Découverte</h3>
-            <p>Un appel de 15 minutes pour comprendre votre activité, vos outils existants et ce qui vous freine au quotidien.</p>
-          </div>
-          <div class="ps-text" data-step="1">
-            <span class="ps-n">02</span>
-            <h3>Stratégie sur mesure</h3>
-            <p>On conçoit la solution adaptée — site, automatisations, SAV. Rien de générique, tout pensé pour vous.</p>
-          </div>
-          <div class="ps-text" data-step="2">
-            <span class="ps-n">03</span>
-            <h3>Développement</h3>
-            <p>On construit tout de A à Z. Vous suivez l'avancement et validez chaque étape en temps réel.</p>
-          </div>
-          <div class="ps-text" data-step="3">
-            <span class="ps-n">04</span>
-            <h3>Livraison en 48h</h3>
-            <p>Site en ligne ou automatisations actives sous 48h. Formation et prise en main incluses.</p>
-          </div>
-          <div class="ps-text" data-step="4">
-            <span class="ps-n">05</span>
-            <h3>Suivi continu</h3>
-            <p>Support, ajustements et améliorations après la livraison — on reste disponibles.</p>
-          </div>
+          <div class="ps-text active" data-step="0"><h3>Analyse de votre activité</h3></div>
+          <div class="ps-text" data-step="1"><h3>Elaboration d'une solution personnalisée</h3></div>
+          <div class="ps-text" data-step="2"><h3>Développement</h3></div>
+          <div class="ps-text" data-step="3"><h3>Livraison en délai réduit</h3></div>
+          <div class="ps-text" data-step="4"><h3>Suivi, maintenance et<br>optimisation régulière</h3></div>
         </div>
       </div>
 
-      <!-- Right: illustration per step -->
-      <div class="process-right">
+      <!-- Right: MacBook 3D (Three.js inline) -->
+      <div class="process-right" style="overflow:visible;">
+        <canvas id="mb-canvas" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;"></canvas>
+        <!-- hidden legacy for compatibility -->
+        <div style="display:none">
+        <div class="mb-viewport">
+          <div class="mb-scene" id="mb-scene" style="display:none">
+            <div class="mb-body">
 
-        <!-- Step 0 — Découverte: discovery call card -->
-        <div class="ps-illus active" data-step="0">
-          <div class="psi-frame"><div class="psi-aurora-extra"></div>
-          <div class="psi-card">
-            <div class="psi-card-header">
-              <div class="psi-avatar-wrap">
-                <div class="psi-avatar"></div>
-                <div class="psi-avatar-pulse"></div>
-              </div>
-              <div>
-                <div class="psi-card-title">Appel découverte</div>
-                <div class="psi-card-sub"><span class="psi-live-dot"></span>En cours · 15 min</div>
-              </div>
-              <div class="psi-timer" id="psi-timer">15:00</div>
-            </div>
-            <div class="psi-checklist">
-              <div class="psi-cl-item psi-cl-done"><span class="psi-cl-icon">✓</span>Activité analysée</div>
-              <div class="psi-cl-item psi-cl-done"><span class="psi-cl-icon">✓</span>Outils cartographiés</div>
-              <div class="psi-cl-item psi-cl-active"><span class="psi-cl-icon">→</span>Points de friction</div>
-              <div class="psi-cl-item"><span class="psi-cl-icon">○</span>Plan d'action défini</div>
-            </div>
-          </div>
-          </div>
-        </div>
+              <!-- LID -->
+              <div class="mb-lid">
+                <div class="mb-lid-front">
+                  <div class="mb-bezel">
+                    <div class="mb-notch"></div>
+                    <div class="mb-screen">
 
-        <!-- Step 1 — Stratégie: plan document -->
-        <div class="ps-illus" data-step="1">
-          <div class="psi-frame"><div class="psi-aurora-extra"></div>
-          <div class="psi-card">
-            <div class="psi-card-header">
-              <div>
-                <div class="psi-card-title">Solution Nexxo</div>
-                <div class="psi-card-sub">Cabinet Moreau · Sur mesure</div>
-              </div>
-              <span class="psi-badge psi-badge--blue">Validé</span>
-            </div>
-            <div class="psi-modules">
-              <div class="psi-module psi-module--on">
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="3" width="16" height="11" rx="2"/><path d="M7 17h6M10 14v3"/></svg>
-                <div><div class="psi-mod-name">Site vitrine</div><div class="psi-mod-sub">SEO + Prise de RDV</div></div>
-                <div class="psi-mod-check">✓</div>
-              </div>
-              <div class="psi-module psi-module--on">
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M17 12a2 2 0 0 1-2 2H5l-3 3V4a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2z"/></svg>
-                <div><div class="psi-mod-name">SAV IA 24h/7j</div><div class="psi-mod-sub">Réponse auto</div></div>
-                <div class="psi-mod-check">✓</div>
-              </div>
-              <div class="psi-module">
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="4" width="14" height="13" rx="2"/><path d="M3 9h14M8 2v4M12 2v4"/></svg>
-                <div><div class="psi-mod-name">Planning IA</div><div class="psi-mod-sub">Agenda automatisé</div></div>
-                <div class="psi-mod-check psi-mod-check--pending">+</div>
-              </div>
-            </div>
-            <div class="psi-timeline-bar">
-              <div class="psi-tl-fill"></div>
-            </div>
-            <div class="psi-tl-label">Livraison estimée : 48h</div>
-          </div>
-          </div>
-        </div>
+                      <!-- Slide 0: Découverte -->
+                      <div class="mb-slide active" data-step="0">
+                        <div style="padding:14px;font-family:'Inter',sans-serif;height:100%;box-sizing:border-box;">
+                          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                            <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);flex-shrink:0;"></div>
+                            <div style="flex:1;">
+                              <div style="font-weight:600;font-size:12px;color:#111;">Appel découverte</div>
+                              <div style="font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;margin-top:1px;"><span style="width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block;"></span>En cours · 15 min</div>
+                            </div>
+                            <div style="font-family:monospace;font-size:14px;font-weight:600;color:#333;" id="mb-timer">15:00</div>
+                          </div>
+                          <div style="display:flex;flex-direction:column;gap:7px;">
+                            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f0fdf4;border-radius:7px;"><span style="color:#22c55e;font-weight:700;font-size:12px;">✓</span><span style="font-size:11px;color:#333;">Activité analysée</span></div>
+                            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f0fdf4;border-radius:7px;"><span style="color:#22c55e;font-weight:700;font-size:12px;">✓</span><span style="font-size:11px;color:#333;">Outils cartographiés</span></div>
+                            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#eff6ff;border-radius:7px;border:1.5px solid #bfdbfe;"><span style="color:#3b82f6;font-weight:700;font-size:12px;">→</span><span style="font-size:11px;font-weight:600;color:#1d4ed8;">Points de friction</span></div>
+                            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f9fafb;border-radius:7px;border:1px dashed #d1d5db;"><span style="color:#9ca3af;font-size:12px;">○</span><span style="font-size:11px;color:#9ca3af;">Plan d'action défini</span></div>
+                          </div>
+                        </div>
+                      </div>
 
-        <!-- Step 2 — Développement: terminal -->
-        <div class="ps-illus" data-step="2">
-          <div class="psi-frame"><div class="psi-aurora-extra"></div>
-          <div class="psi-card psi-card--dark">
-            <div class="psi-term-topbar">
-              <span class="psi-dot-r"></span><span class="psi-dot-y"></span><span class="psi-dot-g"></span>
-              <span class="psi-term-title">nexxo-build · live</span>
-              <span class="psi-badge psi-badge--live">● running</span>
-            </div>
-            <div class="psi-term-body" id="psi-term"></div>
-          </div>
-          </div>
-        </div>
+                      <!-- Slide 1: Stratégie -->
+                      <div class="mb-slide" data-step="1">
+                        <div style="padding:14px;font-family:'Inter',sans-serif;height:100%;box-sizing:border-box;">
+                          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                            <div><div style="font-weight:600;font-size:12px;color:#111;">Solution Nexxo</div><div style="font-size:10px;color:#6b7280;margin-top:1px;">Cabinet Moreau · Sur mesure</div></div>
+                            <span style="background:#dbeafe;color:#1d4ed8;font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;">Validé</span>
+                          </div>
+                          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+                            <div style="display:flex;align-items:center;gap:7px;padding:7px 8px;background:#f0fdf4;border-radius:7px;border:1px solid #bbf7d0;">
+                              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#16a34a" stroke-width="1.8"><rect x="2" y="3" width="16" height="11" rx="2"/><path d="M7 17h6M10 14v3"/></svg>
+                              <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:#111;">Site vitrine</div><div style="font-size:9px;color:#6b7280;">SEO + Prise de RDV</div></div>
+                              <span style="color:#16a34a;font-weight:700;font-size:12px;">✓</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:7px;padding:7px 8px;background:#f0fdf4;border-radius:7px;border:1px solid #bbf7d0;">
+                              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#16a34a" stroke-width="1.8"><path d="M17 12a2 2 0 0 1-2 2H5l-3 3V4a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2z"/></svg>
+                              <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:#111;">SAV IA 24h/7j</div><div style="font-size:9px;color:#6b7280;">Réponse auto</div></div>
+                              <span style="color:#16a34a;font-weight:700;font-size:12px;">✓</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:7px;padding:7px 8px;background:#f9fafb;border-radius:7px;border:1px solid #e5e7eb;">
+                              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="1.8"><rect x="3" y="4" width="14" height="13" rx="2"/><path d="M3 9h14M8 2v4M12 2v4"/></svg>
+                              <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:#9ca3af;">Planning IA</div><div style="font-size:9px;color:#d1d5db;">Agenda automatisé</div></div>
+                              <span style="color:#9ca3af;font-size:13px;">+</span>
+                            </div>
+                          </div>
+                          <div style="height:4px;background:#f3f4f6;border-radius:4px;overflow:hidden;"><div style="height:100%;width:62%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:4px;"></div></div>
+                          <div style="font-size:9px;color:#6b7280;margin-top:4px;">Livraison en délai réduit</div>
+                        </div>
+                      </div>
 
-        <!-- Step 3 — Livraison: browser live -->
-        <div class="ps-illus" data-step="3">
-          <div class="psi-frame"><div class="psi-aurora-extra"></div>
-          <div class="psi-card">
-            <div class="psi-browser-topbar">
-              <span class="psi-dot-r"></span><span class="psi-dot-y"></span><span class="psi-dot-g"></span>
-              <span class="psi-browser-url">cabinet-moreau.fr</span>
-              <span class="psi-badge psi-badge--green">● En ligne</span>
-            </div>
-            <div class="psi-browser-preview">
-              <div class="psi-bp-nav"></div>
-              <div class="psi-bp-hero">
-                <div class="psi-bp-h1"></div>
-                <div class="psi-bp-h2"></div>
-                <div class="psi-bp-btn"></div>
-              </div>
-              <div class="psi-bp-cards">
-                <div class="psi-bp-card"></div>
-                <div class="psi-bp-card"></div>
-                <div class="psi-bp-card"></div>
-              </div>
-            </div>
-            <div class="psi-delivery-stats">
-              <span>⚡ Mis en ligne en 47h</span>
-              <span>📈 Score SEO 94/100</span>
-            </div>
-          </div>
-          </div>
-        </div>
+                      <!-- Slide 2: Développement (terminal) -->
+                      <div class="mb-slide" data-step="2">
+                        <div style="padding:10px;background:#0f1117;height:100%;box-sizing:border-box;font-family:'JetBrains Mono',monospace;">
+                          <div style="display:flex;align-items:center;gap:5px;margin-bottom:8px;">
+                            <span style="width:9px;height:9px;border-radius:50%;background:#ff5f57;"></span>
+                            <span style="width:9px;height:9px;border-radius:50%;background:#febc2e;"></span>
+                            <span style="width:9px;height:9px;border-radius:50%;background:#28c840;"></span>
+                            <span style="font-size:9px;color:rgba(255,255,255,0.35);margin-left:6px;">nexxo-build · live</span>
+                            <span style="margin-left:auto;font-size:8px;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 5px;border-radius:8px;">● running</span>
+                          </div>
+                          <div id="mb-term" style="font-size:9px;line-height:1.9;"></div>
+                        </div>
+                      </div>
 
-        <!-- Step 4 — Suivi: dashboard -->
-        <div class="ps-illus" data-step="4">
-          <div class="psi-frame"><div class="psi-aurora-extra"></div>
-          <div class="psi-card">
-            <div class="psi-card-header">
-              <div>
-                <div class="psi-card-title">Tableau de bord</div>
-                <div class="psi-card-sub">Suivi mensuel</div>
-              </div>
-              <span class="psi-badge psi-badge--green">● Actif</span>
-            </div>
-            <div class="psi-metrics-row">
-              <div class="psi-metric">
-                <div class="psi-metric-val" id="psi-m1">0</div>
-                <div class="psi-metric-lbl">Requêtes SAV</div>
-              </div>
-              <div class="psi-metric">
-                <div class="psi-metric-val" id="psi-m2">0h</div>
-                <div class="psi-metric-lbl">Libérées / sem.</div>
-              </div>
-              <div class="psi-metric">
-                <div class="psi-metric-val" id="psi-m3">0%</div>
-                <div class="psi-metric-lbl">Uptime</div>
-              </div>
-            </div>
-            <div class="psi-activity">
-              <div class="psi-act-row"><span class="psi-act-dot" style="background:#28c840"></span><span>Mise à jour déployée</span><span class="psi-act-time">Aujourd'hui</span></div>
-              <div class="psi-act-row"><span class="psi-act-dot" style="background:#0071e3"></span><span>Nouveau module ajouté</span><span class="psi-act-time">J−3</span></div>
-              <div class="psi-act-row"><span class="psi-act-dot" style="background:#a78bfa"></span><span>Rapport mensuel envoyé</span><span class="psi-act-time">J−7</span></div>
-            </div>
-          </div>
-          </div>
-        </div>
+                      <!-- Slide 3: Livraison -->
+                      <div class="mb-slide" data-step="3">
+                        <div style="padding:10px;font-family:'Inter',sans-serif;height:100%;box-sizing:border-box;">
+                          <div style="display:flex;align-items:center;gap:5px;margin-bottom:7px;">
+                            <span style="width:8px;height:8px;border-radius:50%;background:#ff5f57;"></span>
+                            <span style="width:8px;height:8px;border-radius:50%;background:#febc2e;"></span>
+                            <span style="width:8px;height:8px;border-radius:50%;background:#28c840;"></span>
+                            <div style="flex:1;background:#f3f4f6;border-radius:20px;padding:2px 8px;font-size:9px;color:#6b7280;text-align:center;margin:0 5px;">cabinet-moreau.fr</div>
+                            <span style="font-size:8px;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 5px;border-radius:8px;">● En ligne</span>
+                          </div>
+                          <div style="background:#f9fafb;border-radius:5px;overflow:hidden;margin-bottom:7px;">
+                            <div style="height:18px;background:#fff;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;padding:0 8px;gap:5px;">
+                              <div style="height:3px;width:32px;background:#e5e7eb;border-radius:2px;"></div>
+                              <div style="height:3px;width:22px;background:#e5e7eb;border-radius:2px;"></div>
+                              <div style="height:3px;width:28px;background:#e5e7eb;border-radius:2px;"></div>
+                            </div>
+                            <div style="padding:8px;">
+                              <div style="height:10px;width:60%;background:linear-gradient(90deg,#1e293b,#334155);border-radius:3px;margin-bottom:5px;"></div>
+                              <div style="height:7px;width:75%;background:#e5e7eb;border-radius:2px;margin-bottom:7px;"></div>
+                              <div style="height:20px;width:80px;background:#0071e3;border-radius:5px;"></div>
+                            </div>
+                            <div style="display:flex;gap:4px;padding:0 8px 8px;">
+                              <div style="flex:1;height:28px;background:#fff;border:1px solid #e5e7eb;border-radius:4px;"></div>
+                              <div style="flex:1;height:28px;background:#fff;border:1px solid #e5e7eb;border-radius:4px;"></div>
+                              <div style="flex:1;height:28px;background:#fff;border:1px solid #e5e7eb;border-radius:4px;"></div>
+                            </div>
+                          </div>
+                          <div style="display:flex;gap:8px;font-size:9px;color:#6b7280;">
+                            <span>⚡ Mis en ligne en 47h</span>
+                            <span>📈 Score SEO 94/100</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Slide 4: Suivi -->
+                      <div class="mb-slide" data-step="4">
+                        <div style="padding:12px;font-family:'Inter',sans-serif;height:100%;box-sizing:border-box;">
+                          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                            <div><div style="font-weight:600;font-size:12px;color:#111;">Tableau de bord</div><div style="font-size:10px;color:#6b7280;margin-top:1px;">Suivi mensuel</div></div>
+                            <span style="background:#dcfce7;color:#16a34a;font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;">● Actif</span>
+                          </div>
+                          <div style="display:flex;gap:6px;margin-bottom:10px;">
+                            <div style="flex:1;background:#f9fafb;border-radius:7px;padding:7px;text-align:center;border:1px solid #f3f4f6;">
+                              <div style="font-size:16px;font-weight:700;color:#111;" id="mb-m1">0</div>
+                              <div style="font-size:8px;color:#6b7280;margin-top:2px;">Requêtes SAV</div>
+                            </div>
+                            <div style="flex:1;background:#f9fafb;border-radius:7px;padding:7px;text-align:center;border:1px solid #f3f4f6;">
+                              <div style="font-size:16px;font-weight:700;color:#111;" id="mb-m2">0h</div>
+                              <div style="font-size:8px;color:#6b7280;margin-top:2px;">Libérées / sem.</div>
+                            </div>
+                            <div style="flex:1;background:#f9fafb;border-radius:7px;padding:7px;text-align:center;border:1px solid #f3f4f6;">
+                              <div style="font-size:16px;font-weight:700;color:#111;" id="mb-m3">0%</div>
+                              <div style="font-size:8px;color:#6b7280;margin-top:2px;">Uptime</div>
+                            </div>
+                          </div>
+                          <div style="display:flex;flex-direction:column;gap:5px;">
+                            <div style="display:flex;align-items:center;gap:7px;font-size:10px;"><span style="width:6px;height:6px;border-radius:50%;background:#28c840;flex-shrink:0;"></span><span style="flex:1;color:#374151;">Mise à jour déployée</span><span style="color:#9ca3af;font-size:9px;">Aujourd'hui</span></div>
+                            <div style="display:flex;align-items:center;gap:7px;font-size:10px;"><span style="width:6px;height:6px;border-radius:50%;background:#0071e3;flex-shrink:0;"></span><span style="flex:1;color:#374151;">Nouveau module ajouté</span><span style="color:#9ca3af;font-size:9px;">J−3</span></div>
+                            <div style="display:flex;align-items:center;gap:7px;font-size:10px;"><span style="width:6px;height:6px;border-radius:50%;background:#a78bfa;flex-shrink:0;"></span><span style="flex:1;color:#374151;">Rapport mensuel envoyé</span><span style="color:#9ca3af;font-size:9px;">J−7</span></div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div><!-- /mb-screen -->
+                  </div><!-- /mb-bezel -->
+                </div><!-- /mb-lid-front -->
+                <div class="mb-lid-back">
+                  <svg width="34" height="42" viewBox="0 0 170 200" fill="rgba(255,255,255,0.28)"><path d="M150.4 130.7c-3.3 7.3-4.9 10.5-9.1 16.9-5.9 8.9-14.2 20-24.5 20.1-9.1.1-11.5-5.9-23.9-5.9-12.4 0-15 6-24.2 5.9-10.3-.1-18.1-10.2-24-19.1-16.4-24.9-18.1-54.1-8-69.6 7.2-11.2 18.5-17.7 29.2-17.7 10.8 0 17.6 5.9 26.5 5.9 8.6 0 13.9-6 26.3-6 9.6 0 19.7 5.2 26.9 14.2-23.6 13-19.8 46.9 4.8 55.3zM111.2 51.4c4.7-6 8.2-14.5 6.9-23.1-7.6.5-16.5 5.4-21.7 11.6-4.7 5.6-8.6 14.2-7.1 22.6 8.3.3 16.9-4.7 21.9-11.1z"/></svg>
+                </div>
+              </div><!-- /mb-lid -->
+
+              <!-- BASE -->
+              <div class="mb-base-wrap">
+                <div class="mb-base-top">
+                  <div class="mb-kbd-row"><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div></div>
+                  <div class="mb-kbd-row"><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key wider"></div></div>
+                  <div class="mb-kbd-row"><div class="mb-key wide"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key wider"></div></div>
+                  <div class="mb-kbd-row"><div class="mb-key wider"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key wider"></div></div>
+                  <div class="mb-kbd-row"><div class="mb-key wide"></div><div class="mb-key wide"></div><div class="mb-key space"></div><div class="mb-key wide"></div><div class="mb-key wide"></div></div>
+                  <div class="mb-trackpad"></div>
+                </div>
+                <div class="mb-base-front"></div>
+              </div><!-- /mb-base-wrap -->
+
+            </div><!-- /mb-body -->
+          </div><!-- /mb-scene -->
+        </div><!-- /mb-viewport -->
+        </div><!-- /hidden legacy -->
 
       </div><!-- /process-right -->
+      <!-- Bottom description banner -->
+      <div class="ps-desc-banner">
+        <div class="ps-desc active" data-step="0">Un appel découverte gratuit pour comprendre vos objectifs, vos contraintes et identifier ce qui peut être simplifié, automatisé et boosté par l'IA.</div>
+        <div class="ps-desc" data-step="1">On identifie la solution la plus adaptée — site vitrine, automatisation ou agent IA — et vous envoyons un devis précis sous 48h. Rien de générique.</div>
+        <div class="ps-desc" data-step="2">Design sur mesure, 100% responsive, sans template. Vous suivez l'avancement en temps réel et validez chaque étape avant la mise en ligne.</div>
+        <div class="ps-desc" data-step="3">Livraison en 5 à 12 jours ouvrés. Hébergement et nom de domaine offerts la première année. Formation à la prise en main incluse.</div>
+        <div class="ps-desc" data-step="4">Mises à jour, sauvegardes et monitoring continu. Des ajustements quand vous en avez besoin — sans frais cachés ni mauvaises surprises.</div>
+      </div>
     </div><!-- /process-panel -->
 
     <!-- Scroll room: 4 extra 100vh for 5 steps -->
@@ -2174,7 +2289,7 @@
         <div class="widget-card" id="wc-site">
           <div class="wbar">
             <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
-            <span class="wbar-title">Site web — Livraison 48h</span>
+            <span class="wbar-title">Site web — Délai réduit</span>
             <div class="wlive"><div class="wlive-dot"></div> En ligne</div>
           </div>
           <div class="site-body">
@@ -2192,7 +2307,7 @@
               </div>
             </div>
             <div class="site-stats">
-              <div class="site-stat"><span class="site-stat-val">48h</span></div>
+              <div class="site-stat"><span class="site-stat-val">Rapide</span></div>
               <div class="site-stat"><span class="site-stat-val">94 SEO</span></div>
               <div class="site-stat"><span class="site-stat-val">100%</span></div>
             </div>
@@ -2321,22 +2436,24 @@
       }
 
       function animateStars() {
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        const now = Date.now();
-        stars.forEach(s => {
-          s.x += s.driftX;
-          s.y += s.driftY;
-          if (s.x < 0) s.x = window.innerWidth;
-          if (s.x > window.innerWidth) s.x = 0;
-          if (s.y < 0) s.y = window.innerHeight;
-          if (s.y > window.innerHeight) s.y = 0;
-          const twinkle = Math.sin(now * s.twinkleSpeed + s.twinklePhase);
-          const opacity = Math.max(0, s.baseOpacity + twinkle * 0.28);
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255,255,255,${opacity})`;
-          ctx.fill();
-        });
+        if (!document.hidden) {
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          const now = Date.now();
+          stars.forEach(s => {
+            s.x += s.driftX;
+            s.y += s.driftY;
+            if (s.x < 0) s.x = window.innerWidth;
+            if (s.x > window.innerWidth) s.x = 0;
+            if (s.y < 0) s.y = window.innerHeight;
+            if (s.y > window.innerHeight) s.y = 0;
+            const twinkle = Math.sin(now * s.twinkleSpeed + s.twinklePhase);
+            const opacity = Math.max(0, s.baseOpacity + twinkle * 0.28);
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+            ctx.fill();
+          });
+        }
         requestAnimationFrame(animateStars);
       }
 
@@ -2345,62 +2462,6 @@
       animateStars();
     })();
 
-    // ─────────────────────────────────────────
-    // FEATURES STARS — étoiles locales sur la section dark
-    // ─────────────────────────────────────────
-    (function() {
-      const canvas = document.getElementById('featuresStars');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const section = document.getElementById('features');
-      const N = 90; // nombre d'étoiles
-      let stars = [];
-
-      function resize() {
-        const dpr = window.devicePixelRatio || 1;
-        const w = section.offsetWidth;
-        const h = section.offsetHeight;
-        canvas.width  = w * dpr;
-        canvas.height = h * dpr;
-        ctx.scale(dpr, dpr);
-        stars = [];
-        for (let i = 0; i < N; i++) {
-          stars.push({
-            x:  Math.random() * w,
-            y:  Math.random() * h,
-            r:  Math.random() * 1.1 + 0.3,
-            baseOp:  Math.random() * 0.55 + 0.15,
-            dx: (Math.random() - 0.5) * 0.022,
-            dy: (Math.random() - 0.5) * 0.014,
-            ts: Math.random() * 0.0012 + 0.0004,
-            tp: Math.random() * Math.PI * 2,
-            w, h,
-          });
-        }
-      }
-
-      function draw() {
-        const w = section.offsetWidth;
-        const h = section.offsetHeight;
-        ctx.clearRect(0, 0, w, h);
-        const now = Date.now();
-        stars.forEach(s => {
-          s.x += s.dx; s.y += s.dy;
-          if (s.x < 0) s.x = w; if (s.x > w) s.x = 0;
-          if (s.y < 0) s.y = h; if (s.y > h) s.y = 0;
-          const op = Math.max(0, s.baseOp + Math.sin(now * s.ts + s.tp) * 0.3);
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255,255,255,${op.toFixed(3)})`;
-          ctx.fill();
-        });
-        requestAnimationFrame(draw);
-      }
-
-      window.addEventListener('resize', resize);
-      resize();
-      draw();
-    })();
 
     // ─────────────────────────────────────────
     // ─────────────────────────────────────────
@@ -2770,97 +2831,59 @@
         const section = document.getElementById('process');
         if (!section) return;
 
-        const N = 5;
-        const texts    = document.querySelectorAll('.ps-text');
-        const illus    = document.querySelectorAll('.ps-illus');
-        const dots     = document.querySelectorAll('.ps-ind-dot');
-        const fill     = document.getElementById('ps-ind-fill');
-        let current    = 0;
-        let termTimer  = null;
-
-        // ── Terminal animation (step 2) ──
-        const TERM_LINES = [
-          { cls: 'run',  pfx: '▶',  txt: 'Building cabinet-moreau.fr...' },
-          { cls: 'ok',   pfx: '✓',  txt: 'Dependencies resolved' },
-          { cls: 'run',  pfx: '▶',  txt: 'Compiling assets...' },
-          { cls: 'ok',   pfx: '✓',  txt: 'CSS optimized (14kb)' },
-          { cls: 'ok',   pfx: '✓',  txt: 'SEO meta generated' },
-          { cls: 'run',  pfx: '▶',  txt: 'Deploying to production...' },
-          { cls: 'ok',   pfx: '✓',  txt: 'DNS propagated' },
-          { cls: 'ok',   pfx: '✓',  txt: 'Site live — 0 errors' },
-        ];
-        function startTerminal() {
-          const el = document.getElementById('psi-term');
-          if (!el) return;
-          el.innerHTML = '';
-          let i = 0;
-          function addLine() {
-            if (i >= TERM_LINES.length) return;
-            const l = TERM_LINES[i++];
-            const div = document.createElement('div');
-            div.className = 'psi-term-line ' + l.cls;
-            div.innerHTML = `<span class="psi-term-pfx">${l.pfx}</span><span>${l.txt}</span>`;
-            el.appendChild(div);
-            termTimer = setTimeout(addLine, 420);
-          }
-          addLine();
-        }
-        function stopTerminal() {
-          clearTimeout(termTimer);
-        }
-
-        // ── Counter animation (step 4) ──
-        function animateCounters() {
-          function count(id, target, suffix, dur) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            const start = performance.now();
-            function tick(now) {
-              const p = Math.min((now - start) / dur, 1);
-              const v = Math.floor(p * target);
-              el.textContent = v + suffix;
-              if (p < 1) requestAnimationFrame(tick);
-              else el.textContent = target + suffix;
-            }
-            requestAnimationFrame(tick);
-          }
-          count('psi-m1', 312, '', 1400);
-          count('psi-m2', 8,   'h', 1200);
-          count('psi-m3', 99,  '%', 1000);
-        }
+        const N      = 5;
+        const texts   = document.querySelectorAll('.ps-text');
+        const descs   = document.querySelectorAll('.ps-desc');
+        const dots    = document.querySelectorAll('.ps-ind-dot');
+        const fill    = document.getElementById('ps-ind-fill');
+        const stepNum = document.getElementById('ps-step-num');
+        let current   = 0;
+        let mbEntered = false;
+        let _prevProgress = 0;
+        window._mbPendingEnter = false;
 
         // ── Step switcher ──
         function setStep(idx) {
           if (idx === current) return;
-
           const prev = current;
           current = idx;
-
-          // Out
           texts[prev].classList.remove('active');
-          illus[prev].classList.remove('active');
-          if (prev === 2) stopTerminal();
-
-          // In
+          descs[prev].classList.remove('active');
           texts[idx].classList.add('active');
-          illus[idx].classList.add('active');
-
-          // Dots
+          descs[idx].classList.add('active');
           dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-
-          // Progress bar fill
-          if (fill) fill.style.height = ((idx + 1) / N * 100) + '%';
-
-          // Side effects
-          if (idx === 2) setTimeout(startTerminal, 300);
-          if (idx === 4) setTimeout(animateCounters, 400);
+          if (fill) fill.style.width = ((idx + 1) / N * 100) + '%';
+          if (stepNum) {
+            stepNum.classList.remove('active');
+            void stepNum.offsetWidth; // force reflow to restart animation
+            stepNum.textContent = String(idx + 1).padStart(2, '0');
+            stepNum.classList.add('active');
+          }
+          if (window._mbStep) window._mbStep(idx);
         }
 
-        // ── Scroll tracking via pinscroll event from stack scroll ──
+        // ── Scroll tracking ──
         section.addEventListener('pinscroll', (e) => {
           const progress = e.detail.progress;
-          const idx = Math.min(Math.floor(progress * N), N - 1);
+          window._processVisible = true;
+          // Reset mbEntered quand on revient au début (depuis le hero)
+          if (progress < 0.01) mbEntered = false;
+          if (!mbEntered && progress > 0.01) {
+            mbEntered = true;
+            window._mbPendingEnter = true;
+            if (window._mbEnter) window._mbEnter();
+          }
+          const breaks = [0, 0.222, 0.407, 0.593, 0.778, 1.0];
+          const raw = breaks.findIndex((b, i) => i < N && progress < breaks[i + 1]);
+          const idx = raw === -1 ? N - 1 : raw;
           setStep(idx);
+          texts[idx].classList.add('active'); descs[idx].classList.add('active'); // force re-sync on re-entry
+          // _mbClose sur progress < 0.07 uniquement si l'utilisateur remonte (pas en entrant)
+          const goingBack = progress < _prevProgress;
+          if (mbEntered && progress > 0.93 && window._mbClose) window._mbClose();
+          if (mbEntered && progress < 0.07 && goingBack && window._mbClose) window._mbClose();
+          if (mbEntered && progress > 0.12 && progress < 0.88 && window._mbReopen) window._mbReopen();
+          _prevProgress = progress;
         });
       })();
 
@@ -2927,8 +2950,10 @@
       if (panels.length < 2) return;
 
       const hero      = document.getElementById('hero');
-      const ENTER_DUR = 0.8; // fraction de vh pour l'animation d'entrée
-      const DWELL_DUR = 0.7; // pause de lecture avant que la section suivante commence à monter
+      const ENTER_DUR  = 0.55; // fraction de vh pour l'animation d'entrée
+      const DWELL_DUR  = 0.45; // pause de lecture avant que la section suivante commence à monter
+      const HERO_DWELL = 0.45; // pause sur le hero avant que la première section commence à monter
+      const easeOut = t => 1 - Math.pow(1 - t, 3); // easeOutCubic
 
       // ── 1. Rendre les panneaux fixes (height:auto = hauteur naturelle du contenu) ──
       panels.forEach((el, i) => {
@@ -2961,7 +2986,7 @@
         const vh = window.innerHeight;
         baseScroll = 0;
 
-        let cumulOffset = 0;
+        let cumulOffset = HERO_DWELL * vh;
         panelData = panels.map(el => {
           // Hauteur réelle du contenu (sections > 100vh scrollent leur contenu)
           const overflowH  = Math.max(0, el.offsetHeight - vh);
@@ -2982,11 +3007,12 @@
 
         // Hero recule pendant que realisations monte
         if (hero) {
-          const hp = Math.max(0, Math.min(1, (sy - baseScroll) / (ENTER_DUR * vh)));
+          const hp = Math.max(0, Math.min(1, (sy - baseScroll - HERO_DWELL * vh) / (ENTER_DUR * vh)));
+          const hpe = easeOut(hp);
           hero.style.transform = hp > 0
-            ? `scale(${(1 - hp * 0.08).toFixed(4)}) translateY(${(-hp * 3).toFixed(2)}%)`
+            ? `scale(${(1 - hpe * 0.08).toFixed(4)}) translateY(${(-hpe * 3).toFixed(2)}%)`
             : '';
-          hero.style.opacity = Math.max(0, 1 - Math.pow(hp, 0.8) * 0.95).toFixed(3);
+          hero.style.opacity = Math.max(0, 1 - Math.pow(hpe, 3.5)).toFixed(3);
         }
 
         panels.forEach((el, i) => {
@@ -2999,6 +3025,7 @@
 
           // Pas encore visible — caché en dessous du fold
           if (enterP === 0) {
+            if (el.dataset.pinned) window._processVisible = false;
             el.style.transform    = `translateY(${vh}px)`;
             el.style.opacity      = '1';
             el.style.borderRadius = '28px 28px 0 0';
@@ -3007,8 +3034,10 @@
 
           // Phase d'entrée : monte de bas en haut
           if (enterP < 1) {
-            const ty = (1 - enterP) * vh;
-            const br = (1 - enterP) * 28;
+            if (el.dataset.pinned) window._processVisible = true;
+            const ep = easeOut(enterP);
+            const ty = (1 - ep) * vh;
+            const br = (1 - ep) * 28;
             el.style.transform    = `translateY(${ty.toFixed(1)}px)`;
             el.style.opacity      = '1';
             el.style.borderRadius = `${br.toFixed(1)}px ${br.toFixed(1)}px 0 0`;
@@ -3029,6 +3058,7 @@
 
           // Pinned sections: don't scroll content, expose progress via event
           if (el.dataset.pinned) {
+            window._processVisible = coverP < 1;
             const pinProgress = d.overflowH > 0 ? viewProgress / d.overflowH : 0;
             el.dispatchEvent(new CustomEvent('pinscroll', { detail: { progress: pinProgress } }));
             if (coverP === 0) {
@@ -3073,14 +3103,108 @@
       window.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', () => { recalc(); update(); }, { passive: true });
 
-      // Expose scroll-to-section for nav links
+      // ── Auto-transition (scroll-triggered, time-based) ──
+      let _snapping   = false;
+      let _snapRaf    = null;
+      let _prevSY     = window.scrollY;
+      let _snapUntil  = 0;   // cooldown timestamp
+      let _lastSnapDir = 0;  // direction du dernier snap (1=bas, -1=haut)
+      const SNAP_SPEED = 1300; // ms pour 1×vh — vitesse de référence (constante perçue)
+      const SNAP_COOL  = 300;  // ms d'immunité (même direction uniquement)
+
+      // Bloquer scroll pendant l'animation
+      window.addEventListener('wheel',     function(ev) { if (_snapping) ev.preventDefault(); }, { passive: false });
+      window.addEventListener('touchmove', function(ev) { if (_snapping) ev.preventDefault(); }, { passive: false });
+
+      function _snapTo(targetY, dir) {
+        if (_snapping || (Date.now() < _snapUntil && dir === _lastSnapDir)) return;
+        _snapping = true;
+        if (_snapRaf) cancelAnimationFrame(_snapRaf);
+        const from = window.scrollY;
+        const dist = targetY - from;
+        if (Math.abs(dist) < 2) { _snapping = false; return; }
+        // Durée proportionnelle à la distance → vitesse perçue constante
+        // La descente est délibérément plus lente (×2) pour un feeling plus doux
+        const speedRef = dir > 0 ? SNAP_SPEED * 2 : SNAP_SPEED;
+        const snapMs = Math.min(2200, Math.max(400, Math.abs(dist) / window.innerHeight * speedRef));
+        const t0 = performance.now();
+        (function tick(now) {
+          const t = Math.min(1, (now - t0) / snapMs);
+          const ease = -(Math.cos(Math.PI * t) - 1) / 2; // easeInOutSine (same both directions)
+          window.scrollTo(0, from + dist * ease);
+          if (t < 1) _snapRaf = requestAnimationFrame(tick);
+          else {
+            window.scrollTo(0, targetY);
+            _prevSY    = targetY; // ← sync direction après snap
+            _snapUntil   = Date.now() + SNAP_COOL; // ← cooldown anti-inertie
+            _lastSnapDir = dir;
+            _snapping    = false;
+          }
+        })(performance.now());
+      }
+
+      window.addEventListener('scroll', function() {
+        if (_snapping) return;
+        const sy     = window.scrollY;
+        const vh     = window.innerHeight;
+        const prev   = _prevSY;
+        _prevSY = sy;
+        const goDown = sy > prev;
+
+        // ── Points de franchissement ──
+        const down = []; // franchir vers le bas → lancer transition suivante
+        const up   = []; // franchir vers le haut → revenir à la section précédente
+
+        // Vers le bas : franchir la fin du contenu de chaque section
+        if (panelData.length) {
+          down.push({
+            trigger: baseScroll + HERO_DWELL * vh,
+            target:  baseScroll + panelData[0].offset + panelData[0].enterSize,
+          });
+        }
+        panelData.forEach((d, i) => {
+          const nextD = panelData[i + 1];
+          if (!nextD) return;
+          down.push({
+            trigger: baseScroll + d.offset + d.enterSize + d.overflowH + d.dwellSize,
+            target:  baseScroll + nextD.offset + nextD.enterSize,
+          });
+        });
+
+        // Vers le haut : franchir le enterEnd de chaque section (elle commence à redescendre)
+        panelData.forEach((d, i) => {
+          const prev = panelData[i - 1];
+          up.push({
+            trigger: baseScroll + d.offset + d.enterSize,
+            target:  prev
+              ? baseScroll + prev.offset + prev.enterSize + prev.overflowH + prev.dwellSize // fin du contenu + dwell de la section précédente
+              : 0,
+          });
+        });
+
+        if (goDown) {
+          for (const p of down) {
+            if (prev <= p.trigger && sy >= p.trigger) { _snapTo(p.target, 1); return; }
+          }
+        } else {
+          let best = null;
+          for (const p of up) {
+            if (prev >= p.trigger && sy < p.trigger) best = p;
+          }
+          if (best) { _snapTo(best.target, -1); return; }
+        }
+      }, { passive: true });
+
+      // Expose scroll-to-section for nav links (utilise notre snap pour éviter les conflits)
       window.scrollToSection = function(id) {
         const idx = PANEL_IDS.indexOf(id);
         if (idx === -1) return;
         const d = panelData[idx];
         if (!d) return;
         const target = baseScroll + d.offset + d.enterSize;
-        window.scrollTo({ top: target, behavior: 'smooth' });
+        const dir = target > window.scrollY ? 1 : -1;
+        _snapping = false; // forcer même si un snap est en cours
+        _snapTo(target, dir);
       };
     })();
 
@@ -3174,6 +3298,392 @@
 
       document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta, .btn-dark').forEach(attachParticles);
     })();
+  </script>
+
+  <!-- ── MacBook 3D — Three.js inline ── -->
+  <script type="module">
+import * as THREE from "macbook-assets/three.module.min.js";
+import { GLTFLoader } from "macbook-assets/GLTFLoader.js";
+
+const canvasEl = document.getElementById('mb-canvas');
+if (!canvasEl) { console.warn('mb-canvas not found'); }
+else {
+  const container = canvasEl.parentElement;
+  const screenSize = [29.4, 20];
+  let scene, camera, renderer, lightHolder, screenLight;
+  let darkPlasticMaterial, cameraMaterial, baseMetalMaterial, logoMaterial, screenMaterial, keyboardMaterial;
+  let macGroup, lidGroup, bottomGroup;
+  let floatingTl, laptopOpeningTl, screenOnTl;
+  let currentSlideIdx = 0, slideTextures = [];
+  let mbEntered = false, mbSpinning = false, mbClosed = false;
+
+  // ── Live animated slide 0 ──
+  const W0 = 588, H0 = 400;
+  const liveCanvas0 = document.createElement('canvas');
+  liveCanvas0.width = W0; liveCanvas0.height = H0;
+  const lc = liveCanvas0.getContext('2d');
+  let liveTexture0 = null; // assigned after THREE is ready
+
+  function drawSlide0(t) {
+    const W = W0, H = H0;
+    const c = lc;
+    const CYCLE = 7000;
+    const sec = (t % CYCLE) / 1000;
+
+    // ── Background — pure black ──
+    c.fillStyle = '#000'; c.fillRect(0,0,W,H);
+
+    // Subtle grid
+    c.strokeStyle = 'rgba(255,255,255,0.03)'; c.lineWidth = 0.5;
+    for (let x=0;x<W;x+=32){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
+    for (let y=0;y<H;y+=32){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
+
+    // Blue accent top stripe
+    c.fillStyle = '#0071e3'; c.fillRect(0,0,W,2);
+
+    // ── Header ──
+    const pulse = 0.5 + 0.5*Math.sin(t*0.004);
+    // Live dot
+    c.fillStyle = `rgba(0,113,227,${0.6+0.4*pulse})`;
+    c.beginPath(); c.arc(26,24,4,0,Math.PI*2); c.fill();
+    c.strokeStyle = `rgba(0,113,227,${0.18*pulse})`; c.lineWidth=1;
+    c.beginPath(); c.arc(26,24,9+pulse*3,0,Math.PI*2); c.stroke();
+
+    c.fillStyle = 'rgba(255,255,255,0.9)';
+    c.font = 'bold 12px system-ui,-apple-system,sans-serif';
+    c.fillText('Analyse de votre activité', 40,29);
+
+    // NEXXO badge
+    c.fillStyle = 'rgba(0,113,227,0.12)';
+    c.beginPath(); c.roundRect(W-68,14,56,18,3); c.fill();
+    c.strokeStyle = 'rgba(0,113,227,0.35)'; c.lineWidth=1;
+    c.beginPath(); c.roundRect(W-68,14,56,18,3); c.stroke();
+    c.fillStyle = '#0071e3'; c.font='bold 8px monospace'; c.textAlign='center';
+    c.fillText('NEXXO AI', W-40,26); c.textAlign='left';
+
+    // Divider
+    c.strokeStyle='rgba(255,255,255,0.06)'; c.lineWidth=1;
+    c.beginPath(); c.moveTo(0,40); c.lineTo(W,40); c.stroke();
+
+    // ── URL bar ──
+    c.fillStyle='rgba(255,255,255,0.04)';
+    c.beginPath(); c.roundRect(24,48,W-48,26,4); c.fill();
+    c.strokeStyle='rgba(255,255,255,0.08)'; c.lineWidth=1;
+    c.beginPath(); c.roundRect(24,48,W-48,26,4); c.stroke();
+    c.fillStyle='rgba(255,255,255,0.3)'; c.font='10px monospace'; c.fillText('https://',36,65);
+    c.fillStyle='#0071e3'; c.font='bold 11px monospace'; c.fillText('boulangerie-martin.fr',96,65);
+
+    // ── Scan wireframe ──
+    const scanP = Math.min(1, sec/3.2);
+    const scanY = 86 + scanP*146;
+
+    const sections = [
+      {y:86,  h:38, label:'HERO'},
+      {y:130, h:22, label:'SERVICES'},
+      {y:158, h:22, label:'AVIS'},
+      {y:186, h:22, label:'GALERIE'},
+      {y:214, h:22, label:'CONTACT'},
+    ];
+    sections.forEach(({y,h,label})=>{
+      const revealed = scanY > y+h*0.5;
+      c.fillStyle = revealed ? 'rgba(0,113,227,0.07)' : 'rgba(255,255,255,0.02)';
+      c.beginPath(); c.roundRect(24,y,W-48,h,2); c.fill();
+      c.strokeStyle = revealed ? 'rgba(0,113,227,0.22)' : 'rgba(255,255,255,0.04)';
+      c.lineWidth=1; c.beginPath(); c.roundRect(24,y,W-48,h,2); c.stroke();
+      if (revealed) {
+        c.fillStyle='rgba(0,113,227,0.65)'; c.font='8px monospace';
+        c.fillText(label,34,y+h*0.65);
+        c.fillStyle='rgba(255,255,255,0.07)';
+        c.beginPath(); c.roundRect(90,y+h*0.22,(W-130)*0.62,h*0.56,1); c.fill();
+      }
+    });
+
+    // Scan beam
+    if (scanP < 1) {
+      const bg2 = c.createLinearGradient(0,scanY-14,0,scanY+7);
+      bg2.addColorStop(0,'transparent');
+      bg2.addColorStop(0.55,'rgba(0,113,227,0.45)');
+      bg2.addColorStop(1,'transparent');
+      c.fillStyle=bg2; c.fillRect(24,scanY-14,W-48,21);
+      c.strokeStyle='rgba(0,113,227,0.9)'; c.lineWidth=1;
+      c.beginPath(); c.moveTo(24,scanY); c.lineTo(W-24,scanY); c.stroke();
+      c.fillStyle='#0071e3';
+      c.beginPath(); c.arc(24,scanY,2.5,0,Math.PI*2); c.fill();
+      c.beginPath(); c.arc(W-24,scanY,2.5,0,Math.PI*2); c.fill();
+    }
+
+    // Divider before metrics
+    c.strokeStyle='rgba(255,255,255,0.06)'; c.lineWidth=1;
+    c.beginPath(); c.moveTo(24,248); c.lineTo(W-24,248); c.stroke();
+
+    // ── Metrics ──
+    const metrics = [
+      {label:'SEO',     score:38},
+      {label:'Perf.',   score:54},
+      {label:'Design',  score:47},
+      {label:'Contact', score:72},
+    ];
+    const metStart = 3.5;
+    metrics.forEach(({label,score},i)=>{
+      const delay = i*0.18;
+      const p = Math.max(0,Math.min(1,(sec-metStart-delay)/0.5));
+      if (p<=0) return;
+      const colW = (W-48)/4;
+      const x = 24+i*colW+4;
+      const bw = colW-8;
+      const col = score<50 ? '#ff453a' : score<70 ? '#ff9f0a' : '#30d158';
+      c.globalAlpha=p;
+      c.fillStyle=col; c.font='bold 15px system-ui,sans-serif'; c.textAlign='center';
+      c.fillText(Math.round(score*p),x+bw/2,270);
+      c.fillStyle='rgba(255,255,255,0.06)';
+      c.beginPath(); c.roundRect(x,275,bw,2,1); c.fill();
+      c.fillStyle=col;
+      c.beginPath(); c.roundRect(x,275,bw*(score/100)*p,2,1); c.fill();
+      c.fillStyle='rgba(255,255,255,0.4)'; c.font='8px monospace'; c.textAlign='center';
+      c.fillText(label,x+bw/2,287);
+      c.textAlign='left'; c.globalAlpha=1;
+    });
+
+    // ── Bottom summary ──
+    const summP = Math.max(0,Math.min(1,(sec-5.2)/0.5));
+    if (summP>0) {
+      c.globalAlpha=summP;
+      c.fillStyle='rgba(0,113,227,0.09)';
+      c.beginPath(); c.roundRect(24,300,W-48,52,4); c.fill();
+      c.strokeStyle='rgba(0,113,227,0.22)'; c.lineWidth=1;
+      c.beginPath(); c.roundRect(24,300,W-48,52,4); c.stroke();
+      c.fillStyle='rgba(255,255,255,0.8)'; c.font='bold 10px system-ui,sans-serif';
+      c.fillText('Opportunités détectées',36,317);
+      c.fillStyle='rgba(255,255,255,0.35)'; c.font='9px monospace';
+      c.fillText('Site vieillissant  ·  Pas de SEO local  ·  Formulaire absent',36,331);
+      c.fillStyle='#0071e3';
+      c.beginPath(); c.roundRect(W-112,308,88,22,3); c.fill();
+      c.fillStyle='#fff'; c.font='bold 9px system-ui,sans-serif'; c.textAlign='center';
+      c.fillText('Voir le rapport →',W-68,323); c.textAlign='left';
+      c.globalAlpha=1;
+    }
+
+    if (liveTexture0) liveTexture0.needsUpdate = true;
+  }
+
+  // ── Canvas2D slides ──
+  function makeSlideTexture(idx) {
+    const W = 588, H = 400;
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const c = cv.getContext('2d');
+    const grad = (x1,y1,x2,y2,c1,c2) => { const g=c.createLinearGradient(x1,y1,x2,y2); g.addColorStop(0,c1); g.addColorStop(1,c2); return g; };
+
+    if (idx === 1) {
+      c.fillStyle = grad(0,0,W,H,'#1a1025','#2d1b4e'); c.fillRect(0,0,W,H);
+      c.fillStyle='#a78bfa'; c.font='bold 15px sans-serif'; c.fillText('Maquette UI/UX',30,40);
+      c.strokeStyle='rgba(167,139,250,0.4)'; c.lineWidth=1; c.strokeRect(30,55,W-60,130);
+      c.fillStyle='rgba(167,139,250,0.15)'; c.fillRect(30,55,W-60,40);
+      c.fillStyle='#c4b5fd'; c.font='bold 13px sans-serif'; c.fillText('HERO — Boulangerie Martin',46,80);
+      c.fillStyle='rgba(255,255,255,0.4)'; c.font='10px sans-serif'; c.fillText('Artisanal · Livraison · Commande',46,100);
+      c.fillStyle='#7c3aed'; c.beginPath(); c.roundRect(46,110,80,18,3); c.fill();
+      c.fillStyle='#fff'; c.font='10px sans-serif'; c.fillText('Commander',57,123);
+      [0,1,2].forEach(i=>{ c.fillStyle='rgba(255,255,255,0.05)'; const cw=(W-80)/3,cx=30+i*(cw+10); c.beginPath(); c.roundRect(cx,205,cw,64,4); c.fill(); c.strokeStyle='rgba(167,139,250,0.25)'; c.strokeRect(cx,205,cw,64); });
+      c.fillStyle='#a78bfa'; c.font='bold 11px sans-serif'; c.fillText('Palette',30,302);
+      ['#7c3aed','#a78bfa','#f3f4f6','#1a1025','#fbbf24'].forEach((col,i)=>{ c.fillStyle=col; c.beginPath(); c.arc(50+i*50,330,14,0,Math.PI*2); c.fill(); });
+      c.fillStyle='#64748b'; c.font='11px sans-serif'; c.fillText('Inter · Playfair Display',30,372);
+    } else if (idx === 2) {
+      c.fillStyle = grad(0,0,W,H,'#0a0e1a','#0f1628'); c.fillRect(0,0,W,H);
+      c.fillStyle='rgba(255,255,255,0.06)'; c.beginPath(); c.roundRect(30,16,W-60,26,4); c.fill();
+      [['#ff5f57',50],['#febc2e',72],['#28c840',94]].forEach(([col,x])=>{ c.fillStyle=col; c.beginPath(); c.arc(x,29,5,0,Math.PI*2); c.fill(); });
+      c.fillStyle='rgba(255,255,255,0.3)'; c.font='10px monospace'; c.textAlign='center'; c.fillText('nexxo-agent — bash',W/2,32); c.textAlign='left';
+      [['#60a5fa','▶ Building cabinet-moreau.fr...'],['#4ade80','✓ Dependencies resolved (1.2s)'],['#60a5fa','▶ Compiling assets...'],['#4ade80','✓ CSS optimized  14kb → 4kb'],['#4ade80','✓ SEO meta generated'],['#60a5fa','▶ Deploying to production...'],['#4ade80','✓ DNS propagated'],['#4ade80','✓ Site live — 0 errors'],['#facc15','$ _']].forEach(([col,txt],i)=>{ c.fillStyle=col; c.font='11px monospace'; c.fillText(txt,44,62+i*34); });
+    } else if (idx === 3) {
+      c.fillStyle = grad(0,0,W,H,'#0d1f12','#0f2d1a'); c.fillRect(0,0,W,H);
+      c.fillStyle='rgba(255,255,255,0.06)'; c.beginPath(); c.roundRect(30,16,W-60,26,4); c.fill();
+      [['#ff5f57',50],['#febc2e',72],['#28c840',94]].forEach(([col,x])=>{ c.fillStyle=col; c.beginPath(); c.arc(x,29,5,0,Math.PI*2); c.fill(); });
+      c.fillStyle='rgba(74,222,128,0.08)'; c.fillRect(30,50,W-60,200);
+      c.strokeStyle='rgba(74,222,128,0.3)'; c.lineWidth=1; c.strokeRect(30,50,W-60,200);
+      c.fillStyle='#4ade80'; c.font='bold 14px sans-serif'; c.fillText('Cabinet Moreau',46,80);
+      c.fillStyle='rgba(255,255,255,0.4)'; c.font='11px sans-serif'; c.fillText('Avocat Bordeaux — RDV en ligne',46,100);
+      ['Performance 97/100','SEO 100/100','Accessibilité 95/100','Best Practices 100/100'].forEach((txt,i)=>{ c.fillStyle='#4ade80'; c.font='bold 12px sans-serif'; c.fillText('✓',40,278+i*24); c.fillStyle='#d1fae5'; c.font='12px sans-serif'; c.fillText(txt,60,278+i*24); });
+    } else if (idx === 4) {
+      c.fillStyle = grad(0,0,W,H,'#0f1015','#1a1f2e'); c.fillRect(0,0,W,H);
+      const glow = c.createRadialGradient(W/2,170,10,W/2,170,180); glow.addColorStop(0,'rgba(99,102,241,0.35)'); glow.addColorStop(1,'transparent'); c.fillStyle=glow; c.fillRect(0,0,W,H);
+      c.font='48px sans-serif'; c.textAlign='center'; c.fillText('🚀',W/2,120);
+      c.fillStyle='#e2e8f0'; c.font='bold 20px sans-serif'; c.fillText('Site en ligne !',W/2,165);
+      c.fillStyle='#94a3b8'; c.font='13px sans-serif'; c.fillText('cabinet-moreau.fr',W/2,190);
+      [['Rapide','Délai'],[' 97/100','PageSpeed'],['10/10','Satisfaction']].forEach(([val,lbl],i)=>{ const cx=80+i*170; c.fillStyle='rgba(99,102,241,0.2)'; c.beginPath(); c.roundRect(cx-55,218,110,64,6); c.fill(); c.strokeStyle='rgba(99,102,241,0.5)'; c.lineWidth=1; c.beginPath(); c.roundRect(cx-55,218,110,64,6); c.stroke(); c.fillStyle='#818cf8'; c.font='bold 18px sans-serif'; c.fillText(val,cx,256); c.fillStyle='#64748b'; c.font='10px sans-serif'; c.fillText(lbl,cx,272); });
+      c.fillStyle='#6366f1'; c.beginPath(); c.roundRect(W/2-90,308,180,36,6); c.fill();
+      c.fillStyle='#fff'; c.font='bold 13px sans-serif'; c.fillText('Voir le site →',W/2,331);
+      c.textAlign='left';
+    }
+    const tex = new THREE.CanvasTexture(cv);
+    tex.flipY = false;
+    return tex;
+  }
+
+  function getSize() {
+    return { w: Math.round(window.innerWidth * 0.72), h: Math.round(window.innerHeight * 0.9) };
+  }
+
+  // ── Scene ──
+  function initScene() {
+    const { w, h } = getSize();
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(38, w / h, 10, 1000);
+    camera.position.z = 60;
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: canvasEl });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(w, h);
+    lightHolder = new THREE.Group(); scene.add(lightHolder);
+    const al = new THREE.AmbientLight(0xffffff, .3); scene.add(al);
+    const pl = new THREE.PointLight(0xFFF5E1, 1.0); pl.position.set(0,5,50); lightHolder.add(pl);
+    const pl2 = new THREE.PointLight(0xaabbff, 0.4); pl2.position.set(-30,20,20); lightHolder.add(pl2);
+    macGroup = new THREE.Group(); macGroup.position.set(-5,-3,-10); macGroup.rotation.set(0.05*Math.PI,-1.0,0); macGroup.scale.set(0.90,0.90,0.90); scene.add(macGroup);
+    lidGroup = new THREE.Group(); macGroup.add(lidGroup);
+    bottomGroup = new THREE.Group(); macGroup.add(bottomGroup);
+  }
+
+  function createMaterials() {
+    liveTexture0 = new THREE.CanvasTexture(liveCanvas0);
+    liveTexture0.flipY = false;
+    drawSlide0(0);
+    slideTextures.push(liveTexture0); // idx 0 = live
+    for (let i=1;i<5;i++) slideTextures.push(makeSlideTexture(i));
+    screenMaterial = new THREE.MeshBasicMaterial({ map: slideTextures[0], transparent: true, opacity: 0, side: THREE.BackSide });
+    const kt = new THREE.TextureLoader().load("macbook-assets/keyboard-overlay.png");
+    keyboardMaterial = new THREE.MeshBasicMaterial({ color:0xffffff, alphaMap:kt, transparent:true });
+    darkPlasticMaterial = new THREE.MeshStandardMaterial({ color:0x000000, roughness:.9, metalness:.9 });
+    cameraMaterial = new THREE.MeshBasicMaterial({ color:0x333333 });
+    baseMetalMaterial = new THREE.MeshStandardMaterial({ color:0xCECFD3 });
+    logoMaterial = new THREE.MeshBasicMaterial({ color:0xffffff });
+  }
+
+  function parseModel(glb) {
+    [...glb.scene.children].forEach(child => {
+      if (child.name==='_top') {
+        lidGroup.add(child);
+        [...child.children].forEach(m => {
+          if(m.name==='lid') m.material=baseMetalMaterial;
+          else if(m.name==='logo') m.material=logoMaterial;
+          else if(m.name==='screen-frame') m.material=darkPlasticMaterial;
+          else if(m.name==='camera') m.material=cameraMaterial;
+        });
+      } else if (child.name==='_bottom') {
+        bottomGroup.add(child);
+        [...child.children].forEach(m => {
+          if(m.name==='base') m.material=baseMetalMaterial;
+          else if(m.name==='legs'||m.name==='keyboard'||m.name==='inner') m.material=darkPlasticMaterial;
+        });
+      }
+    });
+  }
+
+  function addScreen() {
+    const sm = new THREE.Mesh(new THREE.PlaneGeometry(screenSize[0],screenSize[1]), screenMaterial);
+    sm.position.set(0,10.5,-.11); sm.rotation.set(Math.PI,0,0); lidGroup.add(sm);
+    screenLight = new THREE.RectAreaLight(0xffffff,0,screenSize[0],screenSize[1]);
+    screenLight.position.set(0,10.5,0); screenLight.rotation.set(Math.PI,0,0); lidGroup.add(screenLight);
+    const ds = sm.clone(); ds.position.set(0,10.5,-.111); ds.rotation.set(Math.PI,Math.PI,0); ds.material=darkPlasticMaterial; lidGroup.add(ds);
+  }
+
+  function addKeyboard() {
+    const kk = new THREE.Mesh(new THREE.PlaneGeometry(27.7,11.6), keyboardMaterial);
+    kk.rotation.set(-.5*Math.PI,0,0); kk.position.set(0,.045,7.21); bottomGroup.add(kk);
+  }
+
+  function createTimelines() {
+    // Lid starts closed
+    lidGroup.rotation.x = 0.5 * Math.PI;
+
+    const floatingTl = gsap.timeline({ repeat:-1 })
+      .to([lidGroup.position,bottomGroup.position],{duration:1.8,y:'+=1.4',ease:'power1.inOut'},0)
+      .to([lidGroup.position,bottomGroup.position],{duration:1.8,y:'-=1.4',ease:'power1.inOut'})
+      .play(); // start floating immediately
+
+    screenOnTl = gsap.timeline({paused:true})
+      .to(screenMaterial,{duration:.2,opacity:.96},0)
+      .to(screenLight,{duration:.2,intensity:1.2},0);
+
+    laptopOpeningTl = gsap.timeline({paused:true})
+      .from(lidGroup.position,{duration:.75,z:'+=.5'},0)
+      .to(lidGroup.rotation,{duration:1.2,x:-.12*Math.PI,ease:'power2.out'},0)
+      .to(screenOnTl,{duration:.06,progress:1},.08);
+
+    window._mbEnter = function() {
+      if (mbEntered) return; mbEntered = true;
+      gsap.timeline()
+        .to(macGroup.rotation,{duration:1.1,y:0.0,x:0.04*Math.PI,ease:'power3.out'},0)
+        .to(laptopOpeningTl,{duration:1.1,progress:1,ease:'power2.out'},.25);
+    };
+
+    window._mbStep = function(idx) {
+      if (idx===currentSlideIdx) return;
+      if (mbSpinning) { _swapSlide(idx); return; }
+      mbSpinning = true;
+      const startY = macGroup.rotation.y;
+      gsap.timeline({onComplete:()=>{ mbSpinning=false; }})
+        .to(macGroup.rotation,{duration:.32,y:startY-Math.PI,ease:'power2.in'},0)
+        .add(()=>_swapSlide(idx),.30)
+        .to(macGroup.rotation,{duration:.32,y:startY-Math.PI*2,ease:'power2.out'},.32)
+        .set(macGroup.rotation,{y:startY});
+    };
+
+    window._mbClose = function() {
+      if (mbClosed) return; mbClosed = true;
+      laptopOpeningTl.kill();
+      gsap.timeline()
+        .to(screenMaterial, {duration:.2, opacity:0, ease:'power2.in', overwrite:'auto'}, 0)
+        .to(screenLight,    {duration:.2, intensity:0, ease:'power2.in', overwrite:'auto'}, 0)
+        .to(lidGroup.rotation, {duration:0.7, x:0.505*Math.PI, ease:'power2.inOut', overwrite:'auto'}, 0.1);
+    };
+
+    window._mbReopen = function() {
+      if (!mbClosed) return; mbClosed = false;
+      gsap.timeline()
+        .fromTo(lidGroup.rotation, {x:0.505*Math.PI}, {duration:0.7, x:-0.12*Math.PI, ease:'power2.out', overwrite:'auto'}, 0)
+        .fromTo(screenMaterial,    {opacity:0},       {duration:.25, opacity:.96, ease:'power2.out', overwrite:'auto'}, 0.55)
+        .fromTo(screenLight,       {intensity:0},     {duration:.25, intensity:1.2, ease:'power2.out', overwrite:'auto'}, 0.55);
+    };
+
+    function _swapSlide(idx) {
+      currentSlideIdx=idx;
+      screenMaterial.map=slideTextures[idx];
+      screenMaterial.needsUpdate=true;
+    }
+  }
+
+  function render() {
+    if (!document.hidden && window._processVisible !== false) {
+      if (currentSlideIdx === 0) drawSlide0(Date.now());
+      lightHolder.quaternion.copy(camera.quaternion);
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(render);
+  }
+
+  function updateSize() {
+    const { w, h } = getSize();
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+
+  initScene();
+  createMaterials();
+  new GLTFLoader().load(
+    "macbook-assets/mac-noUv.glb",
+    glb => {
+      parseModel(glb);
+      addScreen();
+      addKeyboard();
+      createTimelines();
+      render();
+      window.addEventListener('resize', updateSize);
+      // If user already scrolled into section before GLB loaded
+      if (window._mbPendingEnter) window._mbEnter();
+    },
+    undefined,
+    err => console.error('GLB error:', err)
+  );
+}
   </script>
 </body>
 </html>
