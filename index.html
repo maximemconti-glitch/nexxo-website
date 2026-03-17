@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nexxo — Automatisation IA & Sites Web</title>
+  <link rel="icon" type="image/png" href="./favicon.png">
+  <link rel="apple-touch-icon" href="./favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Archivo:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
@@ -194,7 +196,7 @@
     }
     .hero-title {
       font-family: var(--font-head); font-size: clamp(3rem, 7.8vw, 9rem);
-      font-weight: 700; line-height: 1.0; letter-spacing: -0.035em;
+      font-weight: 600; line-height: 1.0; letter-spacing: -0.03em;
       margin-bottom: clamp(16px, 2.5vh, 28px);
       white-space: nowrap;
     }
@@ -294,8 +296,8 @@
     }
     .specs-title {
       font-family: var(--font-head); font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 700; color: #ffffff; line-height: 1.05;
-      letter-spacing: -0.04em;
+      font-weight: 600; color: #ffffff; line-height: 1.05;
+      letter-spacing: -0.03em;
     }
     .specs-grid {
       display: grid; grid-template-columns: repeat(4,1fr);
@@ -363,7 +365,7 @@
     }
     .section-title {
       font-family: var(--font-head); font-size: clamp(2.2rem, 4.5vw, 3.5rem);
-      font-weight: 700; line-height: 1.05; letter-spacing: -0.03em;
+      font-weight: 600; line-height: 1.05; letter-spacing: -0.025em;
     }
 
     /* ─── BENTO FEATURES (WHITE) ─── */
@@ -794,16 +796,16 @@
       gap: 72px;
       padding: 20vh max(48px, 7vw) 0;
       background: #f5f0e8;
-      position: relative;
+      position: sticky; top: 0; overflow: hidden;
     }
-    .process-scroll-room { height: 375vh; }
+    .process-scroll-room { height: 120vh; }
 
     /* Left */
     .process-left { flex: 1; position: relative; z-index: 1; min-width: 0; }
     .process-main-title {
       font-family: var(--font-head); font-size: clamp(2.8rem, 5vw, 4.5rem);
-      font-weight: 700; color: #1d1d1f; line-height: 1.0;
-      letter-spacing: -0.04em; margin-bottom: 36px;
+      font-weight: 600; color: #1d1d1f; line-height: 1.0;
+      letter-spacing: -0.03em; margin-bottom: 36px;
       white-space: nowrap;
     }
     .ps-indicator {
@@ -1269,10 +1271,11 @@
       margin: 0 auto 64px; border-radius: 2px;
     }
 
-    /* ─── WHITE HERO ─── */
+    /* ─── HERO ─── */
     #hero {
-      background: #ffffff;
-      z-index: 2;
+      background: #f5f0e8;
+      position: relative;
+      min-height: 100vh;
     }
     #hero .orb-1, #hero .orb-2 { opacity: 0; }
     #hero .hero-eyebrow { color: #6e6e73; }
@@ -1502,12 +1505,37 @@
 
     /* ─── RÉALISATIONS ─── */
     #realisations {
-      background: #ffffff;
+      background: #f5f0e8;
       padding: 80px max(28px, 5vw) 64px;
       position: relative; z-index: 2;
       display: flex; flex-direction: column;
-      height: 100vh; overflow: hidden;
+      height: calc(100vh + 2px); overflow: hidden;
       box-sizing: border-box;
+      transition: background-color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    /* ─── RÉALISATIONS — mode sombre ─── */
+    #realisations.dark {
+      background: #000000;
+    }
+    #realisations.dark .merged-title { color: #f5f5f7; }
+    #realisations.dark .real-eyebrow { color: rgba(255,255,255,0.45); }
+    #realisations.dark .merged-sub   { color: rgba(255,255,255,0.55); }
+    #realisations.dark .sc-dot       { background: rgba(255,255,255,0.2); }
+    #realisations.dark .sc-dot.active { background: var(--accent); }
+    #realisations.dark .sc-arrow {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+    #realisations.dark .sc-arrow:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.25);
+    }
+    #realisations.dark .floor-glow {
+      background: radial-gradient(ellipse at center bottom, rgba(var(--accent-rgb),0.18) 0%, transparent 70%);
+    }
+    #realisations.dark .floor-line {
+      background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb),0.3), transparent);
     }
     /* Merged section layout */
     .merged-wrap { max-width: 1280px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; min-height: 0; }
@@ -1788,10 +1816,10 @@
     #realisations .floor-glow { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 900px; height: 80px; background: radial-gradient(ellipse at center bottom, rgba(var(--accent-rgb),0.07) 0%, transparent 70%); pointer-events: none; }
     #realisations .floor-line { position: absolute; bottom: 68px; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb),0.15), transparent); pointer-events: none; }
 
-    /* ─── TEAM (WHITE) ─── */
+    /* ─── TEAM ─── */
     #team {
       padding: 100px 32px 120px;
-      background: #f5f5f7;
+      background: #f5f0e8;
     }
     #team .section-title { color: #1d1d1f; }
     #team .section-eyebrow { color: var(--accent); }
@@ -1907,25 +1935,43 @@
     /* ─── SECTION TAG (overrides) ─── */
     #join .section-title { color: var(--text); }
 
-    /* ─── STACK SCROLL ─── */
-    .stack-slide {
-      position: sticky; top: 0;
-      min-height: 100vh;
-      clip-path: inset(0);       /* clip sans casser le sticky */
-      transform-origin: center top;
+    /* ─── SCROLL REVEAL ─── */
+    /* État initial : invisible + légèrement décalé vers le bas */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    /* z-index : les sections s'empilent dans l'ordre */
-    #hero              { z-index: 2 !important; }
-    #process           { z-index: 3 !important; }
-    #realisations      { z-index: 4 !important; }
-    #team              { z-index: 5 !important; }
-    #join              { z-index: 6 !important; }
+    .reveal.revealed {
+      opacity: 1;
+      transform: none;
+    }
+    /* Délais pour les stagger (éléments d'une même grille) */
+    .reveal[data-delay="1"] { transition-delay: 80ms; }
+    .reveal[data-delay="2"] { transition-delay: 160ms; }
+    .reveal[data-delay="3"] { transition-delay: 240ms; }
+    .reveal[data-delay="4"] { transition-delay: 320ms; }
+    .reveal[data-delay="5"] { transition-delay: 400ms; }
+
+    /* Hero — animation d'entrée sur chargement */
+    .hero-content > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .hero-content.hero-entered > * { opacity: 1; transform: none; }
+    .hero-content.hero-entered > *:nth-child(1) { transition-delay: 100ms; }
+    .hero-content.hero-entered > *:nth-child(2) { transition-delay: 220ms; }
+    .hero-content.hero-entered > *:nth-child(3) { transition-delay: 360ms; }
+
   </style>
   <!-- Calendly popup widget -->
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
   <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
   <!-- GSAP for MacBook animation -->
-  <script src="./macbook-assets/gsap.min.js"></script>
+  <script src="../macbook-assets/gsap.min.js"></script>
 </head>
 <body>
 
@@ -2768,7 +2814,15 @@
     // NAVBAR PILL
     // ─────────────────────────────────────────
     const navbar = document.getElementById('navbar');
-    // nav-scrolled est géré par le système de snap (voir _snapTo)
+    // nav-scrolled : passe en bandeau pill dès qu'on quitte le hero
+    window.addEventListener('scroll', function() {
+      if (window._dwellLocked) return;
+      if (window.scrollY > 60) {
+        navbar.classList.add('nav-scrolled');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+      }
+    }, { passive: true });
 
 
     // ─────────────────────────────────────────
@@ -3144,11 +3198,10 @@
           if (fill) fill.style.width = ((idx + 1) / N * 100) + '%';
           if (stepNum) {
             stepNum.classList.remove('active');
-            void stepNum.offsetWidth; // force reflow to restart animation
             stepNum.textContent = String(idx + 1).padStart(2, '0');
-            stepNum.classList.add('active');
+            requestAnimationFrame(() => stepNum.classList.add('active'));
           }
-          if (window._mbStep) window._mbStep(idx);
+          // slide swap handled by _mbScrollDrive
         }
 
         // ── Scroll tracking ──
@@ -3162,12 +3215,9 @@
           const raw = breaks.findIndex((b, i) => i < N && progress < breaks[i + 1]);
           const idx = raw === -1 ? N - 1 : raw;
           setStep(idx);
-          texts[idx].classList.add('active'); descs[idx].classList.add('active'); // force re-sync on re-entry
-          // _mbClose sur progress < 0.07 uniquement si l'utilisateur remonte (pas en entrant)
-          const goingBack = progress < _prevProgress;
-          if (mbEntered && progress > 0.93 && window._mbClose) window._mbClose();
-          if (mbEntered && progress < 0.07 && goingBack && window._mbClose) window._mbClose();
-          if (mbEntered && progress > 0.12 && progress < 0.88 && window._mbReopen) window._mbReopen();
+          texts[idx].classList.add('active'); descs[idx].classList.add('active');
+          // Scroll-driven spin — rotation tied directly to scroll position
+          if (window._mbScrollDrive) window._mbScrollDrive(progress);
           _prevProgress = progress;
         });
       })();
@@ -3226,360 +3276,242 @@
     })();
 
     // ─────────────────────────────────────────
-    // STACK SCROLL — panneaux fixes qui montent sur les précédents
-    // Les sections plus hautes que 100vh scrollent leur contenu avant de laisser passer la suivante
+    // PROCESS SCROLL — simple listener, sections en flux normal
     // ─────────────────────────────────────────
     (function() {
-      const PANEL_IDS = ['process', 'realisations', 'team', 'join'];
-      const panels = PANEL_IDS.map(id => document.getElementById(id)).filter(Boolean);
-      if (panels.length < 2) return;
+      const section = document.getElementById('process');
+      if (!section) return;
+      const room = section.querySelector('.process-scroll-room');
+      if (!room) return;
 
-      const hero      = document.getElementById('hero');
-      const ENTER_DUR  = 0.55; // fraction de vh pour l'animation d'entrée
-      const DWELL_DUR  = 0.45; // pause de lecture avant que la section suivante commence à monter
-      const HERO_DWELL = 0.45; // pause sur le hero avant que la première section commence à monter
-      const easeOut = t => 1 - Math.pow(1 - t, 3); // easeOutCubic
+      let _mbTriggered = false; // passe à true une seule fois, jamais resetté
 
-      // ── 1. Rendre les panneaux fixes (height:auto = hauteur naturelle du contenu) ──
-      panels.forEach((el, i) => {
-        el.classList.remove('stack-slide');
-        Object.assign(el.style, {
-          position:        'fixed',
-          top:             '0',
-          left:            '0',
-          width:           '100%',
-          height:          'auto',
-          minHeight:       '100vh',
-          overflow:        'hidden',
-          transformOrigin: 'center top',
-          willChange:      'transform, opacity',
-        });
-        // z-index via setProperty pour passer le !important des règles CSS existantes
-        el.style.setProperty('z-index', String(4 + i), 'important');
-      });
+      // Lock bref après chaque transition d'écran (quand le Mac est de face)
+      // SPIN_BREAKPOINTS [0.222, 0.407, 0.593, 0.778] + TW (0.055) = positions de face
+      const STEP_LOCK_PROGRESS = [0.277, 0.462, 0.648, 0.833];
+      const STEP_LOCK_MS       = 500; // ms de pause après chaque transition
+      let _stepLockDone  = [false, false, false, false];
+      let _prevProgress  = -1;
+      let _stepLocking   = false;
 
-      // ── 2. Spacer pour la longueur de scroll ──────────────────────────────────────
-      const spacer = document.createElement('div');
-      spacer.id = 'stack-spacer';
-      spacer.style.pointerEvents = 'none';
-      document.body.appendChild(spacer);
-
-      let baseScroll = 0;
-      let panelData  = [];
-
-      function recalc() {
-        const vh = window.innerHeight;
-        baseScroll = 0;
-
-        let cumulOffset = HERO_DWELL * vh;
-        panelData = panels.map(el => {
-          // Hauteur réelle du contenu (sections > 100vh scrollent leur contenu)
-          const overflowH  = Math.max(0, el.offsetHeight - vh);
-          const enterSize  = ENTER_DUR * vh;
-          const dwellSize  = parseFloat(el.dataset.dwell || DWELL_DUR) * vh;
-          const totalSpace = enterSize + overflowH + dwellSize;
-          const d = { overflowH, enterSize, dwellSize, totalSpace, offset: cumulOffset };
-          cumulOffset += totalSpace;
-          return d;
-        });
-
-        spacer.style.height = (cumulOffset + vh) + 'px';
+      function applyStepLock(lockY) {
+        if (window._dwellLocked || _stepLocking) return;
+        _stepLocking = true;
+        window._dwellLocked = true;
+        function blockInput(e) { e.preventDefault(); }
+        window.addEventListener('wheel',     blockInput, { passive: false });
+        window.addEventListener('touchmove', blockInput, { passive: false });
+        window.scrollTo(0, lockY);
+        setTimeout(() => {
+          window.removeEventListener('wheel',     blockInput);
+          window.removeEventListener('touchmove', blockInput);
+          window._dwellLocked = false;
+          _stepLocking = false;
+        }, STEP_LOCK_MS);
       }
 
       function update() {
         const sy = window.scrollY;
-        const vh = window.innerHeight;
+        const rect = section.getBoundingClientRect();
+        const sectionTop = sy + rect.top;
+        const roomH = room.offsetHeight || window.innerHeight * 1.25;
+        const scrolled = sy - sectionTop;
 
-        // Hero recule pendant que realisations monte
-        if (hero) {
-          const hp = Math.max(0, Math.min(1, (sy - baseScroll - HERO_DWELL * vh) / (ENTER_DUR * vh)));
-          const hpe = -(Math.cos(Math.PI * hp) - 1) / 2; // easeInOutSine — synced with section entry
-          hero.style.transform = hp > 0
-            ? `scale(${(1 - hpe * 0.08).toFixed(4)}) translateY(${(-hpe * 3).toFixed(2)}%)`
-            : '';
-          hero.style.opacity = Math.max(0, 1 - Math.pow(hpe, 2)).toFixed(3);
+        window._processVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
-          // Navbar suit le scale du hero avant de passer en bandeau
-          const navEl = document.getElementById('navbar');
-          if (navEl && !navEl.classList.contains('nav-scrolled')) {
-            navEl.style.transform = hp > 0
-              ? `scale(${(1 - hpe * 0.08).toFixed(4)})`
-              : '';
-          } else if (navEl && navEl.classList.contains('nav-scrolled')) {
-            navEl.style.transform = '';
-          }
+        // Ouvrir le Mac la première fois qu'on arrive sur la section
+        if (!_mbTriggered && scrolled >= 0) {
+          _mbTriggered = true;
+          if (window._mbEnter) window._mbEnter();
         }
 
-        panels.forEach((el, i) => {
-          const d          = panelData[i];
-          const enterStart = baseScroll + d.offset;
-          const enterEnd   = enterStart + d.enterSize;
-          const viewEnd    = enterEnd + d.overflowH;
+        if (!_mbTriggered || scrolled < 0) return;
 
-          const enterP = Math.max(0, Math.min(1, (sy - enterStart) / d.enterSize));
+        const progress = Math.max(0, Math.min(1, scrolled / roomH));
+        section.dispatchEvent(new CustomEvent('pinscroll', { detail: { progress } }));
 
-          // Pas encore visible — caché en dessous du fold
-          if (enterP === 0) {
-            if (el.dataset.pinned) { window._processVisible = false; el._mbTriggered = false; }
-            el.style.transform    = `translateY(${vh}px)`;
-            el.style.opacity      = '1';
-            el.style.borderRadius = '28px 28px 0 0';
-            return;
-          }
-
-          // Phase d'entrée : monte de bas en haut
-          if (enterP < 1) {
-            if (el.dataset.pinned) window._processVisible = true;
-            const ep = -(Math.cos(Math.PI * enterP) - 1) / 2; // easeInOutSine — perçu sur toute la hauteur
-            const ty = (1 - ep) * vh;
-            const br = (1 - ep) * 28;
-            el.style.transform    = `translateY(${ty.toFixed(1)}px)`;
-            el.style.opacity      = '1';
-            el.style.borderRadius = `${br.toFixed(1)}px ${br.toFixed(1)}px 0 0`;
-            return;
-          }
-
-          // Pleinement entré — ouvrir le MacBook dès la première frame
-          if (el.dataset.pinned && !el._mbTriggered) {
-            el._mbTriggered = true;
-            if (window._mbEnter) window._mbEnter();
-            if (window._mbReopen) window._mbReopen();
-          }
-
-          // Scroll du contenu si la section dépasse 100vh
-          const viewProgress = Math.max(0, Math.min(d.overflowH, sy - enterEnd));
-
-          // Est-ce que le panneau suivant monte par-dessus ?
-          const nextD      = panelData[i + 1];
-          const coverStart = viewEnd + d.dwellSize;
-          const coverP     = nextD
-            ? Math.max(0, Math.min(1, (sy - coverStart) / nextD.enterSize))
-            : 0;
-
-          const baseTY = -viewProgress;
-
-          // Pinned sections: don't scroll content, expose progress via event
-          if (el.dataset.pinned) {
-            window._processVisible = coverP < 1;
-            const pinProgress = d.overflowH > 0 ? viewProgress / d.overflowH : 0;
-            el.dispatchEvent(new CustomEvent('pinscroll', { detail: { progress: pinProgress } }));
-            if (coverP === 0) {
-              el.style.transform    = '';
-              el.style.opacity      = '1';
-              el.style.borderRadius = '0';
-            } else {
-              const coverPe = -(Math.cos(Math.PI * coverP) - 1) / 2; // easeInOutSine — synced with entry
-              const scale   = 1 - coverPe * 0.06;
-              const coverTY = -coverPe * vh * 0.03;
-              el.style.transform    = `scale(${scale.toFixed(4)}) translateY(${coverTY.toFixed(1)}px)`;
-              el.style.opacity      = Math.max(0, 1 - Math.pow(coverPe, 2)).toFixed(3);
-              el.style.borderRadius = '0';
+        // Détecter franchissement d'un point de lock (aller) — lock bref
+        if (!window._dwellLocked && !_stepLocking) {
+          for (let i = 0; i < STEP_LOCK_PROGRESS.length; i++) {
+            if (!_stepLockDone[i] && _prevProgress < STEP_LOCK_PROGRESS[i] && progress >= STEP_LOCK_PROGRESS[i]) {
+              _stepLockDone[i] = true;
+              applyStepLock(sectionTop + STEP_LOCK_PROGRESS[i] * roomH);
+              break;
             }
-            return;
-          }
-
-          if (coverP === 0) {
-            el.style.transform    = baseTY !== 0 ? `translateY(${baseTY.toFixed(1)}px)` : '';
-            el.style.opacity      = '1';
-            el.style.borderRadius = '0';
-          } else {
-            const coverPe = -(Math.cos(Math.PI * coverP) - 1) / 2; // easeInOutSine — synced with entry
-            const scale   = 1 - coverPe * 0.06;
-            const coverTY = -coverPe * vh * 0.03;
-            el.style.transform    = `scale(${scale.toFixed(4)}) translateY(${(baseTY + coverTY).toFixed(1)}px)`;
-            el.style.opacity      = Math.max(0, 1 - Math.pow(coverPe, 2)).toFixed(3);
-            el.style.borderRadius = '0';
-          }
-        });
-      }
-
-      // Mesurer les hauteurs après rendu (offsetHeight fiable uniquement après layout)
-      requestAnimationFrame(() => {
-        panels.forEach(el => {
-          el.style.transform    = `translateY(${window.innerHeight}px)`;
-          el.style.opacity      = '1';
-          el.style.borderRadius = '28px 28px 0 0';
-        });
-        recalc();
-        update();
-      });
-
-      let _rafPending = false;
-      window.addEventListener('scroll', () => {
-        if (_rafPending) return;
-        _rafPending = true;
-        requestAnimationFrame(() => { _rafPending = false; update(); });
-      }, { passive: true });
-      window.addEventListener('resize', () => { recalc(); update(); }, { passive: true });
-
-      // ── Auto-transition (scroll-triggered, time-based) ──
-      let _snapping   = false;
-      let _snapRaf    = null;
-      let _prevSY     = window.scrollY;
-      let _snapUntil  = 0;   // cooldown timestamp
-      let _lastSnapDir = 0;  // direction du dernier snap (1=bas, -1=haut)
-      const SNAP_SPEED = 1300; // ms pour 1×vh — vitesse de référence (constante perçue)
-      const SNAP_COOL  = 300;  // ms d'immunité (même direction uniquement)
-
-      // Bloquer scroll pendant l'animation
-      window.addEventListener('wheel',     function(ev) { if (_snapping) ev.preventDefault(); }, { passive: false });
-      window.addEventListener('touchmove', function(ev) { if (_snapping) ev.preventDefault(); }, { passive: false });
-
-      function _snapTo(targetY, dir) {
-        if (_snapping || (Date.now() < _snapUntil && dir === _lastSnapDir)) return;
-        _snapping = true;
-        // Retour vers hero → enlever le bandeau immédiatement
-        if (targetY === 0) document.getElementById('navbar').classList.remove('nav-scrolled');
-        if (_snapRaf) cancelAnimationFrame(_snapRaf);
-        const from = window.scrollY;
-        const dist = targetY - from;
-        if (Math.abs(dist) < 2) { _snapping = false; return; }
-        // Durée proportionnelle à la distance → vitesse perçue constante
-        // La descente est délibérément plus lente (×2) pour un feeling plus doux
-        const speedRef = dir > 0 ? SNAP_SPEED * 2 : SNAP_SPEED;
-        const snapMs = Math.min(2200, Math.max(400, Math.abs(dist) / window.innerHeight * speedRef));
-        const t0 = performance.now();
-        let _navToggled = false;
-        (function tick(now) {
-          const t = Math.min(1, (now - t0) / snapMs);
-          const ease = -(Math.cos(Math.PI * t) - 1) / 2; // easeInOutSine (same both directions)
-          window.scrollTo(0, from + dist * ease);
-          // Bandeau : apparaît quand le bord supérieur de la section montante touche la navbar
-          const _navH = document.getElementById('navbar').offsetHeight;
-          const _navThreshold = targetY * (1 - _navH / window.innerHeight);
-          if (targetY > 0 && !_navToggled && window.scrollY >= _navThreshold) {
-            document.getElementById('navbar').classList.add('nav-scrolled');
-            _navToggled = true;
-          }
-          if (t < 1) _snapRaf = requestAnimationFrame(tick);
-          else {
-            window.scrollTo(0, targetY);
-            _prevSY    = targetY; // ← sync direction après snap
-            _snapUntil   = Date.now() + SNAP_COOL; // ← cooldown anti-inertie
-            _lastSnapDir = dir;
-            _snapping    = false;
-            // Reset MacBook quand on retourne au hero
-            if (targetY === 0 && panelData.length > 0 && window._mbReset) window._mbReset();
-          }
-        })(performance.now());
-      }
-
-      // Pause brève au franchissement d'une sous-section du process
-      // Verrouille scrollTo chaque frame pour résister à l'inertie du trackpad
-      function _processDwell(targetY) {
-        if (_snapping) return;
-        _snapping = true;
-        const lockUntil = Date.now() + 450;
-        let _dwellRaf = null;
-        function lock() {
-          window.scrollTo(0, targetY);
-          if (Date.now() < lockUntil) {
-            _dwellRaf = requestAnimationFrame(lock);
-          } else {
-            _prevSY = targetY;
-            _snapping = false;
-            _snapUntil = Date.now() + SNAP_COOL;
-            _lastSnapDir = 0;
           }
         }
-        lock();
+
+        // Réinitialiser les locks dépassés quand on remonte
+        for (let i = 0; i < STEP_LOCK_PROGRESS.length; i++) {
+          if (_stepLockDone[i] && progress < STEP_LOCK_PROGRESS[i] - 0.06) {
+            _stepLockDone[i] = false;
+          }
+        }
+
+        _prevProgress = progress;
+      }
+
+      let _raf = false;
+      window.addEventListener('scroll', () => {
+        if (_raf || window._dwellLocked) return;
+        _raf = true;
+        requestAnimationFrame(() => { _raf = false; update(); });
+      }, { passive: true });
+      window.addEventListener('resize', update, { passive: true });
+      update();
+
+      // Nav links
+      window.scrollToSection = function(id) {
+        if (id === 'hero') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      };
+    })();
+
+    // ─────────────────────────────────────────
+    // REALISATIONS DWELL — pause 1s quand le carousel est pleinement visible
+    // ─────────────────────────────────────────
+    (function() {
+      const section = document.getElementById('realisations');
+      if (!section) return;
+
+      const DWELL_MS = 2500;
+      let _locked  = false;
+      let _done    = false;
+      let _prevSy  = window.scrollY;
+
+      function startDwell(snapY) {
+        if (_locked) return;
+        _locked = true;
+        _done   = true;
+        window._dwellLocked = true;
+
+        // Bloquer wheel/touch AVANT le scrollTo pour couper le momentum
+        function blockInput(e) { e.preventDefault(); }
+        window.addEventListener('wheel',     blockInput, { passive: false });
+        window.addEventListener('touchmove', blockInput, { passive: false });
+
+        // Snap top-aligné : section.top = viewport.top (+ 2px de sécurité vers le bas)
+        // window.scrollTo(0, y) — sans options, toujours instant dans tous les browsers
+        if (snapY != null) window.scrollTo(0, snapY);
+
+        setTimeout(() => {
+          window.removeEventListener('wheel',     blockInput);
+          window.removeEventListener('touchmove', blockInput);
+          window._dwellLocked = false;
+          _locked = false;
+        }, DWELL_MS);
       }
 
       window.addEventListener('scroll', function() {
-        if (_snapping) return;
-        const sy     = window.scrollY;
-        const vh     = window.innerHeight;
-        const prev   = _prevSY;
-        _prevSY = sy;
-        const goDown = sy > prev;
+        const sy        = window.scrollY;
+        const goingDown = sy > _prevSy;
+        _prevSy = sy;
+        const rect = section.getBoundingClientRect();
 
-        // ── Dwell sous-sections process ──
-        if (panelData.length > 0) {
-          const procD = panelData[0];
-          const procEnterEnd = baseScroll + procD.offset + procD.enterSize;
-          const procBreaks = [0.222, 0.407, 0.593, 0.778];
-          for (const frac of procBreaks) {
-            const bp = procEnterEnd + frac * procD.overflowH;
-            if ((goDown && prev < bp && sy >= bp) || (!goDown && prev > bp && sy <= bp)) {
-              _processDwell(bp);
-              return;
-            }
-          }
-        }
+        // Reset quand on remonte largement au-dessus
+        if (rect.top > window.innerHeight * 0.5) { _done = false; return; }
 
-        // ── Points de franchissement ──
-        const down = []; // franchir vers le bas → lancer transition suivante
-        const up   = []; // franchir vers le haut → revenir à la section précédente
-
-        // Vers le bas : franchir la fin du contenu de chaque section
-        if (panelData.length) {
-          down.push({
-            trigger: baseScroll + HERO_DWELL * vh,
-            target:  baseScroll + panelData[0].offset + panelData[0].enterSize,
-          });
-        }
-        panelData.forEach((d, i) => {
-          const nextD = panelData[i + 1];
-          if (!nextD) return;
-          down.push({
-            trigger: baseScroll + d.offset + d.enterSize + d.overflowH + d.dwellSize,
-            target:  baseScroll + nextD.offset + nextD.enterSize,
-          });
-        });
-
-        // Vers le haut : franchir le enterEnd de chaque section (elle commence à redescendre)
-        panelData.forEach((d, i) => {
-          const prev = panelData[i - 1];
-          up.push({
-            trigger: baseScroll + d.offset + d.enterSize,
-            target:  prev
-              ? baseScroll + prev.offset + prev.enterSize + prev.overflowH + prev.dwellSize // fin du contenu + dwell de la section précédente
-              : 0,
-          });
-        });
-
-        if (goDown) {
-          for (const p of down) {
-            if (prev <= p.trigger && sy >= p.trigger) { _snapTo(p.target, 1); return; }
-          }
-        } else {
-          let best = null;
-          for (const p of up) {
-            if (prev >= p.trigger && sy < p.trigger) best = p;
-          }
-          if (best) {
-            _snapTo(best.target, -1);
-            return;
-          }
+        // Fenêtre large : capte les scrolls rapides qui sautent beaucoup de pixels
+        // rect.top in (-15vh, +10px] → section est en train de franchir le haut du viewport
+        if (!_locked && !_done && goingDown
+            && rect.top <= 10 && rect.top > -window.innerHeight * 0.15) {
+          // Top-aligné : scroll jusqu'à ce que le haut de la section = haut du viewport
+          // → section.bottom = innerHeight + 2 → 2px de marge en bas, aucun beige visible
+          const snapY = Math.floor(sy + rect.top);
+          startDwell(snapY);
         }
       }, { passive: true });
 
-      // Expose scroll-to-section for nav links — saut direct, sans passer par les sections intermédiaires
-      window.scrollToSection = function(id) {
-        const idx = PANEL_IDS.indexOf(id);
-        if (idx === -1) {
-          // Hero : revenir en haut directement
-          if (id === 'hero') {
-            _snapping = false;
-            if (_snapRaf) cancelAnimationFrame(_snapRaf);
-            window.scrollTo(0, 0);
-            _prevSY = 0;
-            document.getElementById('navbar').classList.remove('nav-scrolled');
-            if (window._mbReset) window._mbReset();
-            update();
+      // Basculer fond sombre dès que la section entre dans le viewport (40% visible)
+      const darkObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          section.classList.toggle('dark', e.isIntersecting);
+        });
+      }, { threshold: 0.4 });
+      darkObserver.observe(section);
+    })();
+
+    // ─────────────────────────────────────────
+    // SCROLL REVEAL — Apple-style fade-up entrance
+    // ─────────────────────────────────────────
+    (function() {
+      // Éléments à révéler au scroll
+      const REVEAL_SELECTORS = [
+        // Sections light
+        '.specs-header',
+        '.spec-item',
+        '.section-header',
+        // Process
+        '.process-main-title',
+        '.ps-step-counter',
+        // Réalisations
+        '.merged-header',
+        '.widget-card',
+        // Team
+        '.team-card',
+        // Join
+        '.join-inner',
+      ];
+
+      const allEls = document.querySelectorAll(REVEAL_SELECTORS.join(','));
+
+      // Ajouter la classe .reveal + stagger aux siblings dans un même parent
+      allEls.forEach(el => {
+        if (el.classList.contains('reveal')) return; // déjà traité
+        el.classList.add('reveal');
+      });
+
+      // Stagger : éléments partageant le même parent direct
+      const GRID_SELECTORS = ['.spec-item', '.widget-card', '.team-card'];
+      GRID_SELECTORS.forEach(sel => {
+        const parentMap = new Map();
+        document.querySelectorAll(sel).forEach(el => {
+          const p = el.parentElement;
+          if (!parentMap.has(p)) parentMap.set(p, []);
+          parentMap.get(p).push(el);
+        });
+        parentMap.forEach(siblings => {
+          siblings.forEach((el, i) => {
+            if (i > 0) el.dataset.delay = String(Math.min(i, 5));
+          });
+        });
+      });
+
+      // IntersectionObserver
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('revealed');
+            observer.unobserve(e.target);
           }
-          return;
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      // Hero : animation d'entrée après le loader
+      const heroContent = document.querySelector('.hero-content');
+      if (heroContent) {
+        const loaderEl = document.getElementById('loader');
+        function triggerHero() {
+          heroContent.classList.add('hero-entered');
         }
-        const d = panelData[idx];
-        if (!d) return;
-        const target = baseScroll + d.offset + d.enterSize;
-        // Saut instantané — aucune section intermédiaire visible
-        _snapping = false;
-        if (_snapRaf) cancelAnimationFrame(_snapRaf);
-        window.scrollTo(0, target);
-        _prevSY = target;
-        update();
-      };
+        if (loaderEl) {
+          // Attendre que le loader soit masqué
+          const loaderObs = new MutationObserver(() => {
+            if (loaderEl.style.opacity === '0' || loaderEl.style.display === 'none') {
+              setTimeout(triggerHero, 100);
+              loaderObs.disconnect();
+            }
+          });
+          loaderObs.observe(loaderEl, { attributes: true, attributeFilter: ['style'] });
+          // Fallback 2s
+          setTimeout(triggerHero, 2000);
+        } else {
+          setTimeout(triggerHero, 300);
+        }
+      }
     })();
 
     // ─────────────────────────────────────────
@@ -3676,8 +3608,8 @@
 
   <!-- ── MacBook 3D — Three.js inline ── -->
   <script type="module">
-import * as THREE from "./macbook-assets/three.module.min.js";
-import { GLTFLoader } from "./macbook-assets/GLTFLoader.js";
+import * as THREE from "../macbook-assets/three.module.min.js";
+import { GLTFLoader } from "../macbook-assets/GLTFLoader.js";
 
 const canvasEl = document.getElementById('mb-canvas');
 if (!canvasEl) { console.warn('mb-canvas not found'); }
@@ -3907,8 +3839,8 @@ else {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(w, h);
     lightHolder = new THREE.Group(); scene.add(lightHolder);
-    const al = new THREE.AmbientLight(0xffffff, .3); scene.add(al);
-    const pl = new THREE.PointLight(0xFFF5E1, 1.0); pl.position.set(0,5,50); lightHolder.add(pl);
+    const al = new THREE.AmbientLight(0xffffff, .5); scene.add(al);
+    const pl = new THREE.PointLight(0xFFF5E1, 0.5); pl.position.set(0,5,50); lightHolder.add(pl);
     const pl2 = new THREE.PointLight(0xaabbff, 0.4); pl2.position.set(-30,20,20); lightHolder.add(pl2);
     macGroup = new THREE.Group(); macGroup.position.set(-5,-3,-10); macGroup.rotation.set(0.05*Math.PI,-1.0,0); macGroup.scale.set(0.90,0.90,0.90); scene.add(macGroup);
     lidGroup = new THREE.Group(); macGroup.add(lidGroup);
@@ -3922,7 +3854,7 @@ else {
     slideTextures.push(liveTexture0); // idx 0 = live
     for (let i=1;i<5;i++) slideTextures.push(makeSlideTexture(i));
     screenMaterial = new THREE.MeshBasicMaterial({ map: slideTextures[0], transparent: true, opacity: 0, side: THREE.BackSide });
-    const kt = new THREE.TextureLoader().load("./macbook-assets/keyboard-overlay.png");
+    const kt = new THREE.TextureLoader().load("../macbook-assets/keyboard-overlay.png");
     keyboardMaterial = new THREE.MeshBasicMaterial({ color:0xffffff, alphaMap:kt, transparent:true });
     darkPlasticMaterial = new THREE.MeshStandardMaterial({ color:0x000000, roughness:.9, metalness:.9 });
     cameraMaterial = new THREE.MeshBasicMaterial({ color:0x333333 });
@@ -3964,8 +3896,9 @@ else {
   }
 
   function createTimelines() {
-    // Lid starts closed
+    // Lid starts closed — rotation + z offset to sit flush on the base
     lidGroup.rotation.x = 0.5 * Math.PI;
+    lidGroup.position.z = 0.5;
 
     const floatingTl = gsap.timeline({ repeat:-1 })
       .to([lidGroup.position,bottomGroup.position],{duration:1.8,y:'+=1.4',ease:'power1.inOut'},0)
@@ -3986,6 +3919,8 @@ else {
     function _killAll() {
       if (_mbTl) { _mbTl.kill(); _mbTl = null; }
       if (_closeTl) { _closeTl.kill(); _closeTl = null; }
+      // Stop lerp RAF loop
+      if (_lerpRafId) { cancelAnimationFrame(_lerpRafId); _lerpRafId = null; }
       // Belt-and-suspenders: also kill any orphaned tweens per target
       gsap.killTweensOf(lidGroup.rotation);
       gsap.killTweensOf(macGroup.rotation);
@@ -3993,11 +3928,29 @@ else {
       gsap.killTweensOf(screenLight);
     }
 
+    // Scroll block pendant l'animation d'ouverture
+    let _mbOpenBlockInput = null;
+    function _mbLockScroll() {
+      if (_mbOpenBlockInput) return;
+      window._dwellLocked = true;
+      _mbOpenBlockInput = function(e) { e.preventDefault(); };
+      window.addEventListener('wheel',     _mbOpenBlockInput, { passive: false });
+      window.addEventListener('touchmove', _mbOpenBlockInput, { passive: false });
+    }
+    function _mbUnlockScroll() {
+      if (!_mbOpenBlockInput) return;
+      window.removeEventListener('wheel',     _mbOpenBlockInput);
+      window.removeEventListener('touchmove', _mbOpenBlockInput);
+      _mbOpenBlockInput = null;
+      window._dwellLocked = false;
+    }
+
     window._mbEnter = function() {
       if (mbEntered) return;
       mbEntered = true;
       mbOpening = true;
       _killAll();
+      _mbLockScroll();
 
       // Detect state:
       //   First load  → y ≈ -1.0 (set in initScene) — animate turn + lid open
@@ -4012,12 +3965,13 @@ else {
         macGroup.rotation.z = 0;
       }
 
-      _mbTl = gsap.timeline({ onComplete: () => { mbOpening = false; _mbTl = null; } });
+      _mbTl = gsap.timeline({ onComplete: () => { mbOpening = false; _mbTl = null; _mbUnlockScroll(); } });
 
       if (isFirstLoad) {
         // Original dramatic reveal: rotate to face camera + open lid
         _mbTl
           .to(macGroup.rotation, {duration:1.1, y:0.0, x:0.04*Math.PI, ease:'power3.out'}, 0)
+          .to(lidGroup.position, {duration:0.75, z:0, ease:'power2.out'}, 0.25)
           .to(lidGroup.rotation, {duration:1.2, x:-0.12*Math.PI, ease:'power2.out'}, 0.25)
           .to(screenMaterial,    {duration:0.2, opacity:0.96, ease:'power2.out'}, 1.1)
           .to(screenLight,       {duration:0.2, intensity:1.2, ease:'power2.out'}, 1.1);
@@ -4025,6 +3979,7 @@ else {
         // Re-entry: already facing forward, just open lid
         _mbTl
           .to(macGroup.rotation, {duration:0.6, x:0.04*Math.PI, ease:'power3.out'}, 0)
+          .to(lidGroup.position, {duration:0.75, z:0, ease:'power2.out'}, 0.25)
           .to(lidGroup.rotation, {duration:1.2, x:-0.12*Math.PI, ease:'power2.out'}, 0.25)
           .to(screenMaterial,    {duration:0.2, opacity:0.96, ease:'power2.out'}, 1.1)
           .to(screenLight,       {duration:0.2, intensity:1.2, ease:'power2.out'}, 1.1);
@@ -4033,40 +3988,102 @@ else {
 
     window._mbStep = function(idx) {
       if (idx === currentSlideIdx) return;
-      // No spin while opening or not fully entered — just swap texture
-      if (mbOpening || !mbEntered) { _swapSlide(idx); return; }
-      if (mbSpinning) { _swapSlide(idx); return; }
-      mbSpinning = true;
-      if (_mbTl) { _mbTl.kill(); _mbTl = null; }
-      // Always start spin from y=0 (prevents accumulation from interrupted spins)
+      _swapSlide(idx);
+    };
+
+    // ── Scroll-driven spin — Apple lerp style ──
+    // Scroll sets _targetProgress. A RAF loop lerps _currentProgress toward the target
+    // with a damping factor (LERP_K ≈ 0.08), giving the Mac a "weighted" feel identical
+    // to Apple's AirPods scroll section. Rotation and texture swap are derived from
+    // _currentProgress so the visual always matches the lerped state.
+    const SPIN_BREAKPOINTS = [0.222, 0.407, 0.593, 0.778];
+    const TW = 0.055; // half-width of transition zone in progress units
+    const LERP_K = 0.085; // damping per frame — 0.085 ≈ Apple AirPods feel
+
+    let _targetProgress  = 0;
+    let _currentProgress = 0;
+    let _lerpRafId       = null;
+
+    function _applyProgress(p) {
+      for (let i = 0; i < SPIN_BREAKPOINTS.length; i++) {
+        const dist = p - SPIN_BREAKPOINTS[i];
+        if (dist >= -TW && dist <= TW) {
+          const t = (dist + TW) / (2 * TW);
+          macGroup.rotation.y = -Math.PI / 2 * Math.sin(Math.PI * t);
+          const target = t >= 0.5 ? i + 1 : i;
+          if (target !== currentSlideIdx) _swapSlide(target);
+          return;
+        }
+      }
       macGroup.rotation.y = 0;
-      _mbTl = gsap.timeline({
-        onComplete: () => { mbSpinning = false; macGroup.rotation.y = 0; _mbTl = null; }
-      })
-        .to(macGroup.rotation, {duration:.32, y:-Math.PI, ease:'power2.in'}, 0)
-        .add(() => _swapSlide(idx), .30)
-        .to(macGroup.rotation, {duration:.32, y:-Math.PI*2, ease:'power2.out'}, .32);
+      let stableSlide = 0;
+      for (let i = SPIN_BREAKPOINTS.length - 1; i >= 0; i--) {
+        if (p >= SPIN_BREAKPOINTS[i] + TW) { stableSlide = i + 1; break; }
+      }
+      if (stableSlide !== currentSlideIdx) _swapSlide(stableSlide);
+    }
+
+    function _lerpTick() {
+      const diff = _targetProgress - _currentProgress;
+      if (Math.abs(diff) < 0.0003) {
+        _currentProgress = _targetProgress;
+        _applyProgress(_currentProgress);
+        _lerpRafId = null;
+        return;
+      }
+      _currentProgress += diff * LERP_K;
+      _applyProgress(_currentProgress);
+      _lerpRafId = requestAnimationFrame(_lerpTick);
+    }
+
+    window._mbScrollDrive = function(progress) {
+      if (!mbEntered || mbOpening || mbClosed) return;
+      _targetProgress = progress;
+      if (!_lerpRafId) _lerpRafId = requestAnimationFrame(_lerpTick);
     };
 
     window._mbClose = function() {
+      return; // désactivé — le Mac reste ouvert une fois lancé
       if (mbClosed) return;
       mbClosed = true;
       // Kill main animation if still running — close takes priority
       if (_mbTl) { _mbTl.kill(); _mbTl = null; mbOpening = false; }
       if (_closeTl) { _closeTl.kill(); _closeTl = null; }
       _closeTl = gsap.timeline({ onComplete: () => { _closeTl = null; } })
-        .to(screenMaterial, {duration:.2, opacity:0, ease:'power2.in', overwrite:'auto'}, 0)
-        .to(screenLight,    {duration:.2, intensity:0, ease:'power2.in', overwrite:'auto'}, 0)
-        .to(lidGroup.rotation, {duration:0.7, x:0.505*Math.PI, ease:'power2.inOut', overwrite:'auto'}, 0.1);
+        .to(screenMaterial,    {duration:.2, opacity:0, ease:'power2.in', overwrite:'auto'}, 0)
+        .to(screenLight,       {duration:.2, intensity:0, ease:'power2.in', overwrite:'auto'}, 0)
+        .to(lidGroup.rotation, {duration:0.7, x:0.505*Math.PI, ease:'power2.inOut', overwrite:'auto'}, 0.1)
+        .to(lidGroup.position, {duration:0.5, z:0.5, ease:'power2.inOut', overwrite:'auto'}, 0.3);
     };
 
-    window._mbReopen = function() {
+    window._mbReopen = function(progress) {
       if (!mbClosed) return;
       mbClosed = false;
+      mbOpening = true;
       if (_closeTl) { _closeTl.kill(); _closeTl = null; }
+      // Snap MacBook to correct slide — same zone-aware logic as _mbScrollDrive
+      let stableIdx = 0;
+      if (progress !== undefined) {
+        let inZone = false;
+        for (let i = 0; i < SPIN_BREAKPOINTS.length; i++) {
+          const dist = progress - SPIN_BREAKPOINTS[i];
+          if (dist >= -TW && dist <= TW) {
+            stableIdx = ((dist + TW) / (2 * TW)) >= 0.5 ? i + 1 : i;
+            inZone = true; break;
+          }
+        }
+        if (!inZone) {
+          for (let i = SPIN_BREAKPOINTS.length - 1; i >= 0; i--) {
+            if (progress >= SPIN_BREAKPOINTS[i] + TW) { stableIdx = i + 1; break; }
+          }
+        }
+      }
+      macGroup.rotation.y = 0;
+      if (stableIdx !== currentSlideIdx) _swapSlide(stableIdx);
       // Use .to() with overwrite (not fromTo) — don't assume current lid angle
-      _closeTl = gsap.timeline({ onComplete: () => { _closeTl = null; } })
+      _closeTl = gsap.timeline({ onComplete: () => { _closeTl = null; mbOpening = false; } })
         .to(lidGroup.rotation,  {duration:0.7, x:-0.12*Math.PI, ease:'power2.out', overwrite:'auto'}, 0)
+        .to(lidGroup.position,  {duration:0.5, z:0, ease:'power2.out', overwrite:'auto'}, 0)
         .to(screenMaterial, {duration:.25, opacity:.96, ease:'power2.out', overwrite:'auto'}, 0.55)
         .to(screenLight,    {duration:.25, intensity:1.2, ease:'power2.out', overwrite:'auto'}, 0.55);
     };
@@ -4081,11 +4098,15 @@ else {
       mbOpening = false;
       // Reset 3D state — direct property assignment (synchronous)
       lidGroup.rotation.x = 0.5 * Math.PI;
+      lidGroup.position.z = 0.5;
       macGroup.rotation.x = 0.05 * Math.PI;
       macGroup.rotation.y = 0;
       macGroup.rotation.z = 0;
       screenMaterial.opacity = 0;
       screenLight.intensity = 0;
+      // Reset lerp progress state
+      _targetProgress  = 0;
+      _currentProgress = 0;
       // Reset slide
       currentSlideIdx = 0;
       _swapSlide(0);
@@ -4216,7 +4237,7 @@ else {
   initScene();
   createMaterials();
   new GLTFLoader().load(
-    "./macbook-assets/mac-noUv.glb",
+    "../macbook-assets/mac-noUv.glb",
     glb => {
       parseModel(glb);
       addScreen();
