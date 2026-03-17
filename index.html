@@ -12,10 +12,9 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ─── CUSTOM CURSOR ─── */
-    html, body, a, button, input, [role="button"] { cursor: none !important; }
-
+    /* ─── CUSTOM CURSOR (désactivé) ─── */
     #cursor {
+      display: none;
       position: fixed; z-index: 999999; pointer-events: none;
       width: 18px; height: 18px; border-radius: 50%;
       background: #ffffff;
@@ -31,11 +30,18 @@
 
     :root {
       --accent: #0071e3;
+      --accent-dark: #0066cc;
       --accent-rgb: 0, 113, 227;
-      --accent-light: #34aadc;
-      --bg: #000000;
-      --text: #ffffff;
-      --text-secondary: rgba(255,255,255,0.55);
+      --accent-light: #0066cc;
+      --accent-orange: #e37200;
+      --accent-orange-dark: #cc6600;
+      --bg: #ffffff;
+      --bg-subtle: #fafafa;
+      --bg-muted: #f5f5f7;
+      --text: #1d1d1f;
+      --text-body: #333333;
+      --text-secondary: #6e6e73;
+      --border: rgba(0,0,0,0.09);
       --font-head: 'Inter', sans-serif;
       --font-body: 'Archivo', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -53,12 +59,12 @@
     ::selection { background: var(--accent); color: #fff; }
 
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #111; }
+    ::-webkit-scrollbar-track { background: #f5f5f7; }
     ::-webkit-scrollbar-thumb {
-      background: linear-gradient(var(--accent), var(--accent-light));
+      background: linear-gradient(var(--accent), var(--accent-dark));
       border-radius: 3px;
     }
-    ::-webkit-scrollbar-thumb:hover { box-shadow: 0 0 8px rgba(var(--accent-rgb),0.6); }
+    ::-webkit-scrollbar-thumb:hover { box-shadow: 0 0 8px rgba(var(--accent-rgb),0.4); }
 
     /* ─── STARSCAPE ─── */
     #starscape {
@@ -79,7 +85,7 @@
     .loader-logo { margin-bottom: 32px; }
     .wordmark { font-family: var(--font-head); font-weight: 700; letter-spacing: -0.03em; color: currentColor; }
     .wordmark .accent-dot { color: #0071e3; }
-    .loader-logo .wordmark { font-size: 2rem; color: #ffffff; }
+    .loader-logo .wordmark { font-size: 2rem; color: #1d1d1f; }
     .nav-logo .wordmark { font-size: 1.45rem; }
     .footer-brand .wordmark { font-size: 1.3rem; }
     .loader-text {
@@ -89,7 +95,7 @@
     }
     .loader-bar-track {
       width: 200px; height: 3px;
-      background: rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.08);
       border-radius: 2px; overflow: hidden;
       margin: 0 auto;
     }
@@ -101,65 +107,142 @@
 
     /* ─── NAVBAR ─── */
     #navbar {
-      position: fixed; top: 12px; left: 0; right: 0;
+      position: fixed; top: 0; left: 0; right: 0;
       z-index: 1000;
+      padding: 18px 64px;
       transform-origin: center top;
-      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+      transition: padding 0.45s cubic-bezier(0.16,1,0.3,1);
     }
     .nav-inner {
       max-width: 100%; margin: 0 auto;
-      padding: 12px 40px;
       display: flex; justify-content: space-between; align-items: center;
-      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+      transition: all 0.45s cubic-bezier(0.16,1,0.3,1);
     }
-    #navbar.nav-scrolled .nav-inner {
-      max-width: 860px;
-      background: rgba(10,10,10,0.7);
-      border: 1px solid rgba(255,255,255,0.07);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 100px;
-      padding: 10px 28px;
+    /* Scrolled : même apparence, juste un fond blanc subtil */
+    #navbar.nav-scrolled {
+      background: rgba(250,250,250,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
     }
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
-      text-decoration: none; color: var(--text);
+      text-decoration: none; color: #1d1d1f;
     }
     .nav-logo-name {
-      font-family: var(--font-head); font-weight: 600; font-size: 1rem;
-      letter-spacing: 0.5px;
+      font-family: var(--font-head); font-weight: 700; font-size: 1.1rem;
+      letter-spacing: 0.1px; color: #1d1d1f;
+      transition: color 0.35s ease;
     }
     .nav-links {
-      display: flex; align-items: center; gap: 32px;
+      display: flex; align-items: center; gap: 6px;
     }
-    .nav-links a {
-      color: var(--text-secondary); text-decoration: none;
-      font-size: 0.9rem; transition: color 0.2s;
+    /* Cadres géométriques */
+    .nav-links a:not(.nav-cta) {
+      color: #3a3a3f;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      padding: 7px 14px;
+      border: 1px solid rgba(0,0,0,0.13);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.8);
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
     }
-    .nav-links a:hover { color: var(--text); }
+    .nav-links a:not(.nav-cta):hover {
+      background: #ffffff;
+      border-color: rgba(0,0,0,0.22);
+      color: #1d1d1f;
+    }
     .nav-links .nav-cta {
       background: var(--accent); color: #fff;
-      padding: 8px 20px; border-radius: 20px;
-      font-size: 0.85rem; font-weight: 500;
-      transition: all 0.2s;
+      padding: 7px 18px; border-radius: 4px;
+      font-size: 0.875rem; font-weight: 600;
+      border: 1px solid var(--accent); letter-spacing: -0.01em;
+      transition: background 0.2s ease, border-color 0.2s ease;
       position: relative; overflow: visible;
+      margin-left: 10px;
     }
     .nav-links .nav-cta:hover {
-      box-shadow: 0 0 16px rgba(var(--accent-rgb),0.5);
+      background: #0066cc;
+      border-color: #0066cc;
     }
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .nav-inner { padding: 10px 20px; }
+      #navbar { padding: 12px 24px; }
     }
 
     /* ─── HERO ─── */
     #hero {
       position: sticky; top: 0; min-height: 100svh;
-      display: flex; align-items: center; justify-content: flex-start;
-      text-align: left; overflow: clip; z-index: 1;
-      padding: clamp(80px, 10vh, 120px) max(64px, 8vw) clamp(48px, 6vh, 80px);
+      overflow: clip; z-index: 1;
+      background: #fafafa;
     }
-    .hero-bg { position: absolute; inset: 0; pointer-events: none; }
+    /* Texte haut-gauche */
+    .hero-content {
+      position: absolute; z-index: 3;
+      top: clamp(90px, 13vh, 130px);
+      left: max(48px, 6vw);
+      max-width: min(62vw, 860px); text-align: left;
+    }
+    /* Boutons ancrés en bas */
+    .hero-buttons-bottom {
+      position: absolute; z-index: 3;
+      bottom: clamp(32px, 5vh, 56px);
+      left: max(48px, 6vw);
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    /* Vidéo centrée — oversized pour que le mask fonde dans du vide, pas sur un bord dur */
+    .hero-visual {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -46%);
+      width: 140vw;
+      height: 110vh;
+      overflow: hidden;
+      z-index: 1;
+      /* Dégradé radial sur 140vw — la vidéo disparaît bien avant les bords du container */
+      -webkit-mask-image: radial-gradient(ellipse 38% 46% at 53% 50%,
+        black 0%,
+        black 10%,
+        rgba(0,0,0,0.92) 20%,
+        rgba(0,0,0,0.72) 30%,
+        rgba(0,0,0,0.48) 40%,
+        rgba(0,0,0,0.24) 50%,
+        rgba(0,0,0,0.08) 60%,
+        transparent 72%
+      );
+      mask-image: radial-gradient(ellipse 38% 46% at 53% 50%,
+        black 0%,
+        black 10%,
+        rgba(0,0,0,0.92) 20%,
+        rgba(0,0,0,0.72) 30%,
+        rgba(0,0,0,0.48) 40%,
+        rgba(0,0,0,0.24) 50%,
+        rgba(0,0,0,0.08) 60%,
+        transparent 72%
+      );
+    }
+    .hero-visual-glow { display: none; }
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      transform: scale(0.72);
+      opacity: 0.82;
+      transition: opacity 1.5s ease;
+      z-index: 1;
+    }
+    .hero-video.fading { opacity: 0; }
+    .hero-visual-fade { display: none; }
+    /* Quadrillage uniquement dans la zone vidéo */
+    .hero-visual-grid {
+      position: absolute; inset: 0; z-index: 3; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+      background-size: 55px 55px;
+    }
     .orb {
       position: absolute; border-radius: 50%;
       filter: blur(90px); opacity: 0.13;
@@ -182,7 +265,7 @@
         linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 60px 60px;
     }
-    .hero-content { position: relative; z-index: 2; width: 100%; max-width: none; text-align: left; }
+    .hero-content { position: relative; z-index: 2; width: 100%; max-width: min(62vw, 860px); text-align: left; margin-bottom: 6vh; }
     .hero-eyebrow {
       display: inline-flex; align-items: center;
       border: 1px solid rgba(255,255,255,0.22);
@@ -195,18 +278,48 @@
       background: rgba(255,255,255,0.04);
     }
     .hero-title {
-      font-family: var(--font-head); font-size: clamp(3rem, 7.8vw, 9rem);
-      font-weight: 600; line-height: 1.0; letter-spacing: -0.03em;
-      margin-bottom: clamp(16px, 2.5vh, 28px);
-      white-space: nowrap;
+      font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      font-size: clamp(2rem, 3.3vw, 3.8rem);
+      font-weight: 700; line-height: 1.12; letter-spacing: -0.025em;
+      color: #1d1d1f;
+      margin-bottom: clamp(24px, 3vh, 36px);
     }
     .hero-title em {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-style: italic; font-weight: 500;
-      font-size: 1.08em;
+      font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      font-style: normal; font-weight: 700;
+      font-size: 1em;
       color: var(--accent-light);
       -webkit-text-fill-color: var(--accent-light);
       letter-spacing: -0.01em;
+    }
+    .hero-ai {
+      display: inline-block;
+      background: linear-gradient(110deg, #3b82f6 0%, #818cf8 35%, #06b6d4 65%, #3b82f6 100%);
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: hero-ai-shimmer 4s linear infinite;
+      filter: drop-shadow(0 0 14px rgba(59,130,246,0.45));
+      transition: filter 0.35s ease, transform 0.25s ease;
+      cursor: default;
+    }
+    .hero-ai:hover {
+      filter: drop-shadow(0 0 24px rgba(99,102,241,0.85)) drop-shadow(0 0 48px rgba(59,130,246,0.5));
+      transform: scale(1.06);
+    }
+    .hero-ai.ai-clicked {
+      animation: hero-ai-burst 0.5s ease forwards, hero-ai-shimmer 4s linear infinite;
+    }
+    @keyframes hero-ai-shimmer {
+      0%   { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+    @keyframes hero-ai-burst {
+      0%   { transform: scale(1); filter: drop-shadow(0 0 14px rgba(59,130,246,0.45)); }
+      40%  { transform: scale(1.18); filter: drop-shadow(0 0 40px rgba(99,102,241,1)) drop-shadow(0 0 80px rgba(6,182,212,0.7)); }
+      100% { transform: scale(1); filter: drop-shadow(0 0 14px rgba(59,130,246,0.45)); }
     }
     .hero-subtitle {
       font-family: var(--font-body); font-weight: 300;
@@ -227,28 +340,31 @@
 
     .btn-primary {
       background: var(--accent); color: #fff;
-      padding: 14px 32px; border-radius: 12px;
-      font-weight: 600; font-size: 1rem; text-decoration: none;
+      padding: 13px 28px; border-radius: 4px;
+      font-weight: 600; font-size: 0.92rem; text-decoration: none;
       position: relative; overflow: visible;
-      box-shadow: 0 0 24px rgba(var(--accent-rgb),0.35);
-      transition: all 0.3s ease; display: inline-block;
-      border: none; cursor: pointer; font-family: var(--font-body);
+      border: 1px solid var(--accent);
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      display: inline-block; cursor: pointer; font-family: var(--font-body);
+      letter-spacing: -0.01em;
     }
     .btn-primary:hover {
-      box-shadow: 0 0 36px rgba(var(--accent-rgb),0.55);
-      transform: translateY(-2px);
+      background: #0066cc;
+      border-color: #0066cc;
+      box-shadow: 0 2px 12px rgba(var(--accent-rgb),0.25);
     }
     .btn-secondary {
-      background: transparent; color: var(--text);
-      padding: 14px 32px; border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.15);
-      font-size: 1rem; text-decoration: none;
-      transition: all 0.3s ease; display: inline-block;
-      position: relative; overflow: visible;
+      background: #ffffff; color: #1d1d1f;
+      padding: 13px 28px; border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.18);
+      font-size: 0.92rem; font-weight: 500; text-decoration: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      display: inline-block; position: relative; overflow: visible;
+      letter-spacing: -0.01em;
     }
     .btn-secondary:hover {
-      border-color: rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.04);
+      border-color: rgba(0,0,0,0.35);
+      background: #f5f5f7;
     }
     .scroll-hint {
       position: absolute;
@@ -784,10 +900,10 @@
       .bento-title { font-size: clamp(2.2rem,8vw,3.5rem); }
     }
 
-    /* ─── PROCESS — pinned scroll (LIGHT/BEIGE) ─── */
+    /* ─── PROCESS — pinned scroll ─── */
     #process {
       position: relative; z-index: 2;
-      background: #f5f0e8;
+      background: #f5f5f7;
       padding: 0;
     }
     .process-panel {
@@ -795,7 +911,7 @@
       display: flex; align-items: flex-start;
       gap: 72px;
       padding: 20vh max(48px, 7vw) 0;
-      background: #f5f0e8;
+      background: #f5f5f7;
       position: sticky; top: 0; overflow: hidden;
     }
     .process-scroll-room { height: 120vh; }
@@ -881,87 +997,7 @@
     /* Right */
     .process-right { flex: 1; position: relative; z-index: 1; height: 640px; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: visible; }
 
-    /* ─── MACBOOK 3D ─── */
-    .mb-viewport {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      perspective: 900px; perspective-origin: 50% 42%;
-    }
-    .mb-scene {
-      transform-style: preserve-3d;
-      transform: rotateX(-8deg) rotateY(-65deg) translateX(-20px);
-      position: relative;
-    }
-    .mb-body { transform-style: preserve-3d; width: 400px; position: relative; }
-    .mb-lid {
-      width: 400px; height: 254px;
-      transform-style: preserve-3d;
-      transform-origin: bottom center;
-      transform: rotateX(-108deg);
-      position: relative;
-    }
-    .mb-lid-front {
-      position: absolute; inset: 0;
-      background: linear-gradient(160deg, #e2e5e9 0%, #c8cdd4 50%, #a8adb4 100%);
-      border-radius: 12px 12px 0 0;
-      backface-visibility: hidden;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1);
-    }
-    .mb-bezel {
-      position: absolute; inset: 7px 7px 0 7px;
-      background: #171717; border-radius: 7px 7px 0 0; overflow: hidden;
-    }
-    .mb-notch {
-      position: absolute; top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 72px; height: 15px;
-      background: #171717; border-radius: 0 0 8px 8px; z-index: 5;
-    }
-    .mb-screen {
-      position: absolute; inset: 4px 4px 0 4px;
-      border-radius: 4px 4px 0 0; overflow: hidden; background: #fff;
-    }
-    .mb-slide {
-      position: absolute; inset: 0;
-      opacity: 0; transition: opacity 0.2s ease;
-      overflow: hidden;
-    }
-    .mb-slide.active { opacity: 1; }
-    .mb-lid-back {
-      position: absolute; inset: 0;
-      background: linear-gradient(170deg, #e2e5e9 0%, #c8cdd4 50%, #a8adb4 100%);
-      border-radius: 12px 12px 0 0;
-      transform: rotateY(180deg); backface-visibility: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .mb-base-wrap { transform-style: preserve-3d; position: relative; width: 400px; }
-    .mb-base-top {
-      background: linear-gradient(180deg, #c8cdd4 0%, #b0b5bc 100%);
-      padding: 8px 18px 6px;
-      display: flex; flex-direction: column; gap: 3px;
-    }
-    .mb-kbd-row { display: flex; gap: 2px; justify-content: center; }
-    .mb-key {
-      height: 15px;
-      background: linear-gradient(180deg, #2e2e33 0%, #252529 100%);
-      border-radius: 2px; flex: 1;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.4);
-    }
-    .mb-key.fn { height: 11px; }
-    .mb-key.wide { flex: 1.5; }
-    .mb-key.wider { flex: 2; }
-    .mb-key.space { flex: 5; }
-    .mb-trackpad {
-      width: 105px; height: 28px;
-      background: linear-gradient(180deg, #38383c 0%, #2c2c30 100%);
-      border-radius: 4px; margin: 3px auto 0;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
-    }
-    .mb-base-front {
-      height: 7px;
-      background: linear-gradient(180deg, #a8adb4 0%, #888d94 100%);
-      border-radius: 0 0 5px 5px;
-    }
+    /* ─── MACBOOK 3D — supprimé ─── */
 
     /* Dark frame with aurora effect */
     .psi-frame {
@@ -1240,9 +1276,13 @@
     /* ─── FOOTER ─── */
     footer {
       position: relative; z-index: 1;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      background: #1d1d1f;
+      border-top: 1px solid rgba(255,255,255,0.08);
       padding: 60px 32px 40px; text-align: center;
     }
+    .footer-links a { color: rgba(255,255,255,0.5); }
+    .footer-links a:hover { color: #ffffff; }
+    .footer-copy { color: rgba(255,255,255,0.35); }
     .footer-brand {
       display: flex; align-items: center; justify-content: center;
       gap: 10px; margin-bottom: 28px;
@@ -1271,26 +1311,19 @@
       margin: 0 auto 64px; border-radius: 2px;
     }
 
-    /* ─── HERO ─── */
-    #hero {
-      background: #f5f0e8;
-      position: relative;
-      min-height: 100vh;
-    }
-    #hero .orb-1, #hero .orb-2 { opacity: 0; }
-    #hero .hero-eyebrow { color: #6e6e73; }
+    /* ─── HERO COLORS (fond clair, texte sombre) ─── */
     #hero .hero-title { color: #1d1d1f; }
-    #hero .hero-title em {
-      background: linear-gradient(135deg, #0071e3 0%, #34aadc 60%, #0071e3 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    #hero .hero-subtitle { color: #6e6e73; }
-    #hero .scroll-hint { color: #6e6e73; }
-    #hero .scroll-arrow { background: linear-gradient(to bottom, var(--accent), transparent); }
-    #hero .btn-secondary { color: #1d1d1f; border-color: rgba(0,0,0,0.15); }
-    #hero .btn-secondary:hover { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.28); }
+    #hero .hero-title em { color: #1d1d1f; }
+    #hero .hero-ai { color: transparent; -webkit-text-fill-color: transparent; }
+    #hero .btn-secondary { color: #1d1d1f; border-color: rgba(0,0,0,0.18); }
+    #hero .btn-secondary:hover { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.3); }
+
+    /* Navbar sombre sur fond clair — déjà géré par les règles globales */
+
+    /* Navbar entrée animée */
+    #navbar { opacity: 0; transform: translateY(-12px);
+      transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
+    #navbar.nav-entered { opacity: 1; transform: none; }
 
     /* ─── WIDGETS GRID (section réalisations) ─── */
     .widgets-grid {
@@ -1479,24 +1512,8 @@
     .stk-num { font-size: 0.58rem; font-weight: 600; color: #1d1d1f; width: 26px; text-align: right; flex-shrink: 0; }
 
     /* ─── HERO ORBS ─── */
-    .hero-cursor-glow {
-      position: absolute; pointer-events: none;
-      width: 380px; height: 380px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,113,227,0.18) 0%, rgba(52,170,220,0.07) 50%, transparent 70%);
-      transform: translate(-50%, -50%);
-      filter: blur(8px);
-      opacity: 0; transition: opacity 0.3s ease;
-      z-index: 3; will-change: left, top;
-    }
-    .hero-cursor-trail {
-      position: absolute; pointer-events: none;
-      width: 300px; height: 300px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,113,227,0.13) 0%, transparent 65%);
-      transform: translate(-50%, -50%);
-      filter: blur(14px);
-      opacity: 0; z-index: 2;
-      will-change: left, top, opacity;
-    }
+    .hero-cursor-glow { display: none; }
+    .hero-cursor-trail { display: none; }
 
     /* ─── NAVBAR ON WHITE ─── */
     #navbar:not(.nav-scrolled) .nav-logo { color: #1d1d1f; }
@@ -1505,37 +1522,12 @@
 
     /* ─── RÉALISATIONS ─── */
     #realisations {
-      background: #f5f0e8;
+      background: #ffffff;
       padding: 80px max(28px, 5vw) 64px;
       position: relative; z-index: 2;
       display: flex; flex-direction: column;
       height: calc(100vh + 2px); overflow: hidden;
       box-sizing: border-box;
-      transition: background-color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    /* ─── RÉALISATIONS — mode sombre ─── */
-    #realisations.dark {
-      background: #000000;
-    }
-    #realisations.dark .merged-title { color: #f5f5f7; }
-    #realisations.dark .real-eyebrow { color: rgba(255,255,255,0.45); }
-    #realisations.dark .merged-sub   { color: rgba(255,255,255,0.55); }
-    #realisations.dark .sc-dot       { background: rgba(255,255,255,0.2); }
-    #realisations.dark .sc-dot.active { background: var(--accent); }
-    #realisations.dark .sc-arrow {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.12);
-      color: #fff;
-    }
-    #realisations.dark .sc-arrow:hover {
-      background: rgba(255,255,255,0.15);
-      border-color: rgba(255,255,255,0.25);
-    }
-    #realisations.dark .floor-glow {
-      background: radial-gradient(ellipse at center bottom, rgba(var(--accent-rgb),0.18) 0%, transparent 70%);
-    }
-    #realisations.dark .floor-line {
-      background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb),0.3), transparent);
     }
     /* Merged section layout */
     .merged-wrap { max-width: 1280px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; min-height: 0; }
@@ -1819,7 +1811,7 @@
     /* ─── TEAM ─── */
     #team {
       padding: 100px 32px 120px;
-      background: #f5f0e8;
+      background: #f5f5f7;
     }
     #team .section-title { color: #1d1d1f; }
     #team .section-eyebrow { color: var(--accent); }
@@ -1861,8 +1853,8 @@
     #join {
       position: relative; z-index: 1;
       padding: 100px 32px 120px;
-      background: var(--bg);
-      border-top: 1px solid rgba(255,255,255,0.06);
+      background: #1d1d1f;
+      border-top: none;
     }
     .join-inner {
       max-width: 720px; margin: 0 auto; text-align: center;
@@ -1933,7 +1925,10 @@
     }
 
     /* ─── SECTION TAG (overrides) ─── */
-    #join .section-title { color: var(--text); }
+    #join .section-title { color: #ffffff; }
+    #join .section-eyebrow { color: var(--accent); }
+    #join .join-text { color: rgba(255,255,255,0.65); }
+    #join .join-tag { border-color: rgba(255,255,255,0.14); color: rgba(255,255,255,0.55); }
 
     /* ─── SCROLL REVEAL ─── */
     /* État initial : invisible + légèrement décalé vers le bas */
@@ -1963,15 +1958,15 @@
     }
     .hero-content.hero-entered > * { opacity: 1; transform: none; }
     .hero-content.hero-entered > *:nth-child(1) { transition-delay: 100ms; }
-    .hero-content.hero-entered > *:nth-child(2) { transition-delay: 220ms; }
-    .hero-content.hero-entered > *:nth-child(3) { transition-delay: 360ms; }
+    .hero-buttons-bottom { opacity: 0; transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+      transition-delay: 280ms; }
+    .hero-entered-done .hero-buttons-bottom { opacity: 1; transform: none; }
 
   </style>
   <!-- Calendly popup widget -->
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
   <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-  <!-- GSAP for MacBook animation -->
-  <script src="../macbook-assets/gsap.min.js"></script>
 </head>
 <body>
 
@@ -2016,20 +2011,23 @@
 
   <!-- Hero -->
   <section id="hero" class="stack-slide">
-    <div class="hero-bg">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-    </div>
     <div class="hero-content">
-      <h1 class="hero-title">L'IA qui automatise<br><em>votre entreprise.</em></h1>
-      <p class="hero-subtitle">
-        Nexxo automatise vos process métier sur mesure — prospection, SAV, gestion interne.
-        Et conçoit des sites web qui convertissent. Tout construit pour vous, sans technique de votre côté.
-      </p>
-      <div class="hero-buttons">
-        <a href="#" class="btn-primary" id="hero-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Réserver un appel →</a>
-        <a href="#" class="btn-secondary" onclick="event.preventDefault();scrollToSection('realisations')">Voir les services</a>
-      </div>
+      <h1 class="hero-title">Développez le <span class="hero-ai">plein potentiel</span> de votre<br>activité grâce à l'<span class="hero-ai" id="heroAI">IA</span>.</h1>
+    </div>
+    <div class="hero-buttons-bottom">
+      <a href="#" class="btn-primary" id="hero-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Réserver un appel →</a>
+      <a href="#" class="btn-secondary" onclick="event.preventDefault();scrollToSection('realisations')">Voir les services</a>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-visual-glow"></div>
+      <video class="hero-video" id="hero-vid-a" autoplay muted playsinline>
+        <source src="hero-bg.mp4" type="video/mp4">
+      </video>
+      <video class="hero-video fading" id="hero-vid-b" muted playsinline>
+        <source src="hero-bg.mp4" type="video/mp4">
+      </video>
+      <div class="hero-visual-grid"></div>
+      <div class="hero-visual-fade"></div>
     </div>
     <div id="hero-widgets" aria-hidden="true" style="display:none">
 
@@ -2184,8 +2182,8 @@
         </div>
       </div>
 
-      <!-- Right: MacBook 3D (Three.js inline) -->
-      <div class="process-right" style="overflow:visible;">
+      <!-- Right: placeholder (MacBook supprimé) -->
+      <div class="process-right" style="overflow:visible; display:none;">
         <canvas id="mb-canvas" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;"></canvas>
         <!-- hidden legacy for compatibility -->
         <div style="display:none">
@@ -3031,13 +3029,7 @@
         cursor.style.top  = e.clientY + 'px';
       }, { passive: true });
 
-      // Hover — éléments interactifs
-      const interactive = 'a:not(.dash-tab), button:not(.dash-tab), .team-card, .nav-cta, .btn-primary, .btn-secondary, .btn-dark';
-      document.querySelectorAll(interactive).forEach(el => {
-        el.style.cursor = 'none';
-        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-      });
+      // Hover — custom cursor désactivé, curseur natif conservé
 
       // Click
       window.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
@@ -3046,6 +3038,78 @@
       // Quitter / revenir
       document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
       document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+    })();
+
+    // ─────────────────────────────────────────
+    // HERO VIDEO CROSSFADE LOOP
+    // ─────────────────────────────────────────
+    (function() {
+      const FADE_BEFORE = 1.8; // secondes avant la fin pour démarrer le fondu
+      const vidA = document.getElementById('hero-vid-a');
+      const vidB = document.getElementById('hero-vid-b');
+      if (!vidA || !vidB) return;
+
+      let active = vidA, standby = vidB;
+      let swapping = false;
+
+      function swap() {
+        if (swapping) return;
+        swapping = true;
+
+        standby.currentTime = 0;
+        standby.play();
+        standby.classList.remove('fading'); // montée en opacité
+
+        active.classList.add('fading');     // descente en opacité
+
+        setTimeout(() => {
+          active.pause();
+          active.currentTime = 0;
+          [active, standby] = [standby, active];
+          swapping = false;
+        }, 1600);
+      }
+
+      function onTimeUpdate() {
+        if (!swapping && this.duration && this.currentTime >= this.duration - FADE_BEFORE) {
+          swap();
+        }
+      }
+
+      vidA.addEventListener('timeupdate', onTimeUpdate);
+      vidB.addEventListener('timeupdate', onTimeUpdate);
+    })();
+
+    // ─────────────────────────────────────────
+    // HERO AI — interaction "IA"
+    // ─────────────────────────────────────────
+    (function() {
+      const el = document.getElementById('heroAI');
+      if (!el) return;
+
+      // Mouse-move: shift gradient angle based on cursor position
+      el.addEventListener('mousemove', function(e) {
+        const r = el.getBoundingClientRect();
+        const cx = (e.clientX - r.left) / r.width;   // 0..1
+        const cy = (e.clientY - r.top) / r.height;
+        const angle = Math.round(90 + (cx - 0.5) * 80);
+        el.style.backgroundImage =
+          `linear-gradient(${angle}deg, #3b82f6 0%, #818cf8 35%, #06b6d4 65%, #3b82f6 100%)`;
+        el.style.filter =
+          `drop-shadow(${(cx-0.5)*8}px ${(cy-0.5)*8}px 22px rgba(99,102,241,0.85)) drop-shadow(0 0 48px rgba(59,130,246,0.5))`;
+      });
+      el.addEventListener('mouseleave', function() {
+        el.style.backgroundImage = '';
+        el.style.filter = '';
+      });
+
+      // Click: burst flash
+      el.addEventListener('click', function() {
+        el.classList.remove('ai-clicked');
+        void el.offsetWidth; // reflow
+        el.classList.add('ai-clicked');
+        setTimeout(() => el.classList.remove('ai-clicked'), 500);
+      });
     })();
 
     // ─────────────────────────────────────────
@@ -3166,24 +3230,7 @@
         const fill    = document.getElementById('ps-ind-fill');
         const stepNum = document.getElementById('ps-step-num');
         let current   = 0;
-        let mbEntered = false;
         let _prevProgress = 0;
-        window._mbPendingEnter = false;
-        window._mbScrollReset = function() {
-          mbEntered = false;
-          _prevProgress = 0;
-          // Reset step UI to 0 so setStep(0) on re-entry is a no-op
-          if (current !== 0) {
-            texts[current].classList.remove('active');
-            descs[current].classList.remove('active');
-            current = 0;
-            texts[0].classList.add('active');
-            descs[0].classList.add('active');
-            dots.forEach((d, i) => d.classList.toggle('active', i === 0));
-            if (fill) fill.style.width = (1 / N * 100) + '%';
-            if (stepNum) stepNum.textContent = '01';
-          }
-        };
 
         // ── Step switcher ──
         function setStep(idx) {
@@ -3201,23 +3248,17 @@
             stepNum.textContent = String(idx + 1).padStart(2, '0');
             requestAnimationFrame(() => stepNum.classList.add('active'));
           }
-          // slide swap handled by _mbScrollDrive
         }
 
         // ── Scroll tracking ──
         section.addEventListener('pinscroll', (e) => {
           const progress = e.detail.progress;
           window._processVisible = true;
-          // _mbPendingEnter : fallback si le modèle n'était pas encore chargé
-          if (!mbEntered && progress < 0.01) mbEntered = false;
-          if (!mbEntered) { mbEntered = true; window._mbPendingEnter = true; }
           const breaks = [0, 0.222, 0.407, 0.593, 0.778, 1.0];
           const raw = breaks.findIndex((b, i) => i < N && progress < breaks[i + 1]);
           const idx = raw === -1 ? N - 1 : raw;
           setStep(idx);
           texts[idx].classList.add('active'); descs[idx].classList.add('active');
-          // Scroll-driven spin — rotation tied directly to scroll position
-          if (window._mbScrollDrive) window._mbScrollDrive(progress);
           _prevProgress = progress;
         });
       })();
@@ -3284,32 +3325,6 @@
       const room = section.querySelector('.process-scroll-room');
       if (!room) return;
 
-      let _mbTriggered = false; // passe à true une seule fois, jamais resetté
-
-      // Lock bref après chaque transition d'écran (quand le Mac est de face)
-      // SPIN_BREAKPOINTS [0.222, 0.407, 0.593, 0.778] + TW (0.055) = positions de face
-      const STEP_LOCK_PROGRESS = [0.277, 0.462, 0.648, 0.833];
-      const STEP_LOCK_MS       = 500; // ms de pause après chaque transition
-      let _stepLockDone  = [false, false, false, false];
-      let _prevProgress  = -1;
-      let _stepLocking   = false;
-
-      function applyStepLock(lockY) {
-        if (window._dwellLocked || _stepLocking) return;
-        _stepLocking = true;
-        window._dwellLocked = true;
-        function blockInput(e) { e.preventDefault(); }
-        window.addEventListener('wheel',     blockInput, { passive: false });
-        window.addEventListener('touchmove', blockInput, { passive: false });
-        window.scrollTo(0, lockY);
-        setTimeout(() => {
-          window.removeEventListener('wheel',     blockInput);
-          window.removeEventListener('touchmove', blockInput);
-          window._dwellLocked = false;
-          _stepLocking = false;
-        }, STEP_LOCK_MS);
-      }
-
       function update() {
         const sy = window.scrollY;
         const rect = section.getBoundingClientRect();
@@ -3319,36 +3334,10 @@
 
         window._processVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
-        // Ouvrir le Mac la première fois qu'on arrive sur la section
-        if (!_mbTriggered && scrolled >= 0) {
-          _mbTriggered = true;
-          if (window._mbEnter) window._mbEnter();
-        }
-
-        if (!_mbTriggered || scrolled < 0) return;
+        if (scrolled < 0) return;
 
         const progress = Math.max(0, Math.min(1, scrolled / roomH));
         section.dispatchEvent(new CustomEvent('pinscroll', { detail: { progress } }));
-
-        // Détecter franchissement d'un point de lock (aller) — lock bref
-        if (!window._dwellLocked && !_stepLocking) {
-          for (let i = 0; i < STEP_LOCK_PROGRESS.length; i++) {
-            if (!_stepLockDone[i] && _prevProgress < STEP_LOCK_PROGRESS[i] && progress >= STEP_LOCK_PROGRESS[i]) {
-              _stepLockDone[i] = true;
-              applyStepLock(sectionTop + STEP_LOCK_PROGRESS[i] * roomH);
-              break;
-            }
-          }
-        }
-
-        // Réinitialiser les locks dépassés quand on remonte
-        for (let i = 0; i < STEP_LOCK_PROGRESS.length; i++) {
-          if (_stepLockDone[i] && progress < STEP_LOCK_PROGRESS[i] - 0.06) {
-            _stepLockDone[i] = false;
-          }
-        }
-
-        _prevProgress = progress;
       }
 
       let _raf = false;
@@ -3368,69 +3357,7 @@
       };
     })();
 
-    // ─────────────────────────────────────────
-    // REALISATIONS DWELL — pause 1s quand le carousel est pleinement visible
-    // ─────────────────────────────────────────
-    (function() {
-      const section = document.getElementById('realisations');
-      if (!section) return;
-
-      const DWELL_MS = 2500;
-      let _locked  = false;
-      let _done    = false;
-      let _prevSy  = window.scrollY;
-
-      function startDwell(snapY) {
-        if (_locked) return;
-        _locked = true;
-        _done   = true;
-        window._dwellLocked = true;
-
-        // Bloquer wheel/touch AVANT le scrollTo pour couper le momentum
-        function blockInput(e) { e.preventDefault(); }
-        window.addEventListener('wheel',     blockInput, { passive: false });
-        window.addEventListener('touchmove', blockInput, { passive: false });
-
-        // Snap top-aligné : section.top = viewport.top (+ 2px de sécurité vers le bas)
-        // window.scrollTo(0, y) — sans options, toujours instant dans tous les browsers
-        if (snapY != null) window.scrollTo(0, snapY);
-
-        setTimeout(() => {
-          window.removeEventListener('wheel',     blockInput);
-          window.removeEventListener('touchmove', blockInput);
-          window._dwellLocked = false;
-          _locked = false;
-        }, DWELL_MS);
-      }
-
-      window.addEventListener('scroll', function() {
-        const sy        = window.scrollY;
-        const goingDown = sy > _prevSy;
-        _prevSy = sy;
-        const rect = section.getBoundingClientRect();
-
-        // Reset quand on remonte largement au-dessus
-        if (rect.top > window.innerHeight * 0.5) { _done = false; return; }
-
-        // Fenêtre large : capte les scrolls rapides qui sautent beaucoup de pixels
-        // rect.top in (-15vh, +10px] → section est en train de franchir le haut du viewport
-        if (!_locked && !_done && goingDown
-            && rect.top <= 10 && rect.top > -window.innerHeight * 0.15) {
-          // Top-aligné : scroll jusqu'à ce que le haut de la section = haut du viewport
-          // → section.bottom = innerHeight + 2 → 2px de marge en bas, aucun beige visible
-          const snapY = Math.floor(sy + rect.top);
-          startDwell(snapY);
-        }
-      }, { passive: true });
-
-      // Basculer fond sombre dès que la section entre dans le viewport (40% visible)
-      const darkObserver = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          section.classList.toggle('dark', e.isIntersecting);
-        });
-      }, { threshold: 0.4 });
-      darkObserver.observe(section);
-    })();
+    // REALISATIONS — pas de dwell lock, fond beige fixe
 
     // ─────────────────────────────────────────
     // SCROLL REVEAL — Apple-style fade-up entrance
@@ -3490,27 +3417,30 @@
 
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-      // Hero : animation d'entrée après le loader
+      // Hero + navbar : apparaissent en séquence après démarrage de la vidéo
       const heroContent = document.querySelector('.hero-content');
-      if (heroContent) {
-        const loaderEl = document.getElementById('loader');
-        function triggerHero() {
-          heroContent.classList.add('hero-entered');
-        }
-        if (loaderEl) {
-          // Attendre que le loader soit masqué
-          const loaderObs = new MutationObserver(() => {
-            if (loaderEl.style.opacity === '0' || loaderEl.style.display === 'none') {
-              setTimeout(triggerHero, 100);
-              loaderObs.disconnect();
-            }
-          });
-          loaderObs.observe(loaderEl, { attributes: true, attributeFilter: ['style'] });
-          // Fallback 2s
-          setTimeout(triggerHero, 2000);
-        } else {
-          setTimeout(triggerHero, 300);
-        }
+      const navbar      = document.getElementById('navbar');
+      const heroVid     = document.getElementById('hero-vid-a');
+
+      const heroSection = document.getElementById('hero');
+      function triggerHeroSequence() {
+        if (navbar) navbar.classList.add('nav-entered');
+        setTimeout(() => {
+          if (heroContent) heroContent.classList.add('hero-entered');
+          if (heroSection) heroSection.classList.add('hero-entered-done');
+        }, 300);
+      }
+
+      if (heroVid) {
+        // Déclencher dès que la vidéo a réellement commencé à jouer
+        heroVid.addEventListener('playing', function onPlaying() {
+          heroVid.removeEventListener('playing', onPlaying);
+          setTimeout(triggerHeroSequence, 1200); // ~1.2s après démarrage vidéo
+        });
+        // Fallback si l'événement playing ne fire pas
+        setTimeout(triggerHeroSequence, 2500);
+      } else {
+        setTimeout(triggerHeroSequence, 500);
       }
     })();
 
@@ -3606,652 +3536,5 @@
     })();
   </script>
 
-  <!-- ── MacBook 3D — Three.js inline ── -->
-  <script type="module">
-import * as THREE from "../macbook-assets/three.module.min.js";
-import { GLTFLoader } from "../macbook-assets/GLTFLoader.js";
-
-const canvasEl = document.getElementById('mb-canvas');
-if (!canvasEl) { console.warn('mb-canvas not found'); }
-else {
-  const container = canvasEl.parentElement;
-  const screenSize = [29.4, 20];
-  let scene, camera, renderer, lightHolder, screenLight;
-  let darkPlasticMaterial, cameraMaterial, baseMetalMaterial, logoMaterial, screenMaterial, keyboardMaterial;
-  let macGroup, lidGroup, bottomGroup;
-  let floatingTl, laptopOpeningTl, screenOnTl;
-  let currentSlideIdx = 0, slideTextures = [];
-  let mbEntered = false, mbSpinning = false, mbClosed = false, mbOpening = false;
-
-  // ── Live animated slide 0 ──
-  const W0 = 588, H0 = 400;
-  const liveCanvas0 = document.createElement('canvas');
-  liveCanvas0.width = W0; liveCanvas0.height = H0;
-  const lc = liveCanvas0.getContext('2d');
-  let liveTexture0 = null; // assigned after THREE is ready
-
-  function drawSlide0(t) {
-    const W = W0, H = H0;
-    const c = lc;
-    const CYCLE = 7000;
-    const sec = (t % CYCLE) / 1000;
-
-    // ── Background — pure black ──
-    c.fillStyle = '#000'; c.fillRect(0,0,W,H);
-
-    // Subtle grid
-    c.strokeStyle = 'rgba(255,255,255,0.03)'; c.lineWidth = 0.5;
-    for (let x=0;x<W;x+=32){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
-    for (let y=0;y<H;y+=32){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
-
-    // Blue accent top stripe
-    c.fillStyle = '#0071e3'; c.fillRect(0,0,W,2);
-
-    // ── Header ──
-    const pulse = 0.5 + 0.5*Math.sin(t*0.004);
-    // Live dot
-    c.fillStyle = `rgba(0,113,227,${0.6+0.4*pulse})`;
-    c.beginPath(); c.arc(26,24,4,0,Math.PI*2); c.fill();
-    c.strokeStyle = `rgba(0,113,227,${0.18*pulse})`; c.lineWidth=1;
-    c.beginPath(); c.arc(26,24,9+pulse*3,0,Math.PI*2); c.stroke();
-
-    c.fillStyle = 'rgba(255,255,255,0.9)';
-    c.font = 'bold 12px system-ui,-apple-system,sans-serif';
-    c.fillText('Analyse de votre activité', 40,29);
-
-    // NEXXO badge
-    c.fillStyle = 'rgba(0,113,227,0.12)';
-    c.beginPath(); c.roundRect(W-68,14,56,18,3); c.fill();
-    c.strokeStyle = 'rgba(0,113,227,0.35)'; c.lineWidth=1;
-    c.beginPath(); c.roundRect(W-68,14,56,18,3); c.stroke();
-    c.fillStyle = '#0071e3'; c.font='bold 8px monospace'; c.textAlign='center';
-    c.fillText('NEXXO AI', W-40,26); c.textAlign='left';
-
-    // Divider
-    c.strokeStyle='rgba(255,255,255,0.06)'; c.lineWidth=1;
-    c.beginPath(); c.moveTo(0,40); c.lineTo(W,40); c.stroke();
-
-    // ── URL bar ──
-    c.fillStyle='rgba(255,255,255,0.04)';
-    c.beginPath(); c.roundRect(24,48,W-48,26,4); c.fill();
-    c.strokeStyle='rgba(255,255,255,0.08)'; c.lineWidth=1;
-    c.beginPath(); c.roundRect(24,48,W-48,26,4); c.stroke();
-    c.fillStyle='rgba(255,255,255,0.3)'; c.font='10px monospace'; c.fillText('https://',36,65);
-    c.fillStyle='#0071e3'; c.font='bold 11px monospace'; c.fillText('boulangerie-martin.fr',96,65);
-
-    // ── Scan wireframe ──
-    const scanP = Math.min(1, sec/3.2);
-    const scanY = 86 + scanP*146;
-
-    const sections = [
-      {y:86,  h:38, label:'HERO'},
-      {y:130, h:22, label:'SERVICES'},
-      {y:158, h:22, label:'AVIS'},
-      {y:186, h:22, label:'GALERIE'},
-      {y:214, h:22, label:'CONTACT'},
-    ];
-    sections.forEach(({y,h,label})=>{
-      const revealed = scanY > y+h*0.5;
-      c.fillStyle = revealed ? 'rgba(0,113,227,0.07)' : 'rgba(255,255,255,0.02)';
-      c.beginPath(); c.roundRect(24,y,W-48,h,2); c.fill();
-      c.strokeStyle = revealed ? 'rgba(0,113,227,0.22)' : 'rgba(255,255,255,0.04)';
-      c.lineWidth=1; c.beginPath(); c.roundRect(24,y,W-48,h,2); c.stroke();
-      if (revealed) {
-        c.fillStyle='rgba(0,113,227,0.65)'; c.font='8px monospace';
-        c.fillText(label,34,y+h*0.65);
-        c.fillStyle='rgba(255,255,255,0.07)';
-        c.beginPath(); c.roundRect(90,y+h*0.22,(W-130)*0.62,h*0.56,1); c.fill();
-      }
-    });
-
-    // Scan beam
-    if (scanP < 1) {
-      const bg2 = c.createLinearGradient(0,scanY-14,0,scanY+7);
-      bg2.addColorStop(0,'transparent');
-      bg2.addColorStop(0.55,'rgba(0,113,227,0.45)');
-      bg2.addColorStop(1,'transparent');
-      c.fillStyle=bg2; c.fillRect(24,scanY-14,W-48,21);
-      c.strokeStyle='rgba(0,113,227,0.9)'; c.lineWidth=1;
-      c.beginPath(); c.moveTo(24,scanY); c.lineTo(W-24,scanY); c.stroke();
-      c.fillStyle='#0071e3';
-      c.beginPath(); c.arc(24,scanY,2.5,0,Math.PI*2); c.fill();
-      c.beginPath(); c.arc(W-24,scanY,2.5,0,Math.PI*2); c.fill();
-    }
-
-    // Divider before metrics
-    c.strokeStyle='rgba(255,255,255,0.06)'; c.lineWidth=1;
-    c.beginPath(); c.moveTo(24,248); c.lineTo(W-24,248); c.stroke();
-
-    // ── Metrics ──
-    const metrics = [
-      {label:'SEO',     score:38},
-      {label:'Perf.',   score:54},
-      {label:'Design',  score:47},
-      {label:'Contact', score:72},
-    ];
-    const metStart = 3.5;
-    metrics.forEach(({label,score},i)=>{
-      const delay = i*0.18;
-      const p = Math.max(0,Math.min(1,(sec-metStart-delay)/0.5));
-      if (p<=0) return;
-      const colW = (W-48)/4;
-      const x = 24+i*colW+4;
-      const bw = colW-8;
-      const col = score<50 ? '#ff453a' : score<70 ? '#ff9f0a' : '#30d158';
-      c.globalAlpha=p;
-      c.fillStyle=col; c.font='bold 15px system-ui,sans-serif'; c.textAlign='center';
-      c.fillText(Math.round(score*p),x+bw/2,270);
-      c.fillStyle='rgba(255,255,255,0.06)';
-      c.beginPath(); c.roundRect(x,275,bw,2,1); c.fill();
-      c.fillStyle=col;
-      c.beginPath(); c.roundRect(x,275,bw*(score/100)*p,2,1); c.fill();
-      c.fillStyle='rgba(255,255,255,0.4)'; c.font='8px monospace'; c.textAlign='center';
-      c.fillText(label,x+bw/2,287);
-      c.textAlign='left'; c.globalAlpha=1;
-    });
-
-    // ── Bottom summary ──
-    const summP = Math.max(0,Math.min(1,(sec-5.2)/0.5));
-    if (summP>0) {
-      c.globalAlpha=summP;
-      c.fillStyle='rgba(0,113,227,0.09)';
-      c.beginPath(); c.roundRect(24,300,W-48,52,4); c.fill();
-      c.strokeStyle='rgba(0,113,227,0.22)'; c.lineWidth=1;
-      c.beginPath(); c.roundRect(24,300,W-48,52,4); c.stroke();
-      c.fillStyle='rgba(255,255,255,0.8)'; c.font='bold 10px system-ui,sans-serif';
-      c.fillText('Opportunités détectées',36,317);
-      c.fillStyle='rgba(255,255,255,0.35)'; c.font='9px monospace';
-      c.fillText('Site vieillissant  ·  Pas de SEO local  ·  Formulaire absent',36,331);
-      c.fillStyle='#0071e3';
-      c.beginPath(); c.roundRect(W-112,308,88,22,3); c.fill();
-      c.fillStyle='#fff'; c.font='bold 9px system-ui,sans-serif'; c.textAlign='center';
-      c.fillText('Voir le rapport →',W-68,323); c.textAlign='left';
-      c.globalAlpha=1;
-    }
-
-    if (liveTexture0) liveTexture0.needsUpdate = true;
-  }
-
-  // ── Canvas2D slides ──
-  function makeSlideTexture(idx) {
-    const W = 588, H = 400;
-    const cv = document.createElement('canvas');
-    cv.width = W; cv.height = H;
-    const c = cv.getContext('2d');
-    const grad = (x1,y1,x2,y2,c1,c2) => { const g=c.createLinearGradient(x1,y1,x2,y2); g.addColorStop(0,c1); g.addColorStop(1,c2); return g; };
-
-    if (idx === 1) {
-      c.fillStyle = grad(0,0,W,H,'#1a1025','#2d1b4e'); c.fillRect(0,0,W,H);
-      c.fillStyle='#a78bfa'; c.font='bold 15px sans-serif'; c.fillText('Maquette UI/UX',30,40);
-      c.strokeStyle='rgba(167,139,250,0.4)'; c.lineWidth=1; c.strokeRect(30,55,W-60,130);
-      c.fillStyle='rgba(167,139,250,0.15)'; c.fillRect(30,55,W-60,40);
-      c.fillStyle='#c4b5fd'; c.font='bold 13px sans-serif'; c.fillText('HERO — Boulangerie Martin',46,80);
-      c.fillStyle='rgba(255,255,255,0.4)'; c.font='10px sans-serif'; c.fillText('Artisanal · Livraison · Commande',46,100);
-      c.fillStyle='#7c3aed'; c.beginPath(); c.roundRect(46,110,80,18,3); c.fill();
-      c.fillStyle='#fff'; c.font='10px sans-serif'; c.fillText('Commander',57,123);
-      [0,1,2].forEach(i=>{ c.fillStyle='rgba(255,255,255,0.05)'; const cw=(W-80)/3,cx=30+i*(cw+10); c.beginPath(); c.roundRect(cx,205,cw,64,4); c.fill(); c.strokeStyle='rgba(167,139,250,0.25)'; c.strokeRect(cx,205,cw,64); });
-      c.fillStyle='#a78bfa'; c.font='bold 11px sans-serif'; c.fillText('Palette',30,302);
-      ['#7c3aed','#a78bfa','#f3f4f6','#1a1025','#fbbf24'].forEach((col,i)=>{ c.fillStyle=col; c.beginPath(); c.arc(50+i*50,330,14,0,Math.PI*2); c.fill(); });
-      c.fillStyle='#64748b'; c.font='11px sans-serif'; c.fillText('Inter · Playfair Display',30,372);
-    } else if (idx === 2) {
-      c.fillStyle = grad(0,0,W,H,'#0a0e1a','#0f1628'); c.fillRect(0,0,W,H);
-      c.fillStyle='rgba(255,255,255,0.06)'; c.beginPath(); c.roundRect(30,16,W-60,26,4); c.fill();
-      [['#ff5f57',50],['#febc2e',72],['#28c840',94]].forEach(([col,x])=>{ c.fillStyle=col; c.beginPath(); c.arc(x,29,5,0,Math.PI*2); c.fill(); });
-      c.fillStyle='rgba(255,255,255,0.3)'; c.font='10px monospace'; c.textAlign='center'; c.fillText('nexxo-agent — bash',W/2,32); c.textAlign='left';
-      [['#60a5fa','▶ Building cabinet-moreau.fr...'],['#4ade80','✓ Dependencies resolved (1.2s)'],['#60a5fa','▶ Compiling assets...'],['#4ade80','✓ CSS optimized  14kb → 4kb'],['#4ade80','✓ SEO meta generated'],['#60a5fa','▶ Deploying to production...'],['#4ade80','✓ DNS propagated'],['#4ade80','✓ Site live — 0 errors'],['#facc15','$ _']].forEach(([col,txt],i)=>{ c.fillStyle=col; c.font='11px monospace'; c.fillText(txt,44,62+i*34); });
-    } else if (idx === 3) {
-      c.fillStyle = grad(0,0,W,H,'#0d1f12','#0f2d1a'); c.fillRect(0,0,W,H);
-      c.fillStyle='rgba(255,255,255,0.06)'; c.beginPath(); c.roundRect(30,16,W-60,26,4); c.fill();
-      [['#ff5f57',50],['#febc2e',72],['#28c840',94]].forEach(([col,x])=>{ c.fillStyle=col; c.beginPath(); c.arc(x,29,5,0,Math.PI*2); c.fill(); });
-      c.fillStyle='rgba(74,222,128,0.08)'; c.fillRect(30,50,W-60,200);
-      c.strokeStyle='rgba(74,222,128,0.3)'; c.lineWidth=1; c.strokeRect(30,50,W-60,200);
-      c.fillStyle='#4ade80'; c.font='bold 14px sans-serif'; c.fillText('Cabinet Moreau',46,80);
-      c.fillStyle='rgba(255,255,255,0.4)'; c.font='11px sans-serif'; c.fillText('Avocat Bordeaux — RDV en ligne',46,100);
-      ['Performance 97/100','SEO 100/100','Accessibilité 95/100','Best Practices 100/100'].forEach((txt,i)=>{ c.fillStyle='#4ade80'; c.font='bold 12px sans-serif'; c.fillText('✓',40,278+i*24); c.fillStyle='#d1fae5'; c.font='12px sans-serif'; c.fillText(txt,60,278+i*24); });
-    } else if (idx === 4) {
-      c.fillStyle = grad(0,0,W,H,'#0f1015','#1a1f2e'); c.fillRect(0,0,W,H);
-      const glow = c.createRadialGradient(W/2,170,10,W/2,170,180); glow.addColorStop(0,'rgba(99,102,241,0.35)'); glow.addColorStop(1,'transparent'); c.fillStyle=glow; c.fillRect(0,0,W,H);
-      c.font='48px sans-serif'; c.textAlign='center'; c.fillText('🚀',W/2,120);
-      c.fillStyle='#e2e8f0'; c.font='bold 20px sans-serif'; c.fillText('Site en ligne !',W/2,165);
-      c.fillStyle='#94a3b8'; c.font='13px sans-serif'; c.fillText('cabinet-moreau.fr',W/2,190);
-      [['Rapide','Délai'],[' 97/100','PageSpeed'],['10/10','Satisfaction']].forEach(([val,lbl],i)=>{ const cx=80+i*170; c.fillStyle='rgba(99,102,241,0.2)'; c.beginPath(); c.roundRect(cx-55,218,110,64,6); c.fill(); c.strokeStyle='rgba(99,102,241,0.5)'; c.lineWidth=1; c.beginPath(); c.roundRect(cx-55,218,110,64,6); c.stroke(); c.fillStyle='#818cf8'; c.font='bold 18px sans-serif'; c.fillText(val,cx,256); c.fillStyle='#64748b'; c.font='10px sans-serif'; c.fillText(lbl,cx,272); });
-      c.fillStyle='#6366f1'; c.beginPath(); c.roundRect(W/2-90,308,180,36,6); c.fill();
-      c.fillStyle='#fff'; c.font='bold 13px sans-serif'; c.fillText('Voir le site →',W/2,331);
-      c.textAlign='left';
-    }
-    const tex = new THREE.CanvasTexture(cv);
-    tex.flipY = false;
-    return tex;
-  }
-
-  function getSize() {
-    return { w: Math.round(window.innerWidth * 0.72), h: Math.round(window.innerHeight * 0.9) };
-  }
-
-  // ── Scene ──
-  function initScene() {
-    const { w, h } = getSize();
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(38, w / h, 10, 1000);
-    camera.position.z = 60;
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: canvasEl });
-    renderer.setClearColor(0x000000, 0);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(w, h);
-    lightHolder = new THREE.Group(); scene.add(lightHolder);
-    const al = new THREE.AmbientLight(0xffffff, .5); scene.add(al);
-    const pl = new THREE.PointLight(0xFFF5E1, 0.5); pl.position.set(0,5,50); lightHolder.add(pl);
-    const pl2 = new THREE.PointLight(0xaabbff, 0.4); pl2.position.set(-30,20,20); lightHolder.add(pl2);
-    macGroup = new THREE.Group(); macGroup.position.set(-5,-3,-10); macGroup.rotation.set(0.05*Math.PI,-1.0,0); macGroup.scale.set(0.90,0.90,0.90); scene.add(macGroup);
-    lidGroup = new THREE.Group(); macGroup.add(lidGroup);
-    bottomGroup = new THREE.Group(); macGroup.add(bottomGroup);
-  }
-
-  function createMaterials() {
-    liveTexture0 = new THREE.CanvasTexture(liveCanvas0);
-    liveTexture0.flipY = false;
-    drawSlide0(0);
-    slideTextures.push(liveTexture0); // idx 0 = live
-    for (let i=1;i<5;i++) slideTextures.push(makeSlideTexture(i));
-    screenMaterial = new THREE.MeshBasicMaterial({ map: slideTextures[0], transparent: true, opacity: 0, side: THREE.BackSide });
-    const kt = new THREE.TextureLoader().load("../macbook-assets/keyboard-overlay.png");
-    keyboardMaterial = new THREE.MeshBasicMaterial({ color:0xffffff, alphaMap:kt, transparent:true });
-    darkPlasticMaterial = new THREE.MeshStandardMaterial({ color:0x000000, roughness:.9, metalness:.9 });
-    cameraMaterial = new THREE.MeshBasicMaterial({ color:0x333333 });
-    baseMetalMaterial = new THREE.MeshStandardMaterial({ color:0xCECFD3 });
-    logoMaterial = new THREE.MeshBasicMaterial({ color:0xffffff });
-  }
-
-  function parseModel(glb) {
-    [...glb.scene.children].forEach(child => {
-      if (child.name==='_top') {
-        lidGroup.add(child);
-        [...child.children].forEach(m => {
-          if(m.name==='lid') m.material=baseMetalMaterial;
-          else if(m.name==='logo') m.material=logoMaterial;
-          else if(m.name==='screen-frame') m.material=darkPlasticMaterial;
-          else if(m.name==='camera') m.material=cameraMaterial;
-        });
-      } else if (child.name==='_bottom') {
-        bottomGroup.add(child);
-        [...child.children].forEach(m => {
-          if(m.name==='base') m.material=baseMetalMaterial;
-          else if(m.name==='legs'||m.name==='keyboard'||m.name==='inner') m.material=darkPlasticMaterial;
-        });
-      }
-    });
-  }
-
-  function addScreen() {
-    const sm = new THREE.Mesh(new THREE.PlaneGeometry(screenSize[0],screenSize[1]), screenMaterial);
-    sm.position.set(0,10.5,-.11); sm.rotation.set(Math.PI,0,0); lidGroup.add(sm);
-    screenLight = new THREE.RectAreaLight(0xffffff,0,screenSize[0],screenSize[1]);
-    screenLight.position.set(0,10.5,0); screenLight.rotation.set(Math.PI,0,0); lidGroup.add(screenLight);
-    const ds = sm.clone(); ds.position.set(0,10.5,-.111); ds.rotation.set(Math.PI,Math.PI,0); ds.material=darkPlasticMaterial; lidGroup.add(ds);
-  }
-
-  function addKeyboard() {
-    const kk = new THREE.Mesh(new THREE.PlaneGeometry(27.7,11.6), keyboardMaterial);
-    kk.rotation.set(-.5*Math.PI,0,0); kk.position.set(0,.045,7.21); bottomGroup.add(kk);
-  }
-
-  function createTimelines() {
-    // Lid starts closed — rotation + z offset to sit flush on the base
-    lidGroup.rotation.x = 0.5 * Math.PI;
-    lidGroup.position.z = 0.5;
-
-    const floatingTl = gsap.timeline({ repeat:-1 })
-      .to([lidGroup.position,bottomGroup.position],{duration:1.8,y:'+=1.4',ease:'power1.inOut'},0)
-      .to([lidGroup.position,bottomGroup.position],{duration:1.8,y:'-=1.4',ease:'power1.inOut'})
-      .play(); // start floating immediately
-
-    // Legacy timelines (kept for reference, no longer used by _mbEnter)
-    screenOnTl = gsap.timeline({paused:true})
-      .to(screenMaterial,{duration:.2,opacity:.96},0)
-      .to(screenLight,{duration:.2,intensity:1.2},0);
-    laptopOpeningTl = gsap.timeline({paused:true});
-
-    // ── MacBook animation lifecycle ──
-    // Track active timeline to kill it explicitly (killTweensOf misses timeline children)
-    let _mbTl = null;
-    let _closeTl = null;
-
-    function _killAll() {
-      if (_mbTl) { _mbTl.kill(); _mbTl = null; }
-      if (_closeTl) { _closeTl.kill(); _closeTl = null; }
-      // Stop lerp RAF loop
-      if (_lerpRafId) { cancelAnimationFrame(_lerpRafId); _lerpRafId = null; }
-      // Belt-and-suspenders: also kill any orphaned tweens per target
-      gsap.killTweensOf(lidGroup.rotation);
-      gsap.killTweensOf(macGroup.rotation);
-      gsap.killTweensOf(screenMaterial);
-      gsap.killTweensOf(screenLight);
-    }
-
-    // Scroll block pendant l'animation d'ouverture
-    let _mbOpenBlockInput = null;
-    function _mbLockScroll() {
-      if (_mbOpenBlockInput) return;
-      window._dwellLocked = true;
-      _mbOpenBlockInput = function(e) { e.preventDefault(); };
-      window.addEventListener('wheel',     _mbOpenBlockInput, { passive: false });
-      window.addEventListener('touchmove', _mbOpenBlockInput, { passive: false });
-    }
-    function _mbUnlockScroll() {
-      if (!_mbOpenBlockInput) return;
-      window.removeEventListener('wheel',     _mbOpenBlockInput);
-      window.removeEventListener('touchmove', _mbOpenBlockInput);
-      _mbOpenBlockInput = null;
-      window._dwellLocked = false;
-    }
-
-    window._mbEnter = function() {
-      if (mbEntered) return;
-      mbEntered = true;
-      mbOpening = true;
-      _killAll();
-      _mbLockScroll();
-
-      // Detect state:
-      //   First load  → y ≈ -1.0 (set in initScene) — animate turn + lid open
-      //   Re-entry    → y ≈  0   (set by _mbReset)  — just open lid
-      //   Interrupted → any other value              — snap to 0, then open lid
-      const y = macGroup.rotation.y;
-      const isFirstLoad = (y < -0.5);
-
-      if (!isFirstLoad) {
-        // Snap any stale rotation to neutral — synchronous, no GSAP delay
-        macGroup.rotation.y = 0;
-        macGroup.rotation.z = 0;
-      }
-
-      _mbTl = gsap.timeline({ onComplete: () => { mbOpening = false; _mbTl = null; _mbUnlockScroll(); } });
-
-      if (isFirstLoad) {
-        // Original dramatic reveal: rotate to face camera + open lid
-        _mbTl
-          .to(macGroup.rotation, {duration:1.1, y:0.0, x:0.04*Math.PI, ease:'power3.out'}, 0)
-          .to(lidGroup.position, {duration:0.75, z:0, ease:'power2.out'}, 0.25)
-          .to(lidGroup.rotation, {duration:1.2, x:-0.12*Math.PI, ease:'power2.out'}, 0.25)
-          .to(screenMaterial,    {duration:0.2, opacity:0.96, ease:'power2.out'}, 1.1)
-          .to(screenLight,       {duration:0.2, intensity:1.2, ease:'power2.out'}, 1.1);
-      } else {
-        // Re-entry: already facing forward, just open lid
-        _mbTl
-          .to(macGroup.rotation, {duration:0.6, x:0.04*Math.PI, ease:'power3.out'}, 0)
-          .to(lidGroup.position, {duration:0.75, z:0, ease:'power2.out'}, 0.25)
-          .to(lidGroup.rotation, {duration:1.2, x:-0.12*Math.PI, ease:'power2.out'}, 0.25)
-          .to(screenMaterial,    {duration:0.2, opacity:0.96, ease:'power2.out'}, 1.1)
-          .to(screenLight,       {duration:0.2, intensity:1.2, ease:'power2.out'}, 1.1);
-      }
-    };
-
-    window._mbStep = function(idx) {
-      if (idx === currentSlideIdx) return;
-      _swapSlide(idx);
-    };
-
-    // ── Scroll-driven spin — Apple lerp style ──
-    // Scroll sets _targetProgress. A RAF loop lerps _currentProgress toward the target
-    // with a damping factor (LERP_K ≈ 0.08), giving the Mac a "weighted" feel identical
-    // to Apple's AirPods scroll section. Rotation and texture swap are derived from
-    // _currentProgress so the visual always matches the lerped state.
-    const SPIN_BREAKPOINTS = [0.222, 0.407, 0.593, 0.778];
-    const TW = 0.055; // half-width of transition zone in progress units
-    const LERP_K = 0.085; // damping per frame — 0.085 ≈ Apple AirPods feel
-
-    let _targetProgress  = 0;
-    let _currentProgress = 0;
-    let _lerpRafId       = null;
-
-    function _applyProgress(p) {
-      for (let i = 0; i < SPIN_BREAKPOINTS.length; i++) {
-        const dist = p - SPIN_BREAKPOINTS[i];
-        if (dist >= -TW && dist <= TW) {
-          const t = (dist + TW) / (2 * TW);
-          macGroup.rotation.y = -Math.PI / 2 * Math.sin(Math.PI * t);
-          const target = t >= 0.5 ? i + 1 : i;
-          if (target !== currentSlideIdx) _swapSlide(target);
-          return;
-        }
-      }
-      macGroup.rotation.y = 0;
-      let stableSlide = 0;
-      for (let i = SPIN_BREAKPOINTS.length - 1; i >= 0; i--) {
-        if (p >= SPIN_BREAKPOINTS[i] + TW) { stableSlide = i + 1; break; }
-      }
-      if (stableSlide !== currentSlideIdx) _swapSlide(stableSlide);
-    }
-
-    function _lerpTick() {
-      const diff = _targetProgress - _currentProgress;
-      if (Math.abs(diff) < 0.0003) {
-        _currentProgress = _targetProgress;
-        _applyProgress(_currentProgress);
-        _lerpRafId = null;
-        return;
-      }
-      _currentProgress += diff * LERP_K;
-      _applyProgress(_currentProgress);
-      _lerpRafId = requestAnimationFrame(_lerpTick);
-    }
-
-    window._mbScrollDrive = function(progress) {
-      if (!mbEntered || mbOpening || mbClosed) return;
-      _targetProgress = progress;
-      if (!_lerpRafId) _lerpRafId = requestAnimationFrame(_lerpTick);
-    };
-
-    window._mbClose = function() {
-      return; // désactivé — le Mac reste ouvert une fois lancé
-      if (mbClosed) return;
-      mbClosed = true;
-      // Kill main animation if still running — close takes priority
-      if (_mbTl) { _mbTl.kill(); _mbTl = null; mbOpening = false; }
-      if (_closeTl) { _closeTl.kill(); _closeTl = null; }
-      _closeTl = gsap.timeline({ onComplete: () => { _closeTl = null; } })
-        .to(screenMaterial,    {duration:.2, opacity:0, ease:'power2.in', overwrite:'auto'}, 0)
-        .to(screenLight,       {duration:.2, intensity:0, ease:'power2.in', overwrite:'auto'}, 0)
-        .to(lidGroup.rotation, {duration:0.7, x:0.505*Math.PI, ease:'power2.inOut', overwrite:'auto'}, 0.1)
-        .to(lidGroup.position, {duration:0.5, z:0.5, ease:'power2.inOut', overwrite:'auto'}, 0.3);
-    };
-
-    window._mbReopen = function(progress) {
-      if (!mbClosed) return;
-      mbClosed = false;
-      mbOpening = true;
-      if (_closeTl) { _closeTl.kill(); _closeTl = null; }
-      // Snap MacBook to correct slide — same zone-aware logic as _mbScrollDrive
-      let stableIdx = 0;
-      if (progress !== undefined) {
-        let inZone = false;
-        for (let i = 0; i < SPIN_BREAKPOINTS.length; i++) {
-          const dist = progress - SPIN_BREAKPOINTS[i];
-          if (dist >= -TW && dist <= TW) {
-            stableIdx = ((dist + TW) / (2 * TW)) >= 0.5 ? i + 1 : i;
-            inZone = true; break;
-          }
-        }
-        if (!inZone) {
-          for (let i = SPIN_BREAKPOINTS.length - 1; i >= 0; i--) {
-            if (progress >= SPIN_BREAKPOINTS[i] + TW) { stableIdx = i + 1; break; }
-          }
-        }
-      }
-      macGroup.rotation.y = 0;
-      if (stableIdx !== currentSlideIdx) _swapSlide(stableIdx);
-      // Use .to() with overwrite (not fromTo) — don't assume current lid angle
-      _closeTl = gsap.timeline({ onComplete: () => { _closeTl = null; mbOpening = false; } })
-        .to(lidGroup.rotation,  {duration:0.7, x:-0.12*Math.PI, ease:'power2.out', overwrite:'auto'}, 0)
-        .to(lidGroup.position,  {duration:0.5, z:0, ease:'power2.out', overwrite:'auto'}, 0)
-        .to(screenMaterial, {duration:.25, opacity:.96, ease:'power2.out', overwrite:'auto'}, 0.55)
-        .to(screenLight,    {duration:.25, intensity:1.2, ease:'power2.out', overwrite:'auto'}, 0.55);
-    };
-
-    window._mbReset = function() {
-      // Kill ALL active animations
-      _killAll();
-      // Reset all flags
-      mbEntered = false;
-      mbClosed = false;
-      mbSpinning = false;
-      mbOpening = false;
-      // Reset 3D state — direct property assignment (synchronous)
-      lidGroup.rotation.x = 0.5 * Math.PI;
-      lidGroup.position.z = 0.5;
-      macGroup.rotation.x = 0.05 * Math.PI;
-      macGroup.rotation.y = 0;
-      macGroup.rotation.z = 0;
-      screenMaterial.opacity = 0;
-      screenLight.intensity = 0;
-      // Reset lerp progress state
-      _targetProgress  = 0;
-      _currentProgress = 0;
-      // Reset slide
-      currentSlideIdx = 0;
-      _swapSlide(0);
-      // Reset scroll handler state (step UI + flags)
-      if (window._mbScrollReset) window._mbScrollReset();
-      // Reset panel trigger so _mbEnter fires on next entry
-      const processEl = document.getElementById('process');
-      if (processEl) processEl._mbTriggered = false;
-    };
-
-    function _swapSlide(idx) {
-      currentSlideIdx = idx;
-      screenMaterial.map = slideTextures[idx];
-      screenMaterial.needsUpdate = true;
-    }
-  }
-
-  // ── Services Carousel ──
-  (function() {
-    const TOTAL = 12, ANGLE_PER = 30, HOVER_DELAY = 450, AUTO_INTERVAL = 3500;
-    const carousel = document.getElementById('carouselReal');
-    const zone     = document.getElementById('carouselZoneReal');
-    const dotsWrap = document.getElementById('scDots');
-    if (!carousel || !zone || !dotsWrap) return;
-
-    const screens = Array.from(carousel.querySelectorAll('.screen'));
-    let currentIndex = 0, currentAngle = 0;
-    let autoTimer = null, hoverTimer = null, autoResumeTimer = null, isAutoTransitioning = false;
-
-    // Créer les dots
-    for (let i = 0; i < TOTAL; i++) {
-      const d = document.createElement('button');
-      d.className = 'sc-dot' + (i === 0 ? ' active' : '');
-      d.addEventListener('click', () => { stopAll(); rotateTo(i); autoResumeTimer = setTimeout(startAuto, 1500); });
-      dotsWrap.appendChild(d);
-    }
-    const dots = Array.from(dotsWrap.children);
-
-    function setAngle(angle) {
-      // Utilise style.transform direct pour bypasser les conflits CSS variables
-      carousel.style.transform = 'rotateY(' + angle + 'deg)';
-    }
-
-    function rotateTo(index, fromAuto) {
-      const target = -index * ANGLE_PER;
-      let diff = ((target - currentAngle + 180) % 360 + 360) % 360 - 180;
-      currentAngle += diff;
-      currentIndex = index;
-      if (fromAuto) {
-        isAutoTransitioning = true;
-        setTimeout(function() { isAutoTransitioning = false; }, 900);
-      }
-      setAngle(currentAngle);
-      dots.forEach(function(d, i) { d.classList.toggle('active', i === currentIndex); });
-      screens.forEach(function(s, i) {
-        var d2 = Math.abs(((i - currentIndex) % TOTAL + TOTAL) % TOTAL);
-        s.classList.toggle('active', Math.min(d2, TOTAL - d2) === 0);
-      });
-    }
-
-    function startAuto() {
-      stopAuto();
-      autoTimer = setInterval(function() { rotateTo((currentIndex + 1) % TOTAL, true); }, AUTO_INTERVAL);
-    }
-    function stopAuto() { clearInterval(autoTimer); autoTimer = null; }
-    function stopAll() { clearTimeout(hoverTimer); clearTimeout(autoResumeTimer); stopAuto(); }
-
-    // Events par carte
-    screens.forEach(function(s) {
-      var idx = parseInt(s.dataset.index);
-      s.addEventListener('mouseenter', function() {
-        if (isAutoTransitioning) return;
-        clearTimeout(autoResumeTimer);
-        stopAuto();
-        hoverTimer = setTimeout(function() { rotateTo(idx); }, HOVER_DELAY);
-      });
-      s.addEventListener('mouseleave', function() {
-        clearTimeout(hoverTimer);
-        autoResumeTimer = setTimeout(startAuto, 400);
-      });
-      s.addEventListener('click', function() {
-        stopAll();
-        rotateTo(idx);
-        autoResumeTimer = setTimeout(startAuto, 1500);
-      });
-    });
-
-    // Quand la souris quitte la zone entière → reprendre auto
-    zone.addEventListener('mouseleave', function() {
-      clearTimeout(hoverTimer);
-      clearTimeout(autoResumeTimer);
-      startAuto();
-    });
-
-    // Flèches
-    document.getElementById('scArrowL').addEventListener('click', function() {
-      stopAll();
-      rotateTo(((currentIndex - 1) % TOTAL + TOTAL) % TOTAL);
-      autoResumeTimer = setTimeout(startAuto, 1500);
-    });
-    document.getElementById('scArrowR').addEventListener('click', function() {
-      stopAll();
-      rotateTo((currentIndex + 1) % TOTAL);
-      autoResumeTimer = setTimeout(startAuto, 1500);
-    });
-
-    // Init
-    setAngle(0);
-    setTimeout(startAuto, 800);
-  })();
-
-  function render() {
-    if (!document.hidden && window._processVisible !== false) {
-      if (currentSlideIdx === 0) drawSlide0(Date.now());
-      lightHolder.quaternion.copy(camera.quaternion);
-      renderer.render(scene, camera);
-    }
-    requestAnimationFrame(render);
-  }
-
-  function updateSize() {
-    const { w, h } = getSize();
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
-  }
-
-  initScene();
-  createMaterials();
-  new GLTFLoader().load(
-    "../macbook-assets/mac-noUv.glb",
-    glb => {
-      parseModel(glb);
-      addScreen();
-      addKeyboard();
-      createTimelines();
-      render();
-      window.addEventListener('resize', updateSize);
-      // If user already scrolled into section before GLB loaded
-      if (window._mbPendingEnter) window._mbEnter();
-    },
-    undefined,
-    err => console.error('GLB error:', err)
-  );
-}
-  </script>
 </body>
 </html>
