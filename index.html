@@ -338,21 +338,70 @@
       will-change: transform, opacity;
     }
 
+    /* ─── SHIMMER BUTTON ─── */
+    @keyframes shimmer-slide {
+      to { transform: translate(calc(100cqw - 100%), 0); }
+    }
+    @keyframes spin-around {
+      0%       { transform: translateZ(0) rotate(0deg); }
+      15%, 35% { transform: translateZ(0) rotate(90deg); }
+      65%, 85% { transform: translateZ(0) rotate(270deg); }
+      100%     { transform: translateZ(0) rotate(360deg); }
+    }
     .btn-primary {
-      background: var(--accent); color: #fff;
-      padding: 13px 28px; border-radius: 4px;
-      font-weight: 600; font-size: 0.92rem; text-decoration: none;
-      position: relative; overflow: visible;
-      border: 1px solid var(--accent);
-      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-      display: inline-block; cursor: pointer; font-family: var(--font-body);
-      letter-spacing: -0.01em;
+      --shimmer-color: #ffffff;
+      --radius: 100px;
+      --speed: 3s;
+      --spread: 90deg;
+      --cut: 0.05em;
+      --bg: #0060cc;
+      position: relative; z-index: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      overflow: hidden; white-space: nowrap;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 13px 28px;
+      color: #fff;
+      background: var(--bg);
+      border-radius: var(--radius);
+      cursor: pointer; text-decoration: none;
+      font-family: var(--font-body); font-size: 0.92rem;
+      font-weight: 600; letter-spacing: -0.01em;
+      transition: transform 0.3s ease-in-out;
     }
-    .btn-primary:hover {
-      background: #0066cc;
-      border-color: #0066cc;
-      box-shadow: 0 2px 12px rgba(var(--accent-rgb),0.25);
+    .btn-primary:active { transform: translateY(1px); }
+    .shimmer-spark-wrap {
+      position: absolute; inset: 0; z-index: -3;
+      overflow: visible; container-type: size;
+      filter: blur(2px);
     }
+    .shimmer-spark {
+      position: absolute; inset: 0;
+      height: 100cqh; aspect-ratio: 1;
+      animation: shimmer-slide var(--speed) ease-in-out infinite alternate;
+    }
+    .shimmer-spin {
+      position: absolute; inset: -100%; width: auto;
+      animation: spin-around calc(var(--speed) * 2) infinite linear;
+      background: conic-gradient(
+        from calc(270deg - (var(--spread) * 0.5)),
+        transparent 0,
+        var(--shimmer-color) var(--spread),
+        transparent var(--spread)
+      );
+    }
+    .shimmer-highlight {
+      position: absolute; inset: 0;
+      border-radius: 20px;
+      box-shadow: inset 0 -8px 10px rgba(255,255,255,0.12);
+      transition: box-shadow 0.3s ease;
+    }
+    .btn-primary:hover .shimmer-highlight { box-shadow: inset 0 -6px 10px rgba(255,255,255,0.28); }
+    .btn-primary:active .shimmer-highlight { box-shadow: inset 0 -10px 10px rgba(255,255,255,0.28); }
+    .shimmer-backdrop {
+      position: absolute; z-index: -2;
+      inset: var(--cut); background: var(--bg); border-radius: var(--radius);
+    }
+    .btn-primary-text { position: relative; z-index: 1; }
     .btn-secondary {
       background: #ffffff; color: #1d1d1f;
       padding: 13px 28px; border-radius: 4px;
@@ -365,6 +414,65 @@
     .btn-secondary:hover {
       border-color: rgba(0,0,0,0.35);
       background: #f5f5f7;
+    }
+
+    /* ─── LIQUID GLASS BUTTON ─── */
+    .btn-liquid {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 13px 28px;
+      border-radius: 100px;
+      border: none; outline: none;
+      background: transparent;
+      color: #1d1d1f;
+      font-size: 0.92rem; font-weight: 500; text-decoration: none;
+      font-family: var(--font-body); letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.1, 0.4, 0.2, 1);
+      isolation: isolate;
+    }
+    .btn-liquid:hover {
+      transform: scale(1.05);
+    }
+    .btn-liquid:active {
+      transform: scale(0.97);
+    }
+    /* glass shell */
+    .btn-liquid::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 100px;
+      box-shadow:
+        0 0 6px rgba(0,0,0,0.03),
+        0 2px 6px rgba(0,0,0,0.08),
+        inset 1px 1px 1px rgba(255,255,255,0.9),
+        inset -1px -1px 1px rgba(0,0,0,0.08),
+        inset 0 0 12px rgba(0,0,0,0.06),
+        0 0 0 1px rgba(0,0,0,0.09);
+      transition: box-shadow 0.3s ease;
+      z-index: 0;
+    }
+    /* backdrop distortion layer */
+    .btn-liquid::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 100px;
+      backdrop-filter: url("#liquid-glass-filter") blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: -1;
+    }
+    .btn-liquid:hover::before {
+      box-shadow:
+        0 0 8px rgba(0,0,0,0.04),
+        0 4px 12px rgba(0,0,0,0.1),
+        inset 1px 1px 1px rgba(255,255,255,0.95),
+        inset -1px -1px 1px rgba(0,0,0,0.06),
+        inset 0 0 16px rgba(0,0,0,0.05),
+        0 0 0 1px rgba(0,0,0,0.12);
+    }
+    .btn-liquid-text {
+      position: relative; z-index: 1;
+      pointer-events: none;
     }
     .scroll-hint {
       position: absolute;
@@ -900,102 +1008,6 @@
       .bento-title { font-size: clamp(2.2rem,8vw,3.5rem); }
     }
 
-    /* ─── PROCESS — pinned scroll ─── */
-    #process {
-      position: relative; z-index: 2;
-      background: #f5f5f7;
-      padding: 0;
-    }
-    .process-panel {
-      height: 100vh;
-      display: flex; align-items: flex-start;
-      gap: 72px;
-      padding: 20vh max(48px, 7vw) 0;
-      background: #f5f5f7;
-      position: sticky; top: 0; overflow: hidden;
-    }
-    .process-scroll-room { height: 120vh; }
-
-    /* Left */
-    .process-left { flex: 1; position: relative; z-index: 1; min-width: 0; }
-    .process-main-title {
-      font-family: var(--font-head); font-size: clamp(2.8rem, 5vw, 4.5rem);
-      font-weight: 600; color: #1d1d1f; line-height: 1.0;
-      letter-spacing: -0.03em; margin-bottom: 36px;
-      white-space: nowrap;
-    }
-    .ps-indicator {
-      display: flex; flex-direction: column; gap: 10px;
-      margin-bottom: 36px;
-    }
-    .ps-ind-track {
-      width: 150px; height: 2px; background: rgba(0,0,0,0.1);
-      border-radius: 2px; position: relative;
-    }
-    .ps-ind-fill {
-      position: absolute; top: 0; left: 0; height: 100%;
-      background: #0071e3; border-radius: 2px;
-      width: 20%; transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
-    }
-    .ps-ind-dots { display: flex; flex-direction: row; justify-content: space-between; width: 150px; }
-    .ps-ind-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: rgba(0,0,0,0.15);
-      transition: background 0.3s ease, transform 0.3s ease;
-    }
-    .ps-ind-dot.active { background: #0071e3; transform: scale(1.4); }
-    .ps-step-num {
-      font-family: var(--font-head); font-size: clamp(3rem, 5vw, 4.5rem);
-      font-weight: 800; color: #0071e3; line-height: 1;
-      letter-spacing: -0.04em; margin-top: 18px;
-      opacity: 0; transform: translateY(8px) scale(0.92);
-      transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1),
-                  transform 0.4s cubic-bezier(0.16,1,0.3,1);
-    }
-    .ps-step-num.active { opacity: 1; transform: translateY(0) scale(1); }
-    .ps-desc-banner {
-      position: absolute; bottom: 17vh; left: 0; right: 0;
-      display: flex; justify-content: center;
-      padding: 0 max(48px, 7vw);
-    }
-    .ps-desc {
-      position: absolute;
-      max-width: 560px;
-      font-size: 0.9rem; color: #48484a; line-height: 1.75;
-      font-weight: 400; letter-spacing: 0.01em;
-      text-align: center;
-      padding-top: 16px;
-      border-top: 1px solid rgba(0,0,0,0.12);
-      opacity: 0; transform: translateY(12px); filter: blur(4px);
-      transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1) 0.18s,
-                  transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.18s,
-                  filter 0.5s cubic-bezier(0.16,1,0.3,1) 0.18s;
-    }
-    .ps-desc.active { opacity: 1; transform: translateY(0); filter: blur(0); }
-    .ps-texts { position: relative; height: 72px; margin-top: 12px; max-width: 360px; }
-    .ps-text {
-      position: absolute; top: 0; left: 0; width: 100%;
-      opacity: 0; transform: translateX(14px);
-      transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1) 0.07s,
-                  transform 0.4s cubic-bezier(0.16,1,0.3,1) 0.07s;
-      pointer-events: none;
-    }
-    .ps-text.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-    .ps-text h3 {
-      font-family: var(--font-head); font-weight: 700;
-      font-size: 1.25rem; color: #1d1d1f;
-      letter-spacing: -0.03em;
-      margin: 0;
-    }
-    .ps-text p {
-      font-size: 0.875rem; color: #6e6e73; line-height: 1.6;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      margin-top: 6px;
-      max-width: 36ch;
-    }
-
-    /* Right */
-    .process-right { flex: 1; position: relative; z-index: 1; height: 640px; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: visible; }
 
     /* ─── MACBOOK 3D — supprimé ─── */
 
@@ -1810,6 +1822,7 @@
 
     /* ─── TEAM ─── */
     #team {
+      position: relative; z-index: 2;
       padding: 100px 32px 120px;
       background: #f5f5f7;
     }
@@ -1851,7 +1864,7 @@
 
     /* ─── JOIN ─── */
     #join {
-      position: relative; z-index: 1;
+      position: relative; z-index: 2;
       padding: 100px 32px 120px;
       background: #1d1d1f;
       border-top: none;
@@ -1970,6 +1983,19 @@
 </head>
 <body>
 
+  <!-- Liquid Glass SVG Filter -->
+  <svg class="hidden" style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+    <defs>
+      <filter id="liquid-glass-filter" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.05 0.05" numOctaves="1" seed="1" result="turbulence"/>
+        <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise"/>
+        <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="60" xChannelSelector="R" yChannelSelector="B" result="displaced"/>
+        <feGaussianBlur in="displaced" stdDeviation="3" result="finalBlur"/>
+        <feComposite in="finalBlur" in2="finalBlur" operator="over"/>
+      </filter>
+    </defs>
+  </svg>
+
   <!-- Custom cursor -->
   <div id="cursor"></div>
 
@@ -2015,8 +2041,13 @@
       <h1 class="hero-title">Développez le <span class="hero-ai">plein potentiel</span> de votre<br>activité grâce à l'<span class="hero-ai" id="heroAI">IA</span>.</h1>
     </div>
     <div class="hero-buttons-bottom">
-      <a href="#" class="btn-primary" id="hero-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Réserver un appel →</a>
-      <a href="#" class="btn-secondary" onclick="event.preventDefault();scrollToSection('realisations')">Voir les services</a>
+      <a href="#" class="btn-primary" id="hero-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">
+        <div class="shimmer-spark-wrap"><div class="shimmer-spark"><div class="shimmer-spin"></div></div></div>
+        <span class="btn-primary-text">Réserver un appel →</span>
+        <div class="shimmer-highlight"></div>
+        <div class="shimmer-backdrop"></div>
+      </a>
+      <a href="#" class="btn-liquid" onclick="event.preventDefault();scrollToSection('realisations')"><span class="btn-liquid-text">Voir les services</span></a>
     </div>
     <div class="hero-visual">
       <div class="hero-visual-glow"></div>
@@ -2149,523 +2180,598 @@
   </section>
 
 
-  <!-- Process — pinned scroll -->
-  <section id="process" class="stack-slide" data-pinned="true">
-    <!-- Sticky panel: stays at top while scroll room provides scroll space -->
-    <div class="process-panel">
 
-      <!-- Left: fixed title + changing step text -->
-      <div class="process-left">
-        <h2 class="process-main-title">Notre process.</h2>
-        <!-- Step progress indicator -->
-        <div class="ps-indicator">
-          <div class="ps-ind-track">
-            <div class="ps-ind-fill" id="ps-ind-fill"></div>
-          </div>
-          <div class="ps-ind-dots">
-            <span class="ps-ind-dot active" data-step="0"></span>
-            <span class="ps-ind-dot" data-step="1"></span>
-            <span class="ps-ind-dot" data-step="2"></span>
-            <span class="ps-ind-dot" data-step="3"></span>
-            <span class="ps-ind-dot" data-step="4"></span>
-          </div>
-        </div>
-        <!-- Step number -->
-        <div class="ps-step-num active" id="ps-step-num">01</div>
-        <!-- Step title -->
-        <div class="ps-texts">
-          <div class="ps-text active" data-step="0"><h3>Analyse de votre activité</h3></div>
-          <div class="ps-text" data-step="1"><h3>Elaboration d'une solution personnalisée</h3></div>
-          <div class="ps-text" data-step="2"><h3>Développement</h3></div>
-          <div class="ps-text" data-step="3"><h3>Livraison en délai réduit</h3></div>
-          <div class="ps-text" data-step="4"><h3>Suivi, maintenance et<br>optimisation régulière</h3></div>
-        </div>
-      </div>
 
-      <!-- Right: placeholder (MacBook supprimé) -->
-      <div class="process-right" style="overflow:visible; display:none;">
-        <canvas id="mb-canvas" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;"></canvas>
-        <!-- hidden legacy for compatibility -->
-        <div style="display:none">
-        <div class="mb-viewport">
-          <div class="mb-scene" id="mb-scene" style="display:none">
-            <div class="mb-body">
+  <!-- Nos Offres — ContainerScroll -->
+  <section id="offres" style="position: relative; z-index: 2; background: #ffffff; border-top: 1px solid rgba(0,0,0,0.06);">
+    <style>
+      /* ── ContainerScroll wrapper ── */
+      #offres-scroll-container {
+        height: 60rem;
+        display: flex; align-items: center; justify-content: center;
+        position: relative; padding: 0 80px;
+      }
+      #offres-scroll-inner {
+        width: 100%;
+        perspective: 1000px;
+      }
 
-              <!-- LID -->
-              <div class="mb-lid">
-                <div class="mb-lid-front">
-                  <div class="mb-bezel">
-                    <div class="mb-notch"></div>
-                    <div class="mb-screen">
+      /* ── Header (title) ── */
+      #offres-header {
+        padding: clamp(90px, 13vh, 130px) max(48px, 6vw) 0;
+        margin-bottom: -90px;
+        will-change: transform;
+      }
+      .offres-title {
+        font-family: var(--font-head);
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 700; color: #1d1d1f;
+        letter-spacing: -0.025em; line-height: 1.12;
+        margin: 0;
+        text-align: left;
+      }
+      .offres-tw-cursor {
+        display: inline-block; font-weight: 700;
+        background: linear-gradient(110deg, #3b82f6 0%, #818cf8 35%, #06b6d4 65%, #3b82f6 100%);
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: tw-blink 0.9s step-end infinite; margin-left: 1px;
+      }
+      @keyframes tw-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-                      <!-- Slide 0: Découverte -->
-                      <div class="mb-slide active" data-step="0">
-                        <div style="padding:14px;font-family:'Inter',sans-serif;height:100%;box-sizing:border-box;">
-                          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-                            <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);flex-shrink:0;"></div>
-                            <div style="flex:1;">
-                              <div style="font-weight:600;font-size:12px;color:#111;">Appel découverte</div>
-                              <div style="font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;margin-top:1px;"><span style="width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block;"></span>En cours · 15 min</div>
-                            </div>
-                            <div style="font-family:monospace;font-size:14px;font-weight:600;color:#333;" id="mb-timer">15:00</div>
-                          </div>
-                          <div style="display:flex;flex-direction:column;gap:7px;">
-                            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f0fdf4;border-radius:7px;"><span style="color:#22c55e;font-weight:700;font-size:12px;">✓</span><span style="font-size:11px;color:#333;">Activité analysée</span></div>
-                            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f0fdf4;border-radius:7px;"><span style="color:#22c55e;font-weight:700;font-size:12px;">✓</span><span style="font-size:11px;color:#333;">Outils cartographiés</span></div>
-                            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#eff6ff;border-radius:7px;border:1.5px solid #bfdbfe;"><span style="color:#3b82f6;font-weight:700;font-size:12px;">→</span><span style="font-size:11px;font-weight:600;color:#1d4ed8;">Points de friction</span></div>
-                            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f9fafb;border-radius:7px;border:1px dashed #d1d5db;"><span style="color:#9ca3af;font-size:12px;">○</span><span style="font-size:11px;color:#9ca3af;">Plan d'action défini</span></div>
-                          </div>
-                        </div>
-                      </div>
+      /* ── 3D Card ── */
+      #offres-card {
+        max-width: 64rem;
+        margin: -48px auto 0; /* -mt-12 */
+        height: 40rem;
+        width: 100%;
+        border: 4px solid #6C6C6C;
+        padding: 24px;
+        background: #222222;
+        border-radius: 30px;
+        will-change: transform;
+        box-shadow:
+          0 0 #0000004d,
+          0 9px 20px #0000004a,
+          0 37px 37px #00000042,
+          0 84px 50px #00000026,
+          0 149px 60px #0000000a,
+          0 233px 65px #00000003;
+      }
+      #offres-card-inner {
+        height: 100%; width: 100%;
+        overflow: hidden;
+        border-radius: 16px;
+        background: #0d0f14;
+      }
+      #offres-card-inner iframe {
+        width: 100%; height: 100%;
+        border: none; display: block;
+      }
+    </style>
 
-                      <!-- Slide 1: Stratégie -->
-                      <div class="mb-slide" data-step="1">
-                        <div style="padding:14px;font-family:'Inter',sans-serif;height:100%;box-sizing:border-box;">
-                          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                            <div><div style="font-weight:600;font-size:12px;color:#111;">Solution Nexxo</div><div style="font-size:10px;color:#6b7280;margin-top:1px;">Cabinet Moreau · Sur mesure</div></div>
-                            <span style="background:#dbeafe;color:#1d4ed8;font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;">Validé</span>
-                          </div>
-                          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
-                            <div style="display:flex;align-items:center;gap:7px;padding:7px 8px;background:#f0fdf4;border-radius:7px;border:1px solid #bbf7d0;">
-                              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#16a34a" stroke-width="1.8"><rect x="2" y="3" width="16" height="11" rx="2"/><path d="M7 17h6M10 14v3"/></svg>
-                              <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:#111;">Site vitrine</div><div style="font-size:9px;color:#6b7280;">SEO + Prise de RDV</div></div>
-                              <span style="color:#16a34a;font-weight:700;font-size:12px;">✓</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:7px;padding:7px 8px;background:#f0fdf4;border-radius:7px;border:1px solid #bbf7d0;">
-                              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#16a34a" stroke-width="1.8"><path d="M17 12a2 2 0 0 1-2 2H5l-3 3V4a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2z"/></svg>
-                              <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:#111;">SAV IA 24h/7j</div><div style="font-size:9px;color:#6b7280;">Réponse auto</div></div>
-                              <span style="color:#16a34a;font-weight:700;font-size:12px;">✓</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:7px;padding:7px 8px;background:#f9fafb;border-radius:7px;border:1px solid #e5e7eb;">
-                              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="1.8"><rect x="3" y="4" width="14" height="13" rx="2"/><path d="M3 9h14M8 2v4M12 2v4"/></svg>
-                              <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:#9ca3af;">Planning IA</div><div style="font-size:9px;color:#d1d5db;">Agenda automatisé</div></div>
-                              <span style="color:#9ca3af;font-size:13px;">+</span>
-                            </div>
-                          </div>
-                          <div style="height:4px;background:#f3f4f6;border-radius:4px;overflow:hidden;"><div style="height:100%;width:62%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:4px;"></div></div>
-                          <div style="font-size:9px;color:#6b7280;margin-top:4px;">Livraison en délai réduit</div>
-                        </div>
-                      </div>
-
-                      <!-- Slide 2: Développement (terminal) -->
-                      <div class="mb-slide" data-step="2">
-                        <div style="padding:10px;background:#0f1117;height:100%;box-sizing:border-box;font-family:'JetBrains Mono',monospace;">
-                          <div style="display:flex;align-items:center;gap:5px;margin-bottom:8px;">
-                            <span style="width:9px;height:9px;border-radius:50%;background:#ff5f57;"></span>
-                            <span style="width:9px;height:9px;border-radius:50%;background:#febc2e;"></span>
-                            <span style="width:9px;height:9px;border-radius:50%;background:#28c840;"></span>
-                            <span style="font-size:9px;color:rgba(255,255,255,0.35);margin-left:6px;">nexxo-build · live</span>
-                            <span style="margin-left:auto;font-size:8px;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 5px;border-radius:8px;">● running</span>
-                          </div>
-                          <div id="mb-term" style="font-size:9px;line-height:1.9;"></div>
-                        </div>
-                      </div>
-
-                      <!-- Slide 3: Livraison -->
-                      <div class="mb-slide" data-step="3">
-                        <div style="padding:10px;font-family:'Inter',sans-serif;height:100%;box-sizing:border-box;">
-                          <div style="display:flex;align-items:center;gap:5px;margin-bottom:7px;">
-                            <span style="width:8px;height:8px;border-radius:50%;background:#ff5f57;"></span>
-                            <span style="width:8px;height:8px;border-radius:50%;background:#febc2e;"></span>
-                            <span style="width:8px;height:8px;border-radius:50%;background:#28c840;"></span>
-                            <div style="flex:1;background:#f3f4f6;border-radius:20px;padding:2px 8px;font-size:9px;color:#6b7280;text-align:center;margin:0 5px;">cabinet-moreau.fr</div>
-                            <span style="font-size:8px;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 5px;border-radius:8px;">● En ligne</span>
-                          </div>
-                          <div style="background:#f9fafb;border-radius:5px;overflow:hidden;margin-bottom:7px;">
-                            <div style="height:18px;background:#fff;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;padding:0 8px;gap:5px;">
-                              <div style="height:3px;width:32px;background:#e5e7eb;border-radius:2px;"></div>
-                              <div style="height:3px;width:22px;background:#e5e7eb;border-radius:2px;"></div>
-                              <div style="height:3px;width:28px;background:#e5e7eb;border-radius:2px;"></div>
-                            </div>
-                            <div style="padding:8px;">
-                              <div style="height:10px;width:60%;background:linear-gradient(90deg,#1e293b,#334155);border-radius:3px;margin-bottom:5px;"></div>
-                              <div style="height:7px;width:75%;background:#e5e7eb;border-radius:2px;margin-bottom:7px;"></div>
-                              <div style="height:20px;width:80px;background:#0071e3;border-radius:5px;"></div>
-                            </div>
-                            <div style="display:flex;gap:4px;padding:0 8px 8px;">
-                              <div style="flex:1;height:28px;background:#fff;border:1px solid #e5e7eb;border-radius:4px;"></div>
-                              <div style="flex:1;height:28px;background:#fff;border:1px solid #e5e7eb;border-radius:4px;"></div>
-                              <div style="flex:1;height:28px;background:#fff;border:1px solid #e5e7eb;border-radius:4px;"></div>
-                            </div>
-                          </div>
-                          <div style="display:flex;gap:8px;font-size:9px;color:#6b7280;">
-                            <span>⚡ Mis en ligne en 47h</span>
-                            <span>📈 Score SEO 94/100</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Slide 4: Suivi -->
-                      <div class="mb-slide" data-step="4">
-                        <div style="padding:12px;font-family:'Inter',sans-serif;height:100%;box-sizing:border-box;">
-                          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                            <div><div style="font-weight:600;font-size:12px;color:#111;">Tableau de bord</div><div style="font-size:10px;color:#6b7280;margin-top:1px;">Suivi mensuel</div></div>
-                            <span style="background:#dcfce7;color:#16a34a;font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;">● Actif</span>
-                          </div>
-                          <div style="display:flex;gap:6px;margin-bottom:10px;">
-                            <div style="flex:1;background:#f9fafb;border-radius:7px;padding:7px;text-align:center;border:1px solid #f3f4f6;">
-                              <div style="font-size:16px;font-weight:700;color:#111;" id="mb-m1">0</div>
-                              <div style="font-size:8px;color:#6b7280;margin-top:2px;">Requêtes SAV</div>
-                            </div>
-                            <div style="flex:1;background:#f9fafb;border-radius:7px;padding:7px;text-align:center;border:1px solid #f3f4f6;">
-                              <div style="font-size:16px;font-weight:700;color:#111;" id="mb-m2">0h</div>
-                              <div style="font-size:8px;color:#6b7280;margin-top:2px;">Libérées / sem.</div>
-                            </div>
-                            <div style="flex:1;background:#f9fafb;border-radius:7px;padding:7px;text-align:center;border:1px solid #f3f4f6;">
-                              <div style="font-size:16px;font-weight:700;color:#111;" id="mb-m3">0%</div>
-                              <div style="font-size:8px;color:#6b7280;margin-top:2px;">Uptime</div>
-                            </div>
-                          </div>
-                          <div style="display:flex;flex-direction:column;gap:5px;">
-                            <div style="display:flex;align-items:center;gap:7px;font-size:10px;"><span style="width:6px;height:6px;border-radius:50%;background:#28c840;flex-shrink:0;"></span><span style="flex:1;color:#374151;">Mise à jour déployée</span><span style="color:#9ca3af;font-size:9px;">Aujourd'hui</span></div>
-                            <div style="display:flex;align-items:center;gap:7px;font-size:10px;"><span style="width:6px;height:6px;border-radius:50%;background:#0071e3;flex-shrink:0;"></span><span style="flex:1;color:#374151;">Nouveau module ajouté</span><span style="color:#9ca3af;font-size:9px;">J−3</span></div>
-                            <div style="display:flex;align-items:center;gap:7px;font-size:10px;"><span style="width:6px;height:6px;border-radius:50%;background:#a78bfa;flex-shrink:0;"></span><span style="flex:1;color:#374151;">Rapport mensuel envoyé</span><span style="color:#9ca3af;font-size:9px;">J−7</span></div>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div><!-- /mb-screen -->
-                  </div><!-- /mb-bezel -->
-                </div><!-- /mb-lid-front -->
-                <div class="mb-lid-back">
-                  <svg width="34" height="42" viewBox="0 0 170 200" fill="rgba(255,255,255,0.28)"><path d="M150.4 130.7c-3.3 7.3-4.9 10.5-9.1 16.9-5.9 8.9-14.2 20-24.5 20.1-9.1.1-11.5-5.9-23.9-5.9-12.4 0-15 6-24.2 5.9-10.3-.1-18.1-10.2-24-19.1-16.4-24.9-18.1-54.1-8-69.6 7.2-11.2 18.5-17.7 29.2-17.7 10.8 0 17.6 5.9 26.5 5.9 8.6 0 13.9-6 26.3-6 9.6 0 19.7 5.2 26.9 14.2-23.6 13-19.8 46.9 4.8 55.3zM111.2 51.4c4.7-6 8.2-14.5 6.9-23.1-7.6.5-16.5 5.4-21.7 11.6-4.7 5.6-8.6 14.2-7.1 22.6 8.3.3 16.9-4.7 21.9-11.1z"/></svg>
-                </div>
-              </div><!-- /mb-lid -->
-
-              <!-- BASE -->
-              <div class="mb-base-wrap">
-                <div class="mb-base-top">
-                  <div class="mb-kbd-row"><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div><div class="mb-key fn"></div></div>
-                  <div class="mb-kbd-row"><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key wider"></div></div>
-                  <div class="mb-kbd-row"><div class="mb-key wide"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key wider"></div></div>
-                  <div class="mb-kbd-row"><div class="mb-key wider"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key"></div><div class="mb-key wider"></div></div>
-                  <div class="mb-kbd-row"><div class="mb-key wide"></div><div class="mb-key wide"></div><div class="mb-key space"></div><div class="mb-key wide"></div><div class="mb-key wide"></div></div>
-                  <div class="mb-trackpad"></div>
-                </div>
-                <div class="mb-base-front"></div>
-              </div><!-- /mb-base-wrap -->
-
-            </div><!-- /mb-body -->
-          </div><!-- /mb-scene -->
-        </div><!-- /mb-viewport -->
-        </div><!-- /hidden legacy -->
-
-      </div><!-- /process-right -->
-      <!-- Bottom description banner -->
-      <div class="ps-desc-banner">
-        <div class="ps-desc active" data-step="0">Un appel découverte gratuit pour comprendre vos objectifs, vos contraintes et identifier ce qui peut être simplifié, automatisé et boosté par l'IA.</div>
-        <div class="ps-desc" data-step="1">On identifie la solution la plus adaptée — site vitrine, automatisation ou agent IA — et vous envoyons un devis précis sous 48h. Rien de générique.</div>
-        <div class="ps-desc" data-step="2">Design sur mesure, 100% responsive, sans template. Vous suivez l'avancement en temps réel et validez chaque étape avant la mise en ligne.</div>
-        <div class="ps-desc" data-step="3">Livraison en 5 à 12 jours ouvrés. Hébergement et nom de domaine offerts la première année. Formation à la prise en main incluse.</div>
-        <div class="ps-desc" data-step="4">Mises à jour, sauvegardes et monitoring continu. Des ajustements quand vous en avez besoin — sans frais cachés ni mauvaises surprises.</div>
-      </div>
-    </div><!-- /process-panel -->
-
-    <!-- Scroll room: 4 extra 100vh for 5 steps -->
-    <div class="process-scroll-room"></div>
-  </section>
-
-  <!-- Services & Réalisations — merged -->
-  <section id="realisations" class="stack-slide" data-dwell="1.5">
-    <div class="merged-wrap">
-      <div class="merged-header">
-        <h2 class="merged-title">Ce qu'on construit<br>pour vous.</h2>
-      </div>
-      <div class="carousel-zone" id="carouselZoneReal">
-        <div class="carousel-container">
-          <div class="carousel" id="carouselReal">
-
-            <div class="screen" data-index="0" style="--float-dur:4.0s;--float-delay:-0.2s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">01</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:16px;left:18px;right:18px;bottom:16px">
-                      <div class="sv-bdots"></div>
-                      <div class="sv-skel" style="width:45%;margin-bottom:7px"></div>
-                      <div style="display:flex;gap:6px">
-                        <div style="width:30%;height:30px;background:rgba(var(--accent-rgb),0.06);border-radius:4px"></div>
-                        <div style="flex:1;padding-top:3px">
-                          <div class="sv-skel" style="width:85%"></div>
-                          <div class="sv-skel" style="width:60%;margin-top:4px"></div>
-                          <div class="sv-skel" style="width:75%;margin-top:4px"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Présence web.</strong> Un site professionnel, rapide et responsive — conçu sur mesure pour votre activité.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="1" style="--float-dur:4.3s;--float-delay:-1.0s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">02</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:16px;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:5px;justify-content:center">
-                      <div class="sv-bubble in">Bonjour, comment puis-je vous aider ?</div>
-                      <div class="sv-bubble out">Je cherche un devis rapide</div>
-                      <div class="sv-bubble in">Bien sûr ! Quel est votre secteur ?</div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Chatbot IA.</strong> Un assistant virtuel entraîné sur votre contenu, qui répond 24h/24 en langage naturel.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="2" style="--float-dur:3.8s;--float-delay:-0.6s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">03</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:18px;left:18px">
-                      <div class="sv-wlabel">POSITION GOOGLE</div>
-                      <div class="sv-wvalue">#1</div>
-                      <div class="sv-wsub">coiffeur Lyon 3e</div>
-                    </div>
-                    <div class="sv-widget" style="bottom:18px;right:18px">
-                      <div class="sv-wlabel">TRAFIC ORGANIQUE</div>
-                      <div class="sv-bars">
-                        <div class="sv-bar" style="height:5px"></div>
-                        <div class="sv-bar" style="height:8px"></div>
-                        <div class="sv-bar" style="height:7px"></div>
-                        <div class="sv-bar" style="height:11px"></div>
-                        <div class="sv-bar hi" style="height:15px"></div>
-                        <div class="sv-bar hi" style="height:18px"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Optimisation SEO.</strong> Être trouvé sur Google quand un client cherche votre activité — sans payer de publicité.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="3" style="--float-dur:4.1s;--float-delay:-1.5s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">04</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:22px;left:18px;right:18px">
-                      <div class="sv-pipe">
-                        <div class="sv-pstep"><div class="sv-pdot filled">1</div><div class="sv-plbl">Détection</div></div>
-                        <div class="sv-pline"></div>
-                        <div class="sv-pstep"><div class="sv-pdot filled">2</div><div class="sv-plbl">Contact</div></div>
-                        <div class="sv-pline"></div>
-                        <div class="sv-pstep"><div class="sv-pdot">3</div><div class="sv-plbl">Client</div></div>
-                      </div>
-                    </div>
-                    <div class="sv-widget" style="bottom:16px;right:18px">
-                      <div class="sv-wlabel">CONVERSION</div>
-                      <div class="sv-wvalue" style="color:var(--accent)">+34%</div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Automatisation marketing.</strong> De la détection d'un prospect à sa conversion en client — sans lever le petit doigt.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="4" style="--float-dur:4.4s;--float-delay:-0.8s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">05</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:16px;left:18px;right:60px">
-                      <div style="display:flex;align-items:center;gap:4px;margin-bottom:4px">
-                        <span class="sv-pill green">RÉSOLU</span>
-                        <span style="font-size:0.32rem;color:rgba(0,0,0,0.25)">il y a 2 min</span>
-                      </div>
-                      <div style="font-size:0.38rem;color:rgba(0,0,0,0.45);line-height:1.4">Problème de livraison résolu automatiquement</div>
-                    </div>
-                    <div class="sv-widget" style="bottom:16px;right:18px">
-                      <div class="sv-wlabel">TEMPS DE RÉPONSE</div>
-                      <div class="sv-wvalue">&lt; 2min</div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>SAV automatisé.</strong> L'IA lit chaque demande client, la classe et la redirige — ou répond directement.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="5" style="--float-dur:3.9s;--float-delay:-2.1s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">06</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:16px;left:18px">
-                      <div class="sv-wlabel">STOCK ACTUEL</div>
-                      <div class="sv-wvalue">847</div>
-                      <div class="sv-wsub">unités en stock</div>
-                    </div>
-                    <div class="sv-widget" style="bottom:16px;right:18px">
-                      <div style="display:flex;align-items:center;gap:4px">
-                        <span style="width:5px;height:5px;border-radius:50%;background:rgba(245,158,11,0.6);display:inline-block"></span>
-                        <span style="font-size:0.36rem;color:rgba(0,0,0,0.4);font-weight:500">Réappro dans 3j</span>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Gestion des stocks IA.</strong> Suivi en temps réel, anticipation des ruptures, commandes automatiques.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="6" style="--float-dur:4.2s;--float-delay:-0.4s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">07</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:18px;left:18px;right:18px;display:flex;gap:6px">
-                      <div style="flex:1;text-align:center"><div class="sv-wlabel">REVENUE</div><div class="sv-wvalue" style="font-size:0.65rem">12.4K</div></div>
-                      <div style="width:1px;background:rgba(0,0,0,0.06)"></div>
-                      <div style="flex:1;text-align:center"><div class="sv-wlabel">CLIENTS</div><div class="sv-wvalue" style="font-size:0.65rem">89</div></div>
-                      <div style="width:1px;background:rgba(0,0,0,0.06)"></div>
-                      <div style="flex:1;text-align:center"><div class="sv-wlabel">TAUX</div><div class="sv-wvalue" style="font-size:0.65rem;color:var(--accent)">94%</div></div>
-                    </div>
-                    <div class="sv-widget" style="bottom:16px;left:18px;right:18px">
-                      <div class="sv-bars" style="justify-content:space-between">
-                        <div class="sv-bar" style="height:8px;width:12px;border-radius:2px"></div>
-                        <div class="sv-bar" style="height:12px;width:12px;border-radius:2px"></div>
-                        <div class="sv-bar hi" style="height:16px;width:12px;border-radius:2px"></div>
-                        <div class="sv-bar" style="height:10px;width:12px;border-radius:2px"></div>
-                        <div class="sv-bar hi" style="height:18px;width:12px;border-radius:2px"></div>
-                        <div class="sv-bar" style="height:14px;width:12px;border-radius:2px"></div>
-                        <div class="sv-bar hi" style="height:16px;width:12px;border-radius:2px"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Dashboard & données.</strong> Un tableau de bord intelligent qui compile vos chiffres et KPI en temps réel.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="7" style="--float-dur:4.5s;--float-delay:-1.3s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">08</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:16px;left:18px">
-                      <div class="sv-wlabel">PORTÉE MENSUELLE</div>
-                      <div class="sv-wvalue">12.4K</div>
-                      <div class="sv-wsub">vues ce mois</div>
-                    </div>
-                    <div class="sv-widget" style="bottom:16px;right:18px">
-                      <div class="sv-wlabel">ENGAGEMENT</div>
-                      <div class="sv-wvalue" style="color:var(--accent)">+23%</div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Présence média.</strong> Audit et optimisation de votre visibilité digitale — site, réseaux, avis en ligne.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="8" style="--float-dur:3.7s;--float-delay:-1.8s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">09</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:16px;left:18px;right:18px;bottom:16px">
-                      <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
-                        <span class="sv-pill blue">PDF</span>
-                        <span style="font-size:0.34rem;color:rgba(0,0,0,0.25)">facture_0847.pdf</span>
-                      </div>
-                      <div class="sv-skel" style="width:90%;margin-bottom:3px"></div>
-                      <div class="sv-skel" style="width:70%;margin-bottom:3px"></div>
-                      <div style="height:3px;background:rgba(var(--accent-rgb),0.15);border-radius:2px;width:80%;margin-bottom:3px"></div>
-                      <div class="sv-skel" style="width:60%"></div>
-                      <div style="margin-top:6px;font-size:0.32rem;color:var(--accent);font-weight:600">Montant extrait : 2 340 €</div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Automatisation documents.</strong> Lecture, extraction et classification automatique de vos factures et contrats.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="9" style="--float-dur:4.0s;--float-delay:-0.9s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">10</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:16px;left:18px">
-                      <div class="sv-wlabel">COMMANDES</div>
-                      <div class="sv-wvalue">156</div>
-                      <div class="sv-wsub">ce mois</div>
-                    </div>
-                    <div class="sv-widget" style="bottom:16px;right:18px">
-                      <div class="sv-wlabel">REVENUE</div>
-                      <div class="sv-bars">
-                        <div class="sv-bar" style="height:6px"></div>
-                        <div class="sv-bar" style="height:9px"></div>
-                        <div class="sv-bar hi" style="height:14px"></div>
-                        <div class="sv-bar" style="height:11px"></div>
-                        <div class="sv-bar hi" style="height:18px"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>E-commerce automatisé.</strong> Fiches produits IA, analyse des avis clients, gestion automatique des retours.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="10" style="--float-dur:4.3s;--float-delay:-2.4s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">11</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:16px;left:18px;right:18px;bottom:16px">
-                      <div class="sv-wlabel">TENDANCES</div>
-                      <div class="sv-bars" style="height:40px;gap:3px;margin-top:5px">
-                        <div class="sv-bar" style="height:30%;width:8px;border-radius:2px"></div>
-                        <div class="sv-bar" style="height:55%;width:8px;border-radius:2px"></div>
-                        <div class="sv-bar hi" style="height:75%;width:8px;border-radius:2px"></div>
-                        <div class="sv-bar" style="height:45%;width:8px;border-radius:2px"></div>
-                        <div class="sv-bar hi" style="height:90%;width:8px;border-radius:2px"></div>
-                        <div class="sv-bar" style="height:60%;width:8px;border-radius:2px"></div>
-                        <div class="sv-bar hi" style="height:100%;width:8px;border-radius:2px"></div>
-                        <div class="sv-bar" style="height:70%;width:8px;border-radius:2px"></div>
-                      </div>
-                      <div class="sv-wsub" style="margin-top:4px">+18% vs mois précédent</div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Automatisation data.</strong> Vos données brutes collectées, analysées et présentées en dashboards actionnables.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen" data-index="11" style="--float-dur:3.8s;--float-delay:-1.6s">
-              <div class="screen-card">
-                <div class="card-head"><span class="card-num">12</span></div>
-                <div class="card-body">
-                  <div class="card-visual">
-                    <div class="sv-widget" style="top:20px;left:18px;right:18px">
-                      <div class="sv-pipe">
-                        <div class="sv-pstep"><div class="sv-pdot" style="width:26px;height:26px;font-size:0.4rem">CRM</div><div class="sv-plbl">Source</div></div>
-                        <div class="sv-pline" style="width:18px"></div>
-                        <div class="sv-pstep"><div class="sv-pdot filled" style="width:26px;height:26px;font-size:0.4rem">IA</div><div class="sv-plbl">Traitement</div></div>
-                        <div class="sv-pline" style="width:18px"></div>
-                        <div class="sv-pstep"><div class="sv-pdot" style="width:26px;height:26px;font-size:0.4rem">ERP</div><div class="sv-plbl">Action</div></div>
-                      </div>
-                    </div>
-                    <div class="sv-widget" style="bottom:16px;left:50%;transform:translateX(-50%)">
-                      <div style="font-size:0.34rem;color:rgba(0,0,0,0.35);font-weight:500;white-space:nowrap">Vos outils, connectés</div>
-                    </div>
-                  </div>
-                  <p class="card-text"><strong>Automatisations sur mesure.</strong> Tout processus répétitif peut être automatisé. Décrivez-le — on construit.</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <div class="floor-glow"></div>
-        <div class="floor-line"></div>
-        <button class="sc-arrow sc-arrow-l" id="scArrowL">&#8249;</button>
-        <button class="sc-arrow sc-arrow-r" id="scArrowR">&#8250;</button>
-      </div>
-      <div class="sc-dots" id="scDots"></div>
+    <!-- Header — hors du scroll container, aligné à gauche -->
+    <div id="offres-header">
+      <h2 class="offres-title">
+        Ce qu'on fait <span class="hero-ai" id="offres-tw"></span><span class="offres-tw-cursor">|</span>.
+      </h2>
     </div>
+
+    <div id="offres-scroll-container">
+      <div id="offres-scroll-inner">
+
+        <!-- 3D Card -->
+        <div id="offres-card">
+          <div id="offres-card-inner">
+            <iframe src="card-frame.html?embed=1" title="Nexxo — Services" scrolling="no"></iframe>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        // ── Typewriter ──
+        var el = document.getElementById('offres-tw');
+        if (el) {
+          var texts = ['pour vous', 'avec vous', 'ensemble'];
+          var idx = 0, charIdx = texts[0].length, deleting = false, display = texts[0];
+          el.textContent = display;
+          function tick() {
+            var cur = texts[idx];
+            if (deleting) {
+              display = display.slice(0, -1); el.textContent = display;
+              if (display === '') { deleting = false; idx = (idx+1)%texts.length; charIdx = 0; setTimeout(tick, 320); }
+              else setTimeout(tick, 38);
+            } else {
+              if (charIdx < cur.length) { display += cur[charIdx++]; el.textContent = display; setTimeout(tick, 65); }
+              else setTimeout(function(){ deleting = true; tick(); }, 2200);
+            }
+          }
+          setTimeout(function(){ deleting = true; tick(); }, 2200);
+        }
+
+        // ── ContainerScroll animation ──
+        var container = document.getElementById('offres-scroll-container');
+        var header    = document.getElementById('offres-header');
+        var card      = document.getElementById('offres-card');
+
+        function getProgress() {
+          var rect = container.getBoundingClientRect();
+          var wH   = window.innerHeight;
+          // 0 = element top at viewport bottom, 1 = element bottom at viewport top
+          var total   = rect.height + wH;
+          var current = wH - rect.top;
+          return Math.max(0, Math.min(1, current / total));
+        }
+
+        function lerp(a, b, t) { return a + (b - a) * t; }
+
+        function update() {
+          var p = getProgress();
+          // Complete animation at 55% of scroll — clamp so it doesn't overshoot
+          var t = Math.min(p / 0.55, 1);
+          var rotateX    = lerp(20, 0, t);
+          var scale      = lerp(1.05, 1, t);
+          var translateY = lerp(0, -100, t);
+
+          header.style.transform = 'translateY(' + translateY + 'px)';
+          card.style.transform   = 'rotateX(' + rotateX + 'deg) scale(' + scale + ')';
+        }
+
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+      })();
+    </script>
   </section>
 
+  <!-- Notre Processus -->
+  <section id="timeline-section" style="position: relative; z-index: 2; background: #ffffff;">
+    <style>
+      #timeline-section {
+        font-family: var(--font-body);
+        padding: 0;
+      }
+      .tl-header {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 80px 40px 40px;
+      }
+      .tl-header .section-eyebrow {
+        color: var(--accent);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        display: block;
+      }
+      .tl-header h2 {
+        font-family: var(--font-head);
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 700;
+        color: #1d1d1f;
+        letter-spacing: -0.025em;
+        line-height: 1.12;
+        margin: 0 0 16px;
+        max-width: 640px;
+      }
+      .tl-header p {
+        color: #6e6e73;
+        font-size: 1rem;
+        max-width: 420px;
+        line-height: 1.6;
+        margin: 0;
+      }
+      .tl-track {
+        position: relative;
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 40px 100px;
+      }
+      /* Background line */
+      .tl-line-bg {
+        position: absolute;
+        left: calc(40px + 20px);
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, transparent 0%, #e0e0e5 8%, #e0e0e5 92%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+      }
+      /* Animated fill line */
+      .tl-line-fill {
+        position: absolute;
+        left: calc(40px + 20px);
+        top: 0;
+        width: 2px;
+        height: 0%;
+        background: linear-gradient(to bottom, #818cf8, #0071e3, transparent);
+        border-radius: 2px;
+        transition: height 0.05s linear;
+        opacity: 0;
+        transition: height 0.1s linear, opacity 0.4s ease;
+      }
+      /* Each entry */
+      .tl-entry {
+        display: flex;
+        gap: 40px;
+        padding-top: 60px;
+      }
+      .tl-entry:first-child { padding-top: 20px; }
+      /* Left: sticky title + dot */
+      .tl-left {
+        position: sticky;
+        top: 160px;
+        align-self: flex-start;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 180px;
+        flex-shrink: 0;
+      }
+      .tl-dot {
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 1px solid #e0e0e5;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        position: relative;
+        z-index: 1;
+      }
+      .tl-dot-inner {
+        width: 14px; height: 14px;
+        border-radius: 50%;
+        background: #d1d5db;
+        border: 1px solid #c0c4cc;
+        transition: background 0.3s ease, border-color 0.3s ease;
+      }
+      .tl-entry.is-active .tl-dot-inner {
+        background: #0071e3;
+        border-color: rgba(0,113,227,0.4);
+      }
+      .tl-step-label {
+        display: none;
+        margin-top: 16px;
+        font-size: clamp(1.4rem, 2.5vw, 2.8rem);
+        font-family: var(--font-head);
+        font-weight: 700;
+        color: #d1d5db;
+        letter-spacing: -0.02em;
+        text-align: center;
+        transition: color 0.3s ease;
+      }
+      .tl-entry.is-active .tl-step-label { color: #1d1d1f; }
+      /* Right: content */
+      .tl-right {
+        flex: 1;
+        padding-bottom: 40px;
+      }
+      .tl-step-label-mobile {
+        font-size: 1.1rem;
+        font-family: var(--font-head);
+        font-weight: 700;
+        color: #d1d5db;
+        margin-bottom: 12px;
+        transition: color 0.3s ease;
+      }
+      .tl-entry.is-active .tl-step-label-mobile { color: #1d1d1f; }
+      .tl-content-card {
+        background: #fafafa;
+        border: 1px solid rgba(0,0,0,0.07);
+        border-radius: 16px;
+        padding: 32px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .tl-entry.is-active .tl-content-card {
+        border-color: rgba(0,113,227,0.15);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      }
+      .tl-content-card h4 {
+        font-family: var(--font-head);
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #1d1d1f;
+        margin: 0 0 10px;
+        letter-spacing: -0.01em;
+      }
+      .tl-content-card p {
+        color: #6e6e73;
+        font-size: 0.92rem;
+        line-height: 1.65;
+        margin: 0 0 20px;
+      }
+      .tl-tags {
+        display: flex; flex-wrap: wrap; gap: 8px;
+      }
+      .tl-tag {
+        font-size: 0.78rem;
+        font-weight: 500;
+        padding: 4px 12px;
+        border-radius: 100px;
+        background: rgba(0,113,227,0.07);
+        color: #0066cc;
+        border: 1px solid rgba(0,113,227,0.12);
+      }
+      @media (min-width: 768px) {
+        .tl-step-label { display: block; }
+        .tl-step-label-mobile { display: none; }
+        .tl-left { align-items: center; }
+        .tl-line-bg, .tl-line-fill { left: calc(40px + 20px); }
+      }
+      @media (max-width: 767px) {
+        .tl-left { width: 42px; }
+        .tl-header { padding: 60px 24px 32px; }
+        .tl-track { padding: 0 24px 80px; }
+        .tl-line-bg, .tl-line-fill { left: calc(24px + 20px); }
+        .tl-entry { gap: 20px; padding-top: 40px; }
+        .tl-content-card { padding: 24px; }
+        .scroll-card-item { height: 300px; }
+      }
 
+      /* ─── SCROLL STACKING CARDS ─── */
+      .scroll-cards-section { /* no special styles needed — children define height */ }
+      .scroll-card-item {
+        position: sticky;
+        top: 88px;
+        height: 380px;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 0 0 1px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.08), 0 24px 48px rgba(0,0,0,.06);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .sc-bg {
+        position: absolute; inset: 0; z-index: 0;
+        transition: transform 0.6s ease;
+      }
+      .scroll-card-item:hover .sc-bg { transform: scale(1.02); }
+      .sc-body {
+        position: relative; z-index: 1;
+        padding: 28px 28px 24px;
+        display: flex; flex-direction: column; gap: 6px;
+        background: linear-gradient(to top, rgba(0,0,0,0.06) 0%, transparent 100%);
+      }
+      .sc-icon {
+        width: 38px; height: 38px;
+        margin-bottom: 8px;
+        transition: transform 0.3s ease;
+        transform-origin: left center;
+      }
+      .scroll-card-item:hover .sc-icon { transform: scale(0.82); }
+      .sc-title {
+        font-family: var(--font-head);
+        font-size: 1.05rem; font-weight: 600;
+        color: #1d1d1f; margin: 0;
+        letter-spacing: -0.01em;
+      }
+      .sc-desc {
+        font-size: 0.83rem; color: #6e6e73;
+        line-height: 1.55; margin: 0;
+      }
+    </style>
+
+    <div class="tl-header">
+      <h2>De la première discussion<br>à la livraison</h2>
+    </div>
+
+    <div class="tl-track" id="tlTrack">
+      <div class="tl-line-bg"></div>
+      <div class="tl-line-fill" id="tlLineFill"></div>
+
+      <div class="tl-entry" data-tl>
+        <div class="tl-left">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <span class="tl-step-label">01</span>
+        </div>
+        <div class="tl-right">
+          <div class="tl-step-label-mobile">01</div>
+          <div class="scroll-cards-section">
+            <div class="scroll-card-item" style="background:#f0f4ff;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#e8f0ff 0%,#c7d9ff 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#0066cc" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#f5f5f7;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#f5f5f7 0%,#e8e8ed 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#1d1d1f" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#fff8f0;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#cc6600" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#1d1d1f;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#2d2d2f 0%,#1a1a1c 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3"/></svg>
+                <h3 class="sc-title" style="color:#ffffff;">Titre de la carte</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.55);">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-tl>
+        <div class="tl-left">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <span class="tl-step-label">02</span>
+        </div>
+        <div class="tl-right">
+          <div class="tl-step-label-mobile">02</div>
+          <div class="scroll-cards-section">
+            <div class="scroll-card-item" style="background:#f0f4ff;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#e8f0ff 0%,#c7d9ff 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#0066cc" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#f5f5f7;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#f5f5f7 0%,#e8e8ed 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#1d1d1f" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#fff8f0;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#cc6600" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#1d1d1f;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#2d2d2f 0%,#1a1a1c 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+                <h3 class="sc-title" style="color:#ffffff;">Titre de la carte</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.55);">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-tl>
+        <div class="tl-left">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <span class="tl-step-label">03</span>
+        </div>
+        <div class="tl-right">
+          <div class="tl-step-label-mobile">03</div>
+          <div class="scroll-cards-section">
+            <div class="scroll-card-item" style="background:#f0f4ff;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#e8f0ff 0%,#c7d9ff 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#0066cc" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#f5f5f7;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#f5f5f7 0%,#e8e8ed 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#1d1d1f" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#fff8f0;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#cc6600" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#1d1d1f;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#2d2d2f 0%,#1a1a1c 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+                <h3 class="sc-title" style="color:#ffffff;">Titre de la carte</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.55);">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-tl>
+        <div class="tl-left">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <span class="tl-step-label">04</span>
+        </div>
+        <div class="tl-right">
+          <div class="tl-step-label-mobile">04</div>
+          <div class="scroll-cards-section">
+            <div class="scroll-card-item" style="background:#f0f4ff;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#e8f0ff 0%,#c7d9ff 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#0066cc" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#f5f5f7;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#f5f5f7 0%,#e8e8ed 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#1d1d1f" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#fff8f0;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#cc6600" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5"/></svg>
+                <h3 class="sc-title">Titre de la carte</h3>
+                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+            <div class="scroll-card-item" style="background:#1d1d1f;">
+              <div class="sc-bg" style="background:linear-gradient(135deg,#2d2d2f 0%,#1a1a1c 100%);"></div>
+              <div class="sc-body">
+                <svg class="sc-icon" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+                <h3 class="sc-title" style="color:#ffffff;">Titre de la carte</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.55);">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        const track = document.getElementById('tlTrack');
+        const fill  = document.getElementById('tlLineFill');
+        const entries = Array.from(track.querySelectorAll('[data-tl]'));
+        if (!track || !fill) return;
+
+        function update() {
+          const trackRect = track.getBoundingClientRect();
+          const trackTop  = trackRect.top + window.scrollY;
+          const trackH    = trackRect.height;
+          const scrolled  = window.scrollY + window.innerHeight * 0.5;
+          const progress  = Math.min(1, Math.max(0, (scrolled - trackTop) / trackH));
+
+          fill.style.height  = (progress * 100) + '%';
+          fill.style.opacity = progress > 0.01 ? '1' : '0';
+
+          entries.forEach(function(el) {
+            const mid = el.getBoundingClientRect().top + el.getBoundingClientRect().height / 2;
+            if (mid < window.innerHeight * 0.65) {
+              el.classList.add('is-active');
+            } else {
+              el.classList.remove('is-active');
+            }
+          });
+        }
+
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+      })();
+    </script>
+  </section>
 
   <!-- Team -->
   <section id="team" class="stack-slide">
@@ -2709,7 +2815,12 @@
         <span class="join-tag">Commercial</span>
         <span class="join-tag">Design</span>
       </div>
-      <a href="mailto:contact@nexxo.systems" class="btn-primary">Envoyer votre candidature →</a>
+      <a href="mailto:contact@nexxo.systems" class="btn-primary">
+        <div class="shimmer-spark-wrap"><div class="shimmer-spark"><div class="shimmer-spin"></div></div></div>
+        <span class="btn-primary-text">Envoyer votre candidature →</span>
+        <div class="shimmer-highlight"></div>
+        <div class="shimmer-backdrop"></div>
+      </a>
     </div>
 
     <!-- Footer (inside last panel) -->
@@ -3218,51 +3329,6 @@
         launchChat();
       }
 
-      // ── Process pinned scroll ──
-      (function() {
-        const section = document.getElementById('process');
-        if (!section) return;
-
-        const N      = 5;
-        const texts   = document.querySelectorAll('.ps-text');
-        const descs   = document.querySelectorAll('.ps-desc');
-        const dots    = document.querySelectorAll('.ps-ind-dot');
-        const fill    = document.getElementById('ps-ind-fill');
-        const stepNum = document.getElementById('ps-step-num');
-        let current   = 0;
-        let _prevProgress = 0;
-
-        // ── Step switcher ──
-        function setStep(idx) {
-          if (idx === current) return;
-          const prev = current;
-          current = idx;
-          texts[prev].classList.remove('active');
-          descs[prev].classList.remove('active');
-          texts[idx].classList.add('active');
-          descs[idx].classList.add('active');
-          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-          if (fill) fill.style.width = ((idx + 1) / N * 100) + '%';
-          if (stepNum) {
-            stepNum.classList.remove('active');
-            stepNum.textContent = String(idx + 1).padStart(2, '0');
-            requestAnimationFrame(() => stepNum.classList.add('active'));
-          }
-        }
-
-        // ── Scroll tracking ──
-        section.addEventListener('pinscroll', (e) => {
-          const progress = e.detail.progress;
-          window._processVisible = true;
-          const breaks = [0, 0.222, 0.407, 0.593, 0.778, 1.0];
-          const raw = breaks.findIndex((b, i) => i < N && progress < breaks[i + 1]);
-          const idx = raw === -1 ? N - 1 : raw;
-          setStep(idx);
-          texts[idx].classList.add('active'); descs[idx].classList.add('active');
-          _prevProgress = progress;
-        });
-      })();
-
       // ── Dashboard Gestion — tabs + animations ──
       (function() {
         const tabs   = document.querySelectorAll('.dash-tab');
@@ -3316,46 +3382,13 @@
       })();
     })();
 
-    // ─────────────────────────────────────────
-    // PROCESS SCROLL — simple listener, sections en flux normal
-    // ─────────────────────────────────────────
-    (function() {
-      const section = document.getElementById('process');
-      if (!section) return;
-      const room = section.querySelector('.process-scroll-room');
-      if (!room) return;
-
-      function update() {
-        const sy = window.scrollY;
-        const rect = section.getBoundingClientRect();
-        const sectionTop = sy + rect.top;
-        const roomH = room.offsetHeight || window.innerHeight * 1.25;
-        const scrolled = sy - sectionTop;
-
-        window._processVisible = rect.top < window.innerHeight && rect.bottom > 0;
-
-        if (scrolled < 0) return;
-
-        const progress = Math.max(0, Math.min(1, scrolled / roomH));
-        section.dispatchEvent(new CustomEvent('pinscroll', { detail: { progress } }));
-      }
-
-      let _raf = false;
-      window.addEventListener('scroll', () => {
-        if (_raf || window._dwellLocked) return;
-        _raf = true;
-        requestAnimationFrame(() => { _raf = false; update(); });
-      }, { passive: true });
-      window.addEventListener('resize', update, { passive: true });
-      update();
-
-      // Nav links
+    // scrollToSection
+    // Nav links
       window.scrollToSection = function(id) {
         if (id === 'hero') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       };
-    })();
 
     // REALISATIONS — pas de dwell lock, fond beige fixe
 
@@ -3532,7 +3565,7 @@
         });
       }
 
-      document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta, .btn-dark').forEach(attachParticles);
+      document.querySelectorAll('.btn-secondary, .btn-dark').forEach(attachParticles);
     })();
   </script>
 
