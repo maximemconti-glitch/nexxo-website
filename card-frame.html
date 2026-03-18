@@ -34,7 +34,7 @@
     .card-inner {
       height: 100%; width: 100%;
       overflow: hidden; border-radius: 16px;
-      background: #000; position: relative;
+      background: #f5f5f7; position: relative;
     }
     #card-content { position: absolute; inset: 0; }
 
@@ -62,6 +62,7 @@
       border-radius: calc(var(--radius) * 1px);
       border: var(--border-size) solid hsl(0 0% 60% / 0.12);
       touch-action: none;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18);
 
       /* Spotlight background — fixed = relatif au viewport */
       background-image: radial-gradient(
@@ -1780,7 +1781,7 @@
     }
     var inner = document.querySelector('.card-inner');
     if (inner) {
-      inner.style.cssText = 'height:100%;width:100%;overflow:hidden;border-radius:0;background:#0d0f14;';
+      inner.style.cssText = 'height:100%;width:100%;overflow:hidden;border-radius:0;background:#f5f5f7;';
     }
   })();
   </script>

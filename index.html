@@ -135,39 +135,135 @@
       transition: color 0.35s ease;
     }
     .nav-links {
-      display: flex; align-items: center; gap: 6px;
+      display: flex; align-items: center; gap: 4px;
     }
-    /* Cadres géométriques */
-    .nav-links a:not(.nav-cta) {
-      color: #3a3a3f;
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      padding: 7px 14px;
-      border: 1px solid rgba(0,0,0,0.13);
-      border-radius: 4px;
-      background: rgba(255,255,255,0.8);
-      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+
+    /* ─── SHIFTING TABS ─── */
+    .shift-wrap {
+      position: relative;
+      display: flex; align-items: center; gap: 2px;
     }
-    .nav-links a:not(.nav-cta):hover {
-      background: #ffffff;
-      border-color: rgba(0,0,0,0.22);
-      color: #1d1d1f;
+    .shift-tab {
+      display: flex; align-items: center; gap: 5px;
+      padding: 7px 14px; border-radius: 9999px;
+      font-size: 0.875rem; font-weight: 500;
+      border: none; background: transparent;
+      color: #3a3a3f; cursor: pointer;
+      font-family: var(--font-body);
+      white-space: nowrap; line-height: 1;
+      transition: background 0.18s, color 0.18s;
     }
+    .shift-tab.is-active { background: #1d1d1f; color: #f5f5f7; }
+    .shift-chevron {
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: transform 0.22s ease;
+    }
+    .shift-tab.is-active .shift-chevron { transform: rotate(180deg); }
+
+    .shift-link {
+      display: flex; align-items: center;
+      padding: 7px 14px; border-radius: 9999px;
+      font-size: 0.875rem; font-weight: 500;
+      color: #3a3a3f; text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.18s, color 0.18s;
+    }
+    .shift-link:hover { background: rgba(0,0,0,0.06); color: #1d1d1f; }
+
+    /* Bridge — covers gap between tabs and dropdown */
+    .shift-bridge {
+      position: absolute; left: 0; right: 0;
+      top: 100%; height: 24px; z-index: 100;
+    }
+
+    /* Dropdown overlay */
+    .shift-overlay {
+      position: absolute;
+      top: calc(100% + 20px); left: 0;
+      width: 380px;
+      background: linear-gradient(160deg, #18181b 0%, #141417 100%);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px; padding: 20px;
+      z-index: 9999;
+      opacity: 0; pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+    .shift-overlay.is-visible {
+      opacity: 1; pointer-events: auto; transform: translateY(0);
+    }
+
+    /* Nub / triangle pointer */
+    .shift-nub {
+      position: absolute; top: -7px;
+      width: 12px; height: 12px;
+      background: #18181b;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-left: 1px solid rgba(255,255,255,0.1);
+      transform: translateX(-50%) rotate(45deg);
+      border-radius: 2px 0 0 0;
+      transition: left 0.25s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    /* Panels */
+    .shift-panel { display: none; }
+    .shift-panel.is-active { display: block; }
+    @keyframes shiftFromLeft  { from { opacity:0; transform: translateX(-50px); } to { opacity:1; transform: none; } }
+    @keyframes shiftFromRight { from { opacity:0; transform: translateX(50px);  } to { opacity:1; transform: none; } }
+    @keyframes shiftFadeIn    { from { opacity:0; } to { opacity:1; } }
+    .shift-panel.is-active.from-left  { animation: shiftFromLeft  0.22s cubic-bezier(0.16,1,0.3,1); }
+    .shift-panel.is-active.from-right { animation: shiftFromRight 0.22s cubic-bezier(0.16,1,0.3,1); }
+    .shift-panel.is-active.from-none  { animation: shiftFadeIn    0.15s ease; }
+
+    /* Panel — Services */
+    .sp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .sp-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px; border-radius: 9px; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .sp-item:hover { background: rgba(255,255,255,0.06); }
+    .sp-icon {
+      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+    }
+    .sp-text h4 { font-size: 0.78rem; font-weight: 600; color: #f5f5f7; margin-bottom: 2px; }
+    .sp-text p  { font-size: 0.71rem; color: #71717a; line-height: 1.4; }
+
+    /* Panel — Process */
+    .sp-steps { display: flex; flex-direction: column; gap: 14px; }
+    .sp-step  { display: flex; align-items: flex-start; gap: 12px; }
+    .sp-num {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.68rem; font-weight: 700; color: #a1a1aa; margin-top: 1px;
+    }
+    .sp-step-body h4 { font-size: 0.78rem; font-weight: 600; color: #f5f5f7; margin-bottom: 3px; }
+    .sp-step-body p  { font-size: 0.71rem; color: #71717a; line-height: 1.4; }
+    .sp-footer {
+      margin-top: 16px; padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: flex-end;
+    }
+    .sp-cta {
+      font-size: 0.78rem; font-weight: 600; color: #6366f1;
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+      transition: gap 0.15s;
+    }
+    .sp-cta:hover { gap: 7px; }
+
     .nav-links .nav-cta {
       background: var(--accent); color: #fff;
-      padding: 7px 18px; border-radius: 4px;
+      padding: 7px 18px; border-radius: 9999px;
       font-size: 0.875rem; font-weight: 600;
       border: 1px solid var(--accent); letter-spacing: -0.01em;
+      text-decoration: none;
       transition: background 0.2s ease, border-color 0.2s ease;
-      position: relative; overflow: visible;
-      margin-left: 10px;
+      margin-left: 8px; white-space: nowrap;
     }
-    .nav-links .nav-cta:hover {
-      background: #0066cc;
-      border-color: #0066cc;
-    }
+    .nav-links .nav-cta:hover { background: #0066cc; border-color: #0066cc; }
+
     @media (max-width: 768px) {
       .nav-links { display: none; }
       #navbar { padding: 12px 24px; }
@@ -2012,10 +2108,6 @@
       <div class="loader-logo">
         <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
       </div>
-      <p class="loader-text">Loading</p>
-      <div class="loader-bar-track">
-        <div class="loader-bar-fill" id="loaderBar"></div>
-      </div>
     </div>
   </div>
 
@@ -2026,10 +2118,110 @@
         <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
       </a>
       <div class="nav-links">
-        <a href="#" onclick="event.preventDefault();scrollToSection('process')">Process</a>
-        <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">Services</a>
-        <a href="#" onclick="event.preventDefault();scrollToSection('team')">Notre équipe</a>
-        <a href="#" onclick="event.preventDefault();scrollToSection('join')">Nous rejoindre</a>
+
+        <!-- Shifting tabs -->
+        <div class="shift-wrap" id="shift-wrap">
+
+          <button class="shift-tab" data-tab="services">
+            Services
+            <span class="shift-chevron">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+
+          <button class="shift-tab" data-tab="process">
+            Process
+            <span class="shift-chevron">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+
+          <a class="shift-link" href="#" onclick="event.preventDefault();scrollToSection('team')" style="display:none;">Notre équipe</a>
+          <a class="shift-link" href="#" onclick="event.preventDefault();scrollToSection('join')">Nous rejoindre</a>
+
+          <!-- Bridge -->
+          <div class="shift-bridge"></div>
+
+          <!-- Dropdown overlay -->
+          <div class="shift-overlay" id="shift-overlay">
+            <div class="shift-nub" id="shift-nub"></div>
+
+            <!-- Panel : Services -->
+            <div class="shift-panel" data-panel="services">
+              <div class="sp-grid">
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('realisations')">
+                  <div class="sp-icon" style="background:rgba(99,102,241,0.15)">🌐</div>
+                  <div class="sp-text">
+                    <h4>Sites web</h4>
+                    <p>Vitrine, e-commerce, landing page</p>
+                  </div>
+                </a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('realisations')">
+                  <div class="sp-icon" style="background:rgba(34,197,94,0.12)">💬</div>
+                  <div class="sp-text">
+                    <h4>Chatbots</h4>
+                    <p>Support client, lead capture 24/7</p>
+                  </div>
+                </a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('realisations')">
+                  <div class="sp-icon" style="background:rgba(249,115,22,0.12)">⚡</div>
+                  <div class="sp-text">
+                    <h4>Automatisation</h4>
+                    <p>Emails, process, workflows IA</p>
+                  </div>
+                </a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('realisations')">
+                  <div class="sp-icon" style="background:rgba(236,72,153,0.12)">📈</div>
+                  <div class="sp-text">
+                    <h4>SEO & Visibilité</h4>
+                    <p>Google, réputation, réseaux sociaux</p>
+                  </div>
+                </a>
+              </div>
+              <div class="sp-footer">
+                <a class="sp-cta" href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+                  Voir tous les services
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Panel : Process -->
+            <div class="shift-panel" data-panel="process">
+              <div class="sp-steps">
+                <div class="sp-step">
+                  <div class="sp-num">01</div>
+                  <div class="sp-step-body">
+                    <h4>Découverte</h4>
+                    <p>On analyse votre activité et vos besoins en 30 min.</p>
+                  </div>
+                </div>
+                <div class="sp-step">
+                  <div class="sp-num">02</div>
+                  <div class="sp-step-body">
+                    <h4>Stratégie</h4>
+                    <p>On vous propose la solution IA la plus adaptée à votre cas.</p>
+                  </div>
+                </div>
+                <div class="sp-step">
+                  <div class="sp-num">03</div>
+                  <div class="sp-step-body">
+                    <h4>Livraison</h4>
+                    <p>Déploiement rapide, accompagnement inclus.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sp-footer">
+                <a class="sp-cta" href="#" onclick="event.preventDefault();scrollToSection('process')">
+                  Voir le process en détail
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </div>
+
+          </div><!-- /shift-overlay -->
+        </div><!-- /shift-wrap -->
+
         <a href="#" class="nav-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Réserver un appel</a>
       </div>
     </div>
@@ -2184,6 +2376,9 @@
 
   <!-- Nos Offres — ContainerScroll -->
   <section id="offres" style="position: relative; z-index: 2; background: #ffffff; border-top: 1px solid rgba(0,0,0,0.06);">
+    <!-- Lignes verticales latérales (estompées aux extrémités) -->
+    <div style="position:absolute;top:0;bottom:0;left:80px;width:1px;background:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.07) 12%, rgba(0,0,0,0.07) 88%, transparent 100%);pointer-events:none;z-index:0;"></div>
+    <div style="position:absolute;top:0;bottom:0;right:80px;width:1px;background:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.07) 12%, rgba(0,0,0,0.07) 88%, transparent 100%);pointer-events:none;z-index:0;"></div>
     <style>
       /* ── ContainerScroll wrapper ── */
       #offres-scroll-container {
@@ -2201,6 +2396,7 @@
         padding: clamp(90px, 13vh, 130px) max(48px, 6vw) 0;
         margin-bottom: -90px;
         will-change: transform;
+        position: relative;
       }
       .offres-title {
         font-family: var(--font-head);
@@ -2251,10 +2447,12 @@
     </style>
 
     <!-- Header — hors du scroll container, aligné à gauche -->
-    <div id="offres-header">
+    <div id="offres-header" style="padding-bottom: 45px;">
       <h2 class="offres-title">
         Ce qu'on fait <span class="hero-ai" id="offres-tw"></span><span class="offres-tw-cursor">|</span>.
       </h2>
+      <!-- Trait horizontal à équidistance entre le texte et la tablette -->
+      <div style="position:absolute;bottom:0;left:max(48px,6vw);right:max(48px,6vw);height:1px;background:linear-gradient(to right, transparent 0%, rgba(0,0,0,0.08) 10%, rgba(0,0,0,0.08) 90%, transparent 100%);"></div>
     </div>
 
     <div id="offres-scroll-container">
@@ -2324,6 +2522,326 @@
         update();
       })();
     </script>
+
+    <!-- ── Bento Grid — 6 services ── -->
+    <style>
+      #bento-section {
+        padding: 48px 80px 100px;
+        max-width: calc(64rem + 160px);
+        margin: 0 auto;
+      }
+      .bento-grid-6 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 27rem 27rem;
+        gap: 16px;
+      }
+      /* Layout asymétrique */
+      .bg6-1 { grid-column: 1 / 3; grid-row: 1; }
+      .bg6-2 { grid-column: 3;     grid-row: 1; }
+      .bg6-3 { grid-column: 1;     grid-row: 2; }
+      .bg6-4 { grid-column: 2;     grid-row: 2; }
+      .bg6-5 { grid-column: 3;     grid-row: 2; }
+      /* Wide bottom card — spans full row 3 */
+      .bg6-6 { grid-column: 1 / 4; grid-row: 3; height: 22rem; }
+
+      .bc6 {
+        position: relative;
+        display: flex; flex-direction: column; justify-content: flex-end;
+        overflow: hidden; border-radius: 16px;
+        background: #ffffff;
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04), 0 12px 24px rgba(0,0,0,0.06);
+        transition: box-shadow 0.3s ease;
+      }
+      .bc6:hover {
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.08), 0 20px 40px rgba(0,0,0,0.1);
+      }
+
+      /* Background illustration zone */
+      .bc6-bg {
+        position: absolute; inset: 0;
+        overflow: hidden; border-radius: 16px;
+      }
+      .bc6-bg img {
+        width: 100%; height: 100%;
+        object-fit: cover; object-position: center;
+        opacity: 0.08;
+        transition: opacity 0.3s, transform 0.4s ease;
+      }
+      .bc6:hover .bc6-bg img { opacity: 0.13; transform: scale(1.03); }
+
+      /* Gradient overlay */
+      .bc6-bg::after {
+        content: ''; position: absolute; inset: 0;
+        background: linear-gradient(to bottom, transparent 35%, rgba(255,255,255,0.85) 58%, rgba(255,255,255,1) 72%);
+      }
+
+      /* Content */
+      .bc6-body {
+        position: relative; z-index: 2;
+        display: flex; flex-direction: column; gap: 10px;
+        padding: 24px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+      }
+      .bc6:hover .bc6-body { transform: translateY(-10px); }
+
+      .bc6-icon {
+        width: 44px; height: 44px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; margin-bottom: 4px;
+        transition: transform 0.3s ease;
+        transform-origin: left center;
+      }
+      .bc6:hover .bc6-icon { transform: scale(0.82); }
+
+      .bc6-title {
+        font-family: var(--font-head);
+        font-size: 1.15rem; font-weight: 700;
+        color: #1d1d1f; letter-spacing: -0.02em;
+      }
+      .bc6-desc {
+        font-size: 0.85rem; color: #6e6e73; line-height: 1.5;
+        max-width: 380px;
+      }
+
+      /* CTA — slide up on hover */
+      .bc6-cta {
+        position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+        padding: 12px 24px;
+        opacity: 0; transform: translateY(10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+      .bc6:hover .bc6-cta { opacity: 1; transform: translateY(0); }
+      .bc6-cta a {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: 0.82rem; font-weight: 600; color: var(--accent);
+        text-decoration: none;
+        transition: gap 0.15s;
+      }
+      .bc6-cta a:hover { gap: 9px; }
+
+      /* Hover overlay tint */
+      .bc6::after {
+        content: ''; position: absolute; inset: 0; border-radius: 16px;
+        background: transparent; pointer-events: none;
+        transition: background 0.3s;
+      }
+      .bc6:hover::after { background: rgba(0,0,0,0.015); }
+
+      @media (max-width: 900px) {
+        #bento-section { padding: 0 24px 60px; }
+        .bento-grid-6 { grid-template-columns: 1fr; grid-template-rows: auto; }
+        .bg6-1,.bg6-2,.bg6-3,.bg6-4,.bg6-5,.bg6-6 { grid-column: 1; grid-row: auto; height: 20rem; }
+      }
+    </style>
+
+    <div id="bento-section">
+      <div class="bento-grid-6">
+
+        <!-- Card 1 — Automatisation métier (large) -->
+        <div class="bc6 bg6-1">
+          <div class="bc6-bg" style="opacity:1;">
+            <svg style="width:100%;height:100%;position:absolute;inset:0;" viewBox="-20 -10 840 420" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
+              <defs>
+                <linearGradient id="lineGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(99,102,241,0.0)"/>
+                  <stop offset="50%" stop-color="rgba(99,102,241,0.25)"/>
+                  <stop offset="100%" stop-color="rgba(99,102,241,0.0)"/>
+                </linearGradient>
+                <linearGradient id="lineGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(168,85,247,0.0)"/>
+                  <stop offset="50%" stop-color="rgba(168,85,247,0.2)"/>
+                  <stop offset="100%" stop-color="rgba(168,85,247,0.0)"/>
+                </linearGradient>
+                <!-- Dot glow filter -->
+                <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <!-- Paths for animated dots -->
+                <path id="pa" d="M158 82 C 240 82, 270 170, 320 170"/>
+                <path id="pb" d="M158 148 C 240 148, 270 170, 320 170"/>
+                <path id="pc" d="M158 214 C 240 214, 280 170, 320 170"/>
+                <path id="pd" d="M158 280 C 240 280, 280 170, 320 170"/>
+                <path id="pe" d="M440 170 L 520 170"/>
+                <path id="pf" d="M550 155 C 580 120, 600 100, 640 100"/>
+                <path id="pg" d="M550 170 L 640 200"/>
+                <path id="ph" d="M550 185 C 580 220, 600 240, 640 280"/>
+              </defs>
+
+              <!-- Input → Extraction lines -->
+              <path d="M158 82 C 240 82, 270 170, 320 170" stroke="rgba(99,102,241,0.12)" stroke-width="1.5"/>
+              <path d="M158 148 C 240 148, 270 170, 320 170" stroke="rgba(99,102,241,0.12)" stroke-width="1.5"/>
+              <path d="M158 214 C 240 214, 280 170, 320 170" stroke="rgba(99,102,241,0.12)" stroke-width="1.5"/>
+              <path d="M158 280 C 240 280, 280 170, 320 170" stroke="rgba(99,102,241,0.12)" stroke-width="1.5"/>
+
+              <!-- Extraction → Analyse line -->
+              <path d="M440 170 L 520 170" stroke="rgba(99,102,241,0.15)" stroke-width="1.5"/>
+
+              <!-- Analyse → Output lines -->
+              <path d="M550 155 C 580 120, 600 100, 640 100" stroke="rgba(168,85,247,0.15)" stroke-width="1.5"/>
+              <path d="M550 170 L 640 200" stroke="rgba(168,85,247,0.15)" stroke-width="1.5"/>
+              <path d="M550 185 C 580 220, 600 240, 640 280" stroke="rgba(168,85,247,0.15)" stroke-width="1.5"/>
+
+              <!-- INPUT NODES -->
+              <rect x="40" y="58" width="118" height="48" rx="10" fill="white" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
+              <text x="99" y="83" text-anchor="middle" font-size="10.5" fill="rgba(0,0,0,0.5)" font-family="Inter,sans-serif" font-weight="500">Document PDF</text>
+              <text x="99" y="97" text-anchor="middle" font-size="9" fill="rgba(0,0,0,0.28)" font-family="Inter,sans-serif">contrat / facture / bon</text>
+
+              <rect x="40" y="124" width="118" height="48" rx="10" fill="white" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
+              <text x="99" y="149" text-anchor="middle" font-size="10.5" fill="rgba(0,0,0,0.5)" font-family="Inter,sans-serif" font-weight="500">Email client</text>
+              <text x="99" y="163" text-anchor="middle" font-size="9" fill="rgba(0,0,0,0.28)" font-family="Inter,sans-serif">commande / demande</text>
+
+              <rect x="40" y="190" width="118" height="48" rx="10" fill="white" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
+              <text x="99" y="215" text-anchor="middle" font-size="10.5" fill="rgba(0,0,0,0.5)" font-family="Inter,sans-serif" font-weight="500">Données ERP</text>
+              <text x="99" y="229" text-anchor="middle" font-size="9" fill="rgba(0,0,0,0.28)" font-family="Inter,sans-serif">stocks / inventaire</text>
+
+              <rect x="40" y="256" width="118" height="48" rx="10" fill="white" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
+              <text x="99" y="281" text-anchor="middle" font-size="10.5" fill="rgba(0,0,0,0.5)" font-family="Inter,sans-serif" font-weight="500">Fichier interne</text>
+              <text x="99" y="295" text-anchor="middle" font-size="9" fill="rgba(0,0,0,0.28)" font-family="Inter,sans-serif">rapport / bilan</text>
+
+              <!-- EXTRACTION NODE -->
+              <rect x="295" y="140" width="145" height="60" rx="13" fill="rgba(99,102,241,0.06)" stroke="rgba(99,102,241,0.25)" stroke-width="1.5"/>
+              <text x="367" y="165" text-anchor="middle" font-size="11.5" fill="rgba(60,60,180,0.75)" font-family="Inter,sans-serif" font-weight="700">Extraction</text>
+              <text x="367" y="181" text-anchor="middle" font-size="9.5" fill="rgba(99,102,241,0.5)" font-family="Inter,sans-serif">lecture + structuration auto</text>
+              <!-- Pulse ring -->
+              <circle cx="367" cy="170" r="36" stroke="rgba(99,102,241,0.08)" stroke-width="1">
+                <animate attributeName="r" values="34;42;34" dur="2.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.6;0;0.6" dur="2.5s" repeatCount="indefinite"/>
+              </circle>
+
+              <!-- ANALYSE NODE -->
+              <rect x="492" y="140" width="90" height="60" rx="13" fill="rgba(168,85,247,0.06)" stroke="rgba(168,85,247,0.22)" stroke-width="1.5"/>
+              <text x="537" y="166" text-anchor="middle" font-size="11" fill="rgba(120,50,200,0.7)" font-family="Inter,sans-serif" font-weight="700">Analyse</text>
+              <text x="537" y="182" text-anchor="middle" font-size="9.5" fill="rgba(168,85,247,0.5)" font-family="Inter,sans-serif">classification</text>
+
+              <!-- OUTPUT NODES -->
+              <rect x="638" y="76" width="122" height="48" rx="10" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.22)" stroke-width="1"/>
+              <text x="699" y="101" text-anchor="middle" font-size="10.5" fill="rgba(20,130,60,0.7)" font-family="Inter,sans-serif" font-weight="600">Facture générée</text>
+              <text x="699" y="115" text-anchor="middle" font-size="9" fill="rgba(20,130,60,0.4)" font-family="Inter,sans-serif">envoyée automatiquement</text>
+
+              <rect x="638" y="176" width="122" height="48" rx="10" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+              <text x="699" y="201" text-anchor="middle" font-size="10.5" fill="rgba(30,80,180,0.7)" font-family="Inter,sans-serif" font-weight="600">Rapport d'analyse</text>
+              <text x="699" y="215" text-anchor="middle" font-size="9" fill="rgba(30,80,180,0.4)" font-family="Inter,sans-serif">synthèse en temps réel</text>
+
+              <rect x="638" y="256" width="122" height="48" rx="10" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)" stroke-width="1"/>
+              <text x="699" y="281" text-anchor="middle" font-size="10.5" fill="rgba(180,80,10,0.7)" font-family="Inter,sans-serif" font-weight="600">Alerte stock</text>
+              <text x="699" y="295" text-anchor="middle" font-size="9" fill="rgba(180,80,10,0.4)" font-family="Inter,sans-serif">seuil atteint → notification</text>
+
+              <!-- ANIMATED DOTS -->
+              <circle r="3.5" fill="rgba(99,102,241,0.7)" filter="url(#glow)"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#pa"/></animateMotion></circle>
+              <circle r="3.5" fill="rgba(99,102,241,0.7)" filter="url(#glow)"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.6s"><mpath href="#pb"/></animateMotion></circle>
+              <circle r="3.5" fill="rgba(99,102,241,0.7)" filter="url(#glow)"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#pc"/></animateMotion></circle>
+              <circle r="3.5" fill="rgba(99,102,241,0.7)" filter="url(#glow)"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.8s"><mpath href="#pd"/></animateMotion></circle>
+              <circle r="3.5" fill="rgba(140,60,220,0.7)" filter="url(#glow)"><animateMotion dur="1.2s" repeatCount="indefinite" begin="0.4s"><mpath href="#pe"/></animateMotion></circle>
+              <circle r="3" fill="rgba(34,197,94,0.8)" filter="url(#glow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.2s"><mpath href="#pf"/></animateMotion></circle>
+              <circle r="3" fill="rgba(59,130,246,0.8)" filter="url(#glow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.8s"><mpath href="#pg"/></animateMotion></circle>
+              <circle r="3" fill="rgba(249,115,22,0.8)" filter="url(#glow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.4s"><mpath href="#ph"/></animateMotion></circle>
+            </svg>
+          </div>
+          <div class="bc6-body">
+            <div class="bc6-title">Automatisation métier</div>
+            <div class="bc6-desc">Stocks, factures, contrats, documents — classifiés, générés et mis à jour automatiquement, en temps réel.</div>
+          </div>
+          <div class="bc6-cta">
+            <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+              Voir nos réalisations
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2 — SAV -->
+        <div class="bc6 bg6-2">
+          <div class="bc6-bg">
+            <img src="https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=800&auto=format&fit=crop" alt="" style="opacity:0.9;object-position:top;">
+          </div>
+          <div class="bc6-body">
+            <div class="bc6-title">SAV automatisé</div>
+            <div class="bc6-desc">Analyse et traitement des tickets clients, réponses aux avis, support client automatisé — sans intervention humaine.</div>
+          </div>
+          <div class="bc6-cta">
+            <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+              En savoir plus
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3 — Automatisation -->
+        <div class="bc6 bg6-3">
+          <div class="bc6-bg">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop" alt="">
+          </div>
+          <div class="bc6-body">
+
+            <div class="bc6-title">Automatisation</div>
+            <div class="bc6-desc">Emails, relances, reporting — vos process tournent seuls pendant que vous travaillez.</div>
+          </div>
+          <div class="bc6-cta">
+            <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+              Voir les cas d'usage
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4 — SEO -->
+        <div class="bc6 bg6-4">
+          <div class="bc6-bg">
+            <img src="https://images.unsplash.com/photo-1562577309-2592ab84b1bc?w=800&auto=format&fit=crop" alt="">
+          </div>
+          <div class="bc6-body">
+            <div class="bc6-title">SEO & Visibilité</div>
+            <div class="bc6-desc">Remontez sur Google, soignez votre réputation et gagnez en visibilité locale.</div>
+          </div>
+          <div class="bc6-cta">
+            <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+              Analyser mon site
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 5 — Conseil IA -->
+        <div class="bc6 bg6-5">
+          <div class="bc6-bg">
+            <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&auto=format&fit=crop" alt="">
+          </div>
+          <div class="bc6-body">
+            <div class="bc6-title">Conseil IA</div>
+            <div class="bc6-desc">Audit, stratégie et implémentation — on vous guide pas à pas dans votre transition IA.</div>
+          </div>
+          <div class="bc6-cta">
+            <a href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">
+              Prendre RDV
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 6 — Prospection (full-width) -->
+        <div class="bc6 bg6-6" style="grid-template-rows: unset;">
+          <div class="bc6-bg">
+            <img src="https://images.unsplash.com/photo-1553484771-047a44eee27b?w=1600&auto=format&fit=crop" alt="">
+          </div>
+          <div class="bc6-body" style="flex-direction:row; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div style="display:flex;align-items:center;gap:16px;">
+              <div>
+                <div class="bc6-title">Prospection automatisée</div>
+                <div class="bc6-desc" style="max-width:560px">Scraping, scoring, emails personnalisés et relances — votre pipeline commercial tourne en autonome.</div>
+              </div>
+            </div>
+          </div>
+          <div class="bc6-cta" style="bottom:auto;top:50%;transform:translateY(calc(-50% + 10px));left:auto;right:28px;width:auto;">
+            <a href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})" style="font-size:0.875rem;">
+              Démarrer maintenant
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </section>
 
   <!-- Notre Processus -->
@@ -2774,7 +3292,7 @@
   </section>
 
   <!-- Team -->
-  <section id="team" class="stack-slide">
+  <section id="team" class="stack-slide" style="display:none;">
     <div class="section-header">
       <h2 class="section-title">Notre équipe</h2>
     </div>
@@ -2830,7 +3348,7 @@
       </div>
       <div class="footer-links">
         <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">Services</a>
-        <a href="#" onclick="event.preventDefault();scrollToSection('team')">Notre équipe</a>
+        <a href="#" onclick="event.preventDefault();scrollToSection('team')" style="display:none;">Notre équipe</a>
         <a href="#" onclick="event.preventDefault();scrollToSection('join')">Nous rejoindre</a>
         <a href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Prendre rendez-vous</a>
         <a href="mailto:contact@nexxo.systems">contact@nexxo.systems</a>
@@ -2905,12 +3423,75 @@
 
     // ─────────────────────────────────────────
     // ─────────────────────────────────────────
+    // SHIFTING TABS NAV
+    // ─────────────────────────────────────────
+    (function() {
+      var wrap    = document.getElementById('shift-wrap');
+      var overlay = document.getElementById('shift-overlay');
+      var nub     = document.getElementById('shift-nub');
+      if (!wrap || !overlay || !nub) return;
+
+      var tabs   = wrap.querySelectorAll('.shift-tab');
+      var panels = wrap.querySelectorAll('.shift-panel');
+      var TAB_ORDER = ['services', 'process'];
+      var current = null;
+
+      function positionNub(tabId) {
+        var activeTab = wrap.querySelector('[data-tab="' + tabId + '"]');
+        if (!activeTab) return;
+        var tabRect = activeTab.getBoundingClientRect();
+        var wrapRect = wrap.getBoundingClientRect();
+        var center = tabRect.left + tabRect.width / 2 - wrapRect.left;
+        nub.style.left = center + 'px';
+      }
+
+      function showTab(tabId) {
+        var prevId = current;
+        var dir = 'none';
+        if (prevId && prevId !== tabId) {
+          dir = TAB_ORDER.indexOf(tabId) > TAB_ORDER.indexOf(prevId) ? 'right' : 'left';
+        }
+        current = tabId;
+
+        tabs.forEach(function(t) {
+          t.classList.toggle('is-active', t.dataset.tab === tabId);
+        });
+
+        positionNub(tabId);
+
+        panels.forEach(function(p) {
+          p.classList.remove('is-active', 'from-left', 'from-right', 'from-none');
+          if (p.dataset.panel === tabId) {
+            void p.offsetWidth; // force reflow for animation restart
+            p.classList.add('is-active', 'from-' + dir);
+          }
+        });
+
+        overlay.classList.add('is-visible');
+      }
+
+      function hideAll() {
+        current = null;
+        tabs.forEach(function(t) { t.classList.remove('is-active'); });
+        panels.forEach(function(p) { p.classList.remove('is-active', 'from-left', 'from-right', 'from-none'); });
+        overlay.classList.remove('is-visible');
+      }
+
+      tabs.forEach(function(tab) {
+        tab.addEventListener('mouseenter', function() { showTab(tab.dataset.tab); });
+        tab.addEventListener('click', function() {
+          if (current === tab.dataset.tab) hideAll(); else showTab(tab.dataset.tab);
+        });
+      });
+
+      wrap.addEventListener('mouseleave', hideAll);
+    })();
+
+    // ─────────────────────────────────────────
     // LOADER — fermeture immédiate
     // ─────────────────────────────────────────
     (function() {
       const loader = document.getElementById('loader');
-      const loaderBar = document.getElementById('loaderBar');
-      loaderBar.style.width = '100%';
       setTimeout(() => {
         loader.style.opacity = '0';
         loader.style.transition = 'opacity 0.5s ease';
