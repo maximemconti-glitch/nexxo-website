@@ -180,7 +180,7 @@
     .shift-overlay {
       position: absolute;
       top: calc(100% + 20px); left: 0;
-      width: 380px;
+      width: 480px;
       background: linear-gradient(160deg, #18181b 0%, #141417 100%);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 14px; padding: 20px;
@@ -2129,13 +2129,7 @@
             </span>
           </button>
 
-          <button class="shift-tab" data-tab="process">
-            Process
-            <span class="shift-chevron">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-          </button>
-
+          <a class="shift-link" href="#" onclick="event.preventDefault();scrollToSection('timeline-section')">Process</a>
           <a class="shift-link" href="#" onclick="event.preventDefault();scrollToSection('team')" style="display:none;">Notre équipe</a>
           <a class="shift-link" href="#" onclick="event.preventDefault();scrollToSection('join')">Nous rejoindre</a>
 
@@ -2149,71 +2143,17 @@
             <!-- Panel : Services -->
             <div class="shift-panel" data-panel="services">
               <div class="sp-grid">
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('realisations')">
-                  <div class="sp-icon" style="background:rgba(99,102,241,0.15)">🌐</div>
-                  <div class="sp-text">
-                    <h4>Sites web</h4>
-                    <p>Vitrine, e-commerce, landing page</p>
-                  </div>
-                </a>
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('realisations')">
-                  <div class="sp-icon" style="background:rgba(34,197,94,0.12)">💬</div>
-                  <div class="sp-text">
-                    <h4>Chatbots</h4>
-                    <p>Support client, lead capture 24/7</p>
-                  </div>
-                </a>
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('realisations')">
-                  <div class="sp-icon" style="background:rgba(249,115,22,0.12)">⚡</div>
-                  <div class="sp-text">
-                    <h4>Automatisation</h4>
-                    <p>Emails, process, workflows IA</p>
-                  </div>
-                </a>
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('realisations')">
-                  <div class="sp-icon" style="background:rgba(236,72,153,0.12)">📈</div>
-                  <div class="sp-text">
-                    <h4>SEO & Visibilité</h4>
-                    <p>Google, réputation, réseaux sociaux</p>
-                  </div>
-                </a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Présence web</h4></div></a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Automatisation métier</h4></div></a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>SAV automatisé</h4></div></a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Automatisation data</h4></div></a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Automatisation Marketing</h4></div></a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Présence Média</h4></div></a>
+                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')" style="grid-column:1/-1;"><div class="sp-text"><h4>Automatisations sur mesure</h4></div></a>
               </div>
               <div class="sp-footer">
-                <a class="sp-cta" href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+                <a class="sp-cta" href="#" onclick="event.preventDefault();scrollToSection('offres')">
                   Voir tous les services
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
-              </div>
-            </div>
-
-            <!-- Panel : Process -->
-            <div class="shift-panel" data-panel="process">
-              <div class="sp-steps">
-                <div class="sp-step">
-                  <div class="sp-num">01</div>
-                  <div class="sp-step-body">
-                    <h4>Découverte</h4>
-                    <p>On analyse votre activité et vos besoins en 30 min.</p>
-                  </div>
-                </div>
-                <div class="sp-step">
-                  <div class="sp-num">02</div>
-                  <div class="sp-step-body">
-                    <h4>Stratégie</h4>
-                    <p>On vous propose la solution IA la plus adaptée à votre cas.</p>
-                  </div>
-                </div>
-                <div class="sp-step">
-                  <div class="sp-num">03</div>
-                  <div class="sp-step-body">
-                    <h4>Livraison</h4>
-                    <p>Déploiement rapide, accompagnement inclus.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="sp-footer">
-                <a class="sp-cta" href="#" onclick="event.preventDefault();scrollToSection('process')">
-                  Voir le process en détail
                   <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
               </div>
@@ -2222,7 +2162,7 @@
           </div><!-- /shift-overlay -->
         </div><!-- /shift-wrap -->
 
-        <a href="#" class="nav-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Réserver un appel</a>
+        <a href="#" class="nav-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Solliciter un devis</a>
       </div>
     </div>
   </nav>
@@ -2235,11 +2175,11 @@
     <div class="hero-buttons-bottom">
       <a href="#" class="btn-primary" id="hero-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">
         <div class="shimmer-spark-wrap"><div class="shimmer-spark"><div class="shimmer-spin"></div></div></div>
-        <span class="btn-primary-text">Réserver un appel →</span>
+        <span class="btn-primary-text">Solliciter un devis →</span>
         <div class="shimmer-highlight"></div>
         <div class="shimmer-backdrop"></div>
       </a>
-      <a href="#" class="btn-liquid" onclick="event.preventDefault();scrollToSection('realisations')"><span class="btn-liquid-text">Voir les services</span></a>
+      <a href="#" class="btn-liquid" onclick="event.preventDefault();scrollToSection('offres')"><span class="btn-liquid-text">Voir les services</span></a>
     </div>
     <div class="hero-visual">
       <div class="hero-visual-glow"></div>
@@ -3045,6 +2985,10 @@
       }
     </style>
 
+    <div style="padding: 60px max(48px,6vw) 40px; position:relative;">
+      <h2 class="offres-title">Nos <span class="hero-ai">services</span>.</h2>
+      <div style="position:absolute;bottom:0;left:max(48px,6vw);right:max(48px,6vw);height:1px;background:linear-gradient(to right, transparent 0%, rgba(0,0,0,0.08) 10%, rgba(0,0,0,0.08) 90%, transparent 100%);"></div>
+    </div>
     <div id="bento-section">
       <div class="bc6-frame">
       <div class="bento-grid-6">
@@ -3159,7 +3103,7 @@
             <div class="bc6-desc">Stocks, factures, contrats, documents — classifiés, générés et mis à jour automatiquement, en temps réel.</div>
           </div>
           <div class="bc6-cta">
-            <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+            <a href="#" onclick="event.preventDefault();scrollToSection('offres')">
               Voir nos réalisations
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -3193,7 +3137,7 @@
             <div class="bc6-desc">Analyse et traitement des tickets clients, réponses aux avis, support client automatisé — sans intervention humaine.</div>
           </div>
           <div class="bc6-cta">
-            <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+            <a href="#" onclick="event.preventDefault();scrollToSection('offres')">
               En savoir plus
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -3399,7 +3343,7 @@
             <div class="bc6-desc">Ventes, trafic, clients — collectés, analysés et présentés automatiquement en dashboards clairs et alertes en temps réel.</div>
           </div>
           <div class="bc6-cta">
-            <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+            <a href="#" onclick="event.preventDefault();scrollToSection('offres')">
               Voir les cas d'usage
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -3455,7 +3399,7 @@
             <div class="bc6-desc">Prospection, relances auto et scoring de leads — votre pipeline commercial tourne sans vous.</div>
           </div>
           <div class="bc6-cta">
-            <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
+            <a href="#" onclick="event.preventDefault();scrollToSection('offres')">
               Voir les cas d'usage
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -3581,10 +3525,14 @@
               <div class="auto-task" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);font-style:italic;">+ tout ce que vous faites à la main</div>
             </div>
           </div>
-          <div class="bc6-body" style="flex-direction:row; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+          <div class="bc6-body" style="flex-direction:row; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:0; padding:16px 24px 8px;">
             <div>
               <div class="bc6-title" style="color:#ffffff;animation:autoStatPulse 3.5s ease-in-out infinite;text-shadow:0 0 8px rgba(255,255,255,0.2);">Automatisations sur mesure</div>
               <div class="bc6-desc" style="color:#aeaeb2;max-width:560px;">Presque tout ce que vous faites à la main peut être automatisé. On vous montre exactement quoi — et on le fait.</div>
+              <a href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:10px 22px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:99px;color:#fff;font-size:0.82rem;font-weight:600;text-decoration:none;backdrop-filter:blur(8px);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                Demander un devis
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
             </div>
           </div>
           <div class="bc6-cta" style="bottom:auto;top:50%;transform:translateY(calc(-50% + 10px));left:auto;right:28px;width:auto;">
@@ -3733,6 +3681,15 @@
         transition: color 0.3s ease;
       }
       .tl-entry.is-active .tl-step-label-mobile { color: #1d1d1f; }
+      .tl-step-title {
+        font-size: 1.35rem;
+        font-family: var(--font-head);
+        font-weight: 700;
+        color: #d1d5db;
+        margin-bottom: 20px;
+        transition: color 0.3s ease;
+      }
+      .tl-entry.is-active .tl-step-title { color: #1d1d1f; }
       .tl-content-card {
         background: #fafafa;
         border: 1px solid rgba(0,0,0,0.07);
@@ -3837,6 +3794,7 @@
       <div class="tl-line-bg"></div>
       <div class="tl-line-fill" id="tlLineFill"></div>
 
+      <!-- ÉTAPE 01 — Brief & cadrage -->
       <div class="tl-entry" data-tl>
         <div class="tl-left">
           <div class="tl-dot"><div class="tl-dot-inner"></div></div>
@@ -3844,43 +3802,34 @@
         </div>
         <div class="tl-right">
           <div class="tl-step-label-mobile">01</div>
+          <h3 class="tl-step-title">Brief & cadrage</h3>
           <div class="scroll-cards-section">
-            <div class="scroll-card-item" style="background:#f0f4ff;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#e8f0ff 0%,#c7d9ff 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#0066cc" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+            <!-- Photo — meeting -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.55) saturate(0.85);"></div>
+              <!-- Vignette top -->
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.72) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 01</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Analyse de votre activité<br>et vos besoins</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">On écoute vos besoins, on analyse votre activité, et on identifie comment vous faire <strong style="color:#fff;font-weight:600;">gagner</strong> du <strong style="color:#fff;font-weight:600;">temps</strong> et de l'<strong style="color:#fff;font-weight:600;">argent</strong>.</p>
               </div>
             </div>
-            <div class="scroll-card-item" style="background:#f5f5f7;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#f5f5f7 0%,#e8e8ed 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#1d1d1f" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
-              </div>
-            </div>
-            <div class="scroll-card-item" style="background:#fff8f0;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#cc6600" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
-              </div>
-            </div>
-            <div class="scroll-card-item" style="background:#1d1d1f;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#2d2d2f 0%,#1a1a1c 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3"/></svg>
-                <h3 class="sc-title" style="color:#ffffff;">Titre de la carte</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.55);">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+            <!-- Photo — cahier des charges -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.5) saturate(0.8);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 01</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Cahier des charges<br>co-construit</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">On travaille à deux pour formaliser vos contraintes, vos priorités et le périmètre exact du projet — signé avant de commencer.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- ÉTAPE 02 — Proposition & validation -->
       <div class="tl-entry" data-tl>
         <div class="tl-left">
           <div class="tl-dot"><div class="tl-dot-inner"></div></div>
@@ -3888,43 +3837,33 @@
         </div>
         <div class="tl-right">
           <div class="tl-step-label-mobile">02</div>
+          <h3 class="tl-step-title">Proposition & validation</h3>
           <div class="scroll-cards-section">
-            <div class="scroll-card-item" style="background:#f0f4ff;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#e8f0ff 0%,#c7d9ff 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#0066cc" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+            <!-- Photo — devis -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.5) saturate(0.8);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 02</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Devis clair,<br>sans surprise</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Coût, délais, livrables — tout posé par écrit avant de commencer.</p>
               </div>
             </div>
-            <div class="scroll-card-item" style="background:#f5f5f7;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#f5f5f7 0%,#e8e8ed 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#1d1d1f" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
-              </div>
-            </div>
-            <div class="scroll-card-item" style="background:#fff8f0;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#cc6600" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
-              </div>
-            </div>
-            <div class="scroll-card-item" style="background:#1d1d1f;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#2d2d2f 0%,#1a1a1c 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
-                <h3 class="sc-title" style="color:#ffffff;">Titre de la carte</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.55);">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+            <!-- Photo — validation/accord -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.45) saturate(0.8);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 02</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Votre accord<br>avant tout</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">On ne démarre qu'avec votre signature. Aucune dérive de périmètre possible.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- ÉTAPE 03 — Première version -->
       <div class="tl-entry" data-tl>
         <div class="tl-left">
           <div class="tl-dot"><div class="tl-dot-inner"></div></div>
@@ -3932,43 +3871,31 @@
         </div>
         <div class="tl-right">
           <div class="tl-step-label-mobile">03</div>
+          <h3 class="tl-step-title">Première version</h3>
           <div class="scroll-cards-section">
-            <div class="scroll-card-item" style="background:#f0f4ff;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#e8f0ff 0%,#c7d9ff 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#0066cc" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+            <!-- Photo — laptop/code -->
+            <div class="scroll-card-item">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80');background-size:cover;background-position:center;"></div>
+              <div class="sc-body" style="background:linear-gradient(to top,rgba(0,0,0,0.78) 0%,rgba(0,0,0,0.08) 100%);">
+                <h3 class="sc-title" style="color:#fff;">On construit, pas on bricole</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.72);">Développement propre, testé en interne avant de vous montrer quoi que ce soit.</p>
               </div>
             </div>
-            <div class="scroll-card-item" style="background:#f5f5f7;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#f5f5f7 0%,#e8e8ed 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#1d1d1f" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
-              </div>
-            </div>
-            <div class="scroll-card-item" style="background:#fff8f0;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#cc6600" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
-              </div>
-            </div>
-            <div class="scroll-card-item" style="background:#1d1d1f;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#2d2d2f 0%,#1a1a1c 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
-                <h3 class="sc-title" style="color:#ffffff;">Titre de la carte</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.55);">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+            <!-- Photo — design/screens -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 03</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Testé avant<br>de vous montrer</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Cross-browser, mobile, performance — zéro bug au moment de la présentation.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- ÉTAPE 04 — Retours & ajustements -->
       <div class="tl-entry" data-tl>
         <div class="tl-left">
           <div class="tl-dot"><div class="tl-dot-inner"></div></div>
@@ -3976,37 +3903,92 @@
         </div>
         <div class="tl-right">
           <div class="tl-step-label-mobile">04</div>
+          <h3 class="tl-step-title">Retours & ajustements</h3>
           <div class="scroll-cards-section">
-            <div class="scroll-card-item" style="background:#f0f4ff;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#e8f0ff 0%,#c7d9ff 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#0066cc" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+            <!-- Photo — feedback/review -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 04</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Vos retours<br>bien pris en compte</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Feedback structuré, priorisé, intégré. Pas d'allers-retours éparpillés.</p>
               </div>
             </div>
-            <div class="scroll-card-item" style="background:#f5f5f7;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#f5f5f7 0%,#e8e8ed 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#1d1d1f" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+            <!-- Photo — laptop/review -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 04</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Un round inclus,<br>sans discussion</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Modifications intégrées rapidement. Votre feu vert avant la mise en ligne.</p>
               </div>
             </div>
-            <div class="scroll-card-item" style="background:#fff8f0;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#cc6600" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5"/></svg>
-                <h3 class="sc-title">Titre de la carte</h3>
-                <p class="sc-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 05 — Livraison finale -->
+      <div class="tl-entry" data-tl>
+        <div class="tl-left">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <span class="tl-step-label">05</span>
+        </div>
+        <div class="tl-right">
+          <div class="tl-step-label-mobile">05</div>
+          <h3 class="tl-step-title">Livraison finale</h3>
+          <div class="scroll-cards-section">
+            <!-- Photo — analytics/live -->
+            <div class="scroll-card-item">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80');background-size:cover;background-position:center;"></div>
+              <div class="sc-body" style="background:linear-gradient(to top,rgba(0,0,0,0.78) 0%,rgba(0,0,0,0.08) 100%);">
+                <h3 class="sc-title" style="color:#fff;">Votre site est en ligne</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.72);">Déploiement, tests finaux, formation à la mise à jour — tout inclus.</p>
               </div>
             </div>
-            <div class="scroll-card-item" style="background:#1d1d1f;">
-              <div class="sc-bg" style="background:linear-gradient(135deg,#2d2d2f 0%,#1a1a1c 100%);"></div>
-              <div class="sc-body">
-                <svg class="sc-icon" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
-                <h3 class="sc-title" style="color:#ffffff;">Titre de la carte</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.55);">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam purus sit amet luctus.</p>
+            <!-- Photo — handover/keys -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 05</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Tout vous<br>appartient</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Hébergement, domaine, backoffice — remise complète de tous les accès.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 06 — Suivi J+30 -->
+      <div class="tl-entry" data-tl>
+        <div class="tl-left">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <span class="tl-step-label">06</span>
+        </div>
+        <div class="tl-right">
+          <div class="tl-step-label-mobile">06</div>
+          <h3 class="tl-step-title">Maintenance & suivi</h3>
+          <div class="scroll-cards-section">
+            <!-- Photo — analytics/results -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 06</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Votre site<br>toujours à jour</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Mises à jour, sécurité, performances — on s'occupe de la maintenance pour que vous puissiez vous concentrer sur votre métier.</p>
+              </div>
+            </div>
+            <!-- Photo — support/followup -->
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
+              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
+              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
+                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 06</span>
+                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Un interlocuteur<br>dédié, dans la durée</h3>
+                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Corrections, évolutions, questions — on reste disponibles. Pas de ticket anonyme, vous avez un contact direct.</p>
               </div>
             </div>
           </div>
@@ -4103,7 +4085,7 @@
         <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
       </div>
       <div class="footer-links">
-        <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">Services</a>
+        <a href="#" onclick="event.preventDefault();scrollToSection('offres')">Services</a>
         <a href="#" onclick="event.preventDefault();scrollToSection('team')" style="display:none;">Notre équipe</a>
         <a href="#" onclick="event.preventDefault();scrollToSection('join')">Nous rejoindre</a>
         <a href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Prendre rendez-vous</a>
@@ -4397,8 +4379,7 @@
         });
       }
 
-      bindCta('main-cta');
-      bindCta('hero-cta');
+      // confetti disabled
     })();
 
     // ─────────────────────────────────────────
