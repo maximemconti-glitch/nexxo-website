@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Widgets Archive — Section Réalisations</title>
+<style>
+  :root {
+    --font-head: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --font-body: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --font-mono: 'Menlo', 'SF Mono', monospace;
+    --accent: #0071e3;
+    --accent-light: #34aadc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    background: #f0f0f5;
+    padding: 48px 32px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+  }
+  .archive-meta {
+    font-size: 0.8rem;
+    color: #8e8e93;
+    margin-bottom: 40px;
+    font-family: var(--font-mono);
+  }
+
+  /* ─── WIDGETS GRID ─── */
+  .widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 280px);
+    gap: 16px;
+    max-width: 1100px;
+  }
+
+  .widget-card {
+    width: 100%; height: 100%;
+    min-width: 0; min-height: 0;
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1),
+                box-shadow 0.35s ease, filter 0.35s ease;
+    display: flex; flex-direction: column;
+    position: relative;
+    opacity: 0; transform: translateY(12px);
+    animation: cardIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  .widgets-grid .widget-card:nth-child(1) { animation-delay: 0.08s; }
+  .widgets-grid .widget-card:nth-child(2) { animation-delay: 0.14s; }
+  .widgets-grid .widget-card:nth-child(3) { animation-delay: 0.20s; }
+  .widgets-grid .widget-card:nth-child(4) { animation-delay: 0.26s; }
+  .widgets-grid .widget-card:nth-child(5) { animation-delay: 0.32s; }
+  .widgets-grid .widget-card:nth-child(6) { animation-delay: 0.38s; }
+  @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+  .widgets-grid:has(.widget-card:hover) .widget-card:not(:hover) {
+    transform: scale(0.97);
+    filter: brightness(0.94);
+  }
+  .widget-card:hover {
+    transform: scale(1.04) translateY(-8px);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+    z-index: 10;
+  }
+
+  /* Window bar */
+  .wbar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 14px;
+    height: 36px;
+    background: #f5f5f7;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    flex-shrink: 0;
+  }
+  .wdot { width: 9px; height: 9px; border-radius: 50%; }
+  .wdot-r { background: #ff5f57; }
+  .wdot-y { background: #ffbd2e; }
+  .wdot-g { background: #28c840; }
+  .wbar-title { margin-left: 6px; font-size: 0.65rem; color: #8e8e93; }
+  .wlive {
+    margin-left: auto; display: flex; align-items: center; gap: 4px;
+    font-size: 0.6rem; color: #28c840; font-weight: 500;
+  }
+  .wlive-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #28c840;
+    position: relative;
+  }
+  .wlive-dot::after {
+    content: ''; position: absolute; inset: -3px; border-radius: 50%;
+    border: 1.5px solid #28c840; animation: wping 1.5s ease-out infinite;
+  }
+  @keyframes wping { to { transform: scale(2.2); opacity: 0; } }
+
+  /* ── Dashboard Prospection ── */
+  .dash-body { padding: 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 10px; }
+  .dash-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+  .ds { background: #f9f9fb; border-radius: 10px; padding: 10px 8px 8px; }
+  .ds-val { font-size: 1.3rem; font-weight: 700; color: #1d1d1f; letter-spacing: -0.03em; line-height: 1; }
+  .ds-val em { color: #0071e3; font-style: normal; }
+  .ds-label { font-size: 0.58rem; color: #8e8e93; margin-top: 3px; }
+  .dash-recent { display: flex; flex-direction: column; gap: 4px; flex: 1; min-height: 0; overflow: hidden; margin-bottom: 6px; }
+  .drecent-row { display: flex; align-items: center; gap: 7px; padding: 5px 7px; background: #f9f9fb; border-radius: 7px; }
+  .dr-dot  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dr-text { font-size: 0.57rem; color: #3d3d3d; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dr-time { font-size: 0.54rem; color: #aeaeb2; font-family: 'Menlo', monospace; flex-shrink: 0; }
+  .dash-live {
+    display: flex; align-items: center; gap: 5px;
+    padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); flex-shrink: 0;
+  }
+  .dpulse { width: 6px; height: 6px; border-radius: 50%; background: #28c840; position: relative; flex-shrink: 0; }
+  .dpulse::after { content:''; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid #28c840; animation: wping 1.5s ease-out infinite; }
+  .dash-live-txt { font-size: 0.6rem; color: #8e8e93; }
+
+  /* ── Terminal ── */
+  .term-body { padding: 8px 12px 8px; flex: 1; overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
+  .term-feed { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+  .tentry {
+    display: flex; gap: 6px; align-items: center;
+    padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+    font-size: 0.63rem; flex-shrink: 0;
+    overflow: hidden; min-width: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .tentry.show { opacity: 1; }
+  .ttime { color: #c7c7cc; font-family: 'Menlo', monospace; flex-shrink: 0; font-size: 0.57rem; }
+  .ttag {
+    padding: 1px 6px; border-radius: 4px; font-size: 0.55rem;
+    font-weight: 600; flex-shrink: 0; font-family: 'Menlo', monospace;
+  }
+  .ttag-detect { background: rgba(0,113,227,0.10); color: #0071e3; }
+  .ttag-send   { background: rgba(0,0,0,0.06);     color: #6e6e73; }
+  .ttag-reply  { background: rgba(0,113,227,0.07); color: #0071e3; }
+  .ttag-rdv    { background: rgba(0,113,227,0.13); color: #005bb5; }
+  .ttag-auto   { background: rgba(0,0,0,0.06);     color: #6e6e73; }
+  .tmsg { color: #3d3d3d; line-height: 1.4; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tmsg strong { color: #1d1d1f; font-weight: 500; }
+  .term-input {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 0 0; border-top: 1px solid rgba(0,0,0,0.06); flex-shrink: 0;
+  }
+  .tprompt { color: #0071e3; font-family: 'Menlo', monospace; font-size: 0.7rem; font-weight: 700; }
+  .tcursor { width: 6px; height: 12px; background: #0071e3; animation: tblink 1s step-end infinite; }
+  @keyframes tblink { 50% { opacity: 0; } }
+  .tinput-lbl { font-family: 'Menlo', monospace; font-size: 0.62rem; color: #c7c7cc; }
+
+  /* ── SAV IA Chat ── */
+  .chat-body { padding: 10px 12px 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
+  .chat-msgs { flex: 1; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
+  .chat-bubble {
+    max-width: 82%; padding: 7px 10px; border-radius: 12px;
+    font-size: 0.65rem; line-height: 1.45;
+    opacity: 0; transform: translateY(5px);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+  }
+  .chat-bubble.show { opacity: 1; transform: translateY(0); }
+  .bubble-user { background: #0071e3; color: #fff; align-self: flex-end; border-bottom-right-radius: 3px; }
+  .bubble-ai   { background: #f5f5f7; color: #1d1d1f; align-self: flex-start; border-bottom-left-radius: 3px; }
+  .typing-wrap { align-self: flex-start; }
+  .typing-dots { display: flex; gap: 4px; align-items: center; padding: 9px 12px; background: #f5f5f7; border-radius: 12px 12px 12px 3px; }
+  .typing-dot  { width: 5px; height: 5px; border-radius: 50%; background: #aeaeb2; }
+  .typing-dot:nth-child(1) { animation: tdot 1.1s ease-in-out 0.0s infinite; }
+  .typing-dot:nth-child(2) { animation: tdot 1.1s ease-in-out 0.2s infinite; }
+  .typing-dot:nth-child(3) { animation: tdot 1.1s ease-in-out 0.4s infinite; }
+  @keyframes tdot { 0%,60%,100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }
+  .chat-foot { font-size: 0.55rem; color: #c7c7cc; text-align: center; padding-top: 6px; border-top: 1px solid rgba(0,0,0,0.05); flex-shrink: 0; }
+
+  /* ── Dashboard Gestion ── */
+  .dash-tabs { display: flex; gap: 3px; padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.07); flex-shrink: 0; background: #f5f5f7; }
+  .dash-tab { flex: 1; padding: 4px 3px; border: none; background: transparent; border-radius: 6px; font-size: 0.58rem; font-weight: 500; color: #aeaeb2; cursor: pointer; transition: background 0.2s, color 0.2s; font-family: var(--font-body); }
+  .dash-tab.active { background: #ffffff; color: #0071e3; box-shadow: 0 1px 4px rgba(0,0,0,0.10); }
+  .dash-body-mgmt { flex: 1; overflow: hidden; position: relative; }
+  .dash-panel { position: absolute; inset: 0; padding: 10px 11px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .dash-panel.active { opacity: 1; pointer-events: auto; }
+  .cal-week { display: flex; gap: 4px; height: 100%; }
+  .cal-day { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .cal-day-label { font-size: 0.55rem; font-weight: 600; color: #8e8e93; text-align: center; padding-bottom: 3px; border-bottom: 1px solid #e5e5ea; margin-bottom: 2px; }
+  .cal-event { font-size: 0.51rem; padding: 4px 5px; border-radius: 5px; line-height: 1.35; font-weight: 500; }
+  .inv-form { display: flex; flex-direction: column; gap: 7px; margin-bottom: 8px; }
+  .inv-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: #f9f9fb; border-radius: 7px; }
+  .inv-lbl { font-size: 0.58rem; color: #8e8e93; font-weight: 500; }
+  .inv-val { font-size: 0.62rem; color: #1d1d1f; font-weight: 600; min-height: 1em; }
+  .inv-status { text-align: center; font-size: 0.65rem; font-weight: 600; color: #1a9e2a; padding: 6px; opacity: 0; transition: opacity 0.4s; }
+  .inv-status.show { opacity: 1; }
+  .stk-list { display: flex; flex-direction: column; gap: 9px; }
+  .stk-row { display: flex; align-items: center; gap: 7px; }
+  .stk-name { font-size: 0.58rem; color: #6e6e73; width: 64px; flex-shrink: 0; }
+  .stk-bar { flex: 1; height: 5px; background: #e5e5ea; border-radius: 3px; overflow: hidden; }
+  .stk-fill { height: 100%; border-radius: 3px; width: 0; transition: width 0.9s cubic-bezier(0.16,1,0.3,1); }
+  .stk-num { font-size: 0.58rem; font-weight: 600; color: #1d1d1f; width: 26px; text-align: right; flex-shrink: 0; }
+
+  /* ── Site web widget ── */
+  .site-body { padding: 10px 12px 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
+  .sbm { background: #f0f0f5; border-radius: 8px; overflow: hidden; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .sbm-nav { height: 22px; background: #e2e2e8; flex-shrink: 0; display: flex; align-items: center; padding: 0 8px; gap: 4px; }
+  .sbm-nav::before { content: ''; display: block; height: 6px; width: 40%; background: #cbcbd2; border-radius: 3px; }
+  .sbm-content { padding: 8px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .sbm-h1 { height: 10px; background: #cacad0; border-radius: 3px; width: 65%; }
+  .sbm-h2 { height: 7px; background: #dcdce0; border-radius: 3px; width: 45%; }
+  .sbm-btn { height: 16px; background: #0071e3; border-radius: 5px; width: 70px; margin-top: 3px; }
+  .sbm-cards { display: flex; gap: 5px; margin-top: 5px; flex: 1; }
+  .sbm-card { flex: 1; background: #e2e2e8; border-radius: 5px; }
+  .site-stats { display: flex; gap: 6px; flex-shrink: 0; }
+  .site-stat { flex: 1; background: #f5f5f8; border-radius: 8px; padding: 7px 6px; text-align: center; }
+  .site-stat-val { font-size: 0.88rem; font-weight: 700; color: #0071e3; display: block; letter-spacing: -0.02em; }
+  .site-stat-lbl { font-size: 0.52rem; color: #8e8e93; display: block; margin-top: 2px; }
+
+  /* ── Prospection auto widget ── */
+  .prosp-body { padding: 10px 12px 12px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 6px; }
+  .prosp-funnel { flex: 1; display: flex; flex-direction: column; gap: 5px; justify-content: center; }
+  .pf-step {
+    border-radius: 7px; padding: 6px 10px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: white; flex-shrink: 0;
+  }
+  .pf-step:nth-child(1) { background: linear-gradient(90deg,#0071e3,#34aadc); margin: 0 0%; }
+  .pf-step:nth-child(2) { background: linear-gradient(90deg,#2a84f4,#5ab8ff); margin: 0 6%; }
+  .pf-step:nth-child(3) { background: linear-gradient(90deg,#5ac8fa,#34aadc); margin: 0 14%; }
+  .pf-step:nth-child(4) { background: linear-gradient(90deg,#28c840,#30d158); margin: 0 22%; }
+  .pf-label { font-size: 0.59rem; opacity: 0.9; }
+  .pf-val { font-size: 0.78rem; font-weight: 700; }
+  .prosp-rate { font-size: 0.6rem; color: #8e8e93; text-align: center; padding-top: 5px; border-top: 1px solid rgba(0,0,0,0.05); flex-shrink: 0; }
+  .prosp-rate strong { color: #28c840; }
+</style>
+</head>
+<body>
+
+<h1>Widgets Archive — Section "Ce qu'on construit pour vous"</h1>
+<p class="archive-meta">Archivé avant refonte complète de la section réalisations.</p>
+
+<div class="widgets-grid">
+
+  <!-- 1 — Dashboard Prospection -->
+  <div class="widget-card" id="wc-prosp-dash">
+    <div class="wbar">
+      <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+      <span class="wbar-title">Prospection Dashboard</span>
+      <div class="wlive"><div class="wlive-dot"></div> Live</div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-stats">
+        <div class="ds"><div class="ds-val" id="ds1">0</div><div class="ds-label">Leads ce mois</div></div>
+        <div class="ds"><div class="ds-val" id="ds2">0</div><div class="ds-label">RDV obtenus</div></div>
+        <div class="ds"><div class="ds-val"><span id="ds3">0</span><em>%</em></div><div class="ds-label">Taux conv.</div></div>
+      </div>
+      <div class="dash-recent">
+        <div class="drecent-row"><span class="dr-dot" style="background:#0071e3"></span><span class="dr-text">Mail envoyé · Boulangerie Martin</span><span class="dr-time">14:32</span></div>
+        <div class="drecent-row"><span class="dr-dot" style="background:#28c840"></span><span class="dr-text">RDV confirmé · Pharmacie Morin</span><span class="dr-time">13:08</span></div>
+        <div class="drecent-row"><span class="dr-dot" style="background:#0071e3"></span><span class="dr-text">Prospect détecté · Cabinet Leblanc</span><span class="dr-time">11:55</span></div>
+      </div>
+      <div class="dash-live">
+        <div class="dpulse"></div>
+        <span class="dash-live-txt">3 automatisations actives</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 — Terminal nexxo-agent -->
+  <div class="widget-card" id="wc-term">
+    <div class="wbar">
+      <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+      <span class="wbar-title">nexxo-agent · live</span>
+      <div class="wlive"><div class="wlive-dot"></div> En ligne</div>
+    </div>
+    <div class="term-body">
+      <div class="term-feed" id="wterm-feed"></div>
+      <div class="term-input">
+        <span class="tprompt">›</span>
+        <span class="tinput-lbl">Automatisation en cours...</span>
+        <div class="tcursor"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 — SAV IA Chat -->
+  <div class="widget-card" id="wc-chat">
+    <div class="wbar">
+      <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+      <span class="wbar-title">SAV IA — Assistant 24/7</span>
+    </div>
+    <div class="chat-body">
+      <div class="chat-msgs" id="wchat-msgs"></div>
+      <div class="chat-foot">Répond en &lt;3s · 247 conversations ce mois</div>
+    </div>
+  </div>
+
+  <!-- 4 — Gestion interne -->
+  <div class="widget-card" id="wc-mgmt">
+    <div class="wbar">
+      <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+      <span class="wbar-title">Gestion interne</span>
+    </div>
+    <div class="dash-tabs">
+      <button class="dash-tab active" data-panel="planning">Planning</button>
+      <button class="dash-tab" data-panel="facture">Facture</button>
+      <button class="dash-tab" data-panel="stocks">Stocks</button>
+    </div>
+    <div class="dash-body-mgmt">
+      <div class="dash-panel active" id="dp-planning">
+        <div class="cal-week">
+          <div class="cal-day"><div class="cal-day-label">Lun</div><div class="cal-event" style="background:#dbeafe;color:#1e40af">10h — Moreau</div><div class="cal-event" style="background:#f3f4f6;color:#374151">15h — Factures</div></div>
+          <div class="cal-day"><div class="cal-day-label">Mar</div><div class="cal-event" style="background:#f3f4f6;color:#374151">11h — Relances</div></div>
+          <div class="cal-day"><div class="cal-day-label">Mer</div><div class="cal-event" style="background:#dcfce7;color:#166534">14h — Livraison</div><div class="cal-event" style="background:#dbeafe;color:#1e40af">16h — Démo</div></div>
+          <div class="cal-day"><div class="cal-day-label">Jeu</div><div class="cal-event" style="background:#fef9c3;color:#92400e">09h — Prospect</div></div>
+          <div class="cal-day"><div class="cal-day-label">Ven</div><div class="cal-event" style="background:#f3f4f6;color:#374151">10h — Réunion</div></div>
+        </div>
+      </div>
+      <div class="dash-panel" id="dp-facture">
+        <div class="inv-form">
+          <div class="inv-row"><span class="inv-lbl">Client</span><span class="inv-val" id="iv-client"></span></div>
+          <div class="inv-row"><span class="inv-lbl">Service</span><span class="inv-val" id="iv-service"></span></div>
+          <div class="inv-row"><span class="inv-lbl">Montant</span><span class="inv-val" id="iv-montant"></span></div>
+        </div>
+        <div class="inv-status" id="inv-status"></div>
+      </div>
+      <div class="dash-panel" id="dp-stocks">
+        <div class="stk-list">
+          <div class="stk-row"><span class="stk-name">Licences IA</span><div class="stk-bar"><div class="stk-fill" data-w="82" style="background:#34d399"></div></div><span class="stk-num">82</span></div>
+          <div class="stk-row"><span class="stk-name">Crédits mail</span><div class="stk-bar"><div class="stk-fill" data-w="45" style="background:#fbbf24"></div></div><span class="stk-num">45%</span></div>
+          <div class="stk-row"><span class="stk-name">Serveurs</span><div class="stk-bar"><div class="stk-fill" data-w="91" style="background:#34d399"></div></div><span class="stk-num">91%</span></div>
+          <div class="stk-row"><span class="stk-name">API calls</span><div class="stk-bar"><div class="stk-fill" data-w="18" style="background:#f87171"></div></div><span class="stk-num">18%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 — Site web -->
+  <div class="widget-card" id="wc-site">
+    <div class="wbar">
+      <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+      <span class="wbar-title">Site web — Délai réduit</span>
+      <div class="wlive"><div class="wlive-dot"></div> En ligne</div>
+    </div>
+    <div class="site-body">
+      <div class="sbm">
+        <div class="sbm-nav"></div>
+        <div class="sbm-content">
+          <div class="sbm-h1"></div>
+          <div class="sbm-h2"></div>
+          <div class="sbm-btn"></div>
+          <div class="sbm-cards">
+            <div class="sbm-card"></div>
+            <div class="sbm-card"></div>
+            <div class="sbm-card"></div>
+          </div>
+        </div>
+      </div>
+      <div class="site-stats">
+        <div class="site-stat"><span class="site-stat-val">Rapide</span><span class="site-stat-lbl">Performance</span></div>
+        <div class="site-stat"><span class="site-stat-val">94 SEO</span><span class="site-stat-lbl">Référencement</span></div>
+        <div class="site-stat"><span class="site-stat-val">100%</span><span class="site-stat-lbl">Mobile</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 — Prospection automatique -->
+  <div class="widget-card" id="wc-prosp-auto">
+    <div class="wbar">
+      <span class="wdot wdot-r"></span><span class="wdot wdot-y"></span><span class="wdot wdot-g"></span>
+      <span class="wbar-title">Prospection automatique</span>
+      <div class="wlive"><div class="wlive-dot"></div> Actif</div>
+    </div>
+    <div class="prosp-body">
+      <div class="prosp-funnel">
+        <div class="pf-step"><span class="pf-label">Leads détectés</span><span class="pf-val">1 240</span></div>
+        <div class="pf-step"><span class="pf-label">Qualifiés</span><span class="pf-val">387</span></div>
+        <div class="pf-step"><span class="pf-label">Contactés</span><span class="pf-val">142</span></div>
+        <div class="pf-step"><span class="pf-label">RDV obtenus</span><span class="pf-val">28</span></div>
+      </div>
+      <div class="prosp-rate">Taux de conversion moyen : <strong>19%</strong></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── CountUp ──
+  function countUp(id, target) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let v = 0;
+    const step = target / 40;
+    const t = setInterval(() => {
+      v = Math.min(v + step, target);
+      el.textContent = Math.round(v);
+      if (v >= target) clearInterval(t);
+    }, 28);
+  }
+  setTimeout(() => { countUp('ds1', 148); countUp('ds2', 32); countUp('ds3', 22); }, 800);
+
+  // ── Terminal feed ──
+  const EVENTS = [
+    { delay: 600,  tag: 'detect', label: 'DETECT', msg: 'Nouveau prospect — <strong>Boulangerie Martin</strong>, Paris 11e' },
+    { delay: 1500, tag: 'send',   label: 'MAIL',   msg: 'Email personnalisé envoyé à <strong>martin@boulangerie.fr</strong>' },
+    { delay: 2600, tag: 'auto',   label: 'AUTO',   msg: 'Relance J+2 programmée automatiquement' },
+    { delay: 3700, tag: 'reply',  label: 'REPLY',  msg: '<strong>Réponse reçue</strong> — "Ça m\'intéresse, on se parle ?"' },
+    { delay: 4700, tag: 'rdv',    label: 'RDV',    msg: '<strong>RDV confirmé</strong> · Lundi 10h · Appel découverte' },
+    { delay: 5800, tag: 'detect', label: 'DETECT', msg: 'Nouveau prospect — <strong>Cabinet Leblanc</strong>, Bordeaux' },
+    { delay: 6700, tag: 'send',   label: 'MAIL',   msg: 'Séquence de 3 mails lancée pour <strong>Cabinet Leblanc</strong>' },
+    { delay: 7700, tag: 'auto',   label: 'AUTO',   msg: 'SAV automatique activé pour <strong>Boulangerie Martin</strong>' },
+  ];
+  const feed = document.getElementById('wterm-feed');
+  function launchFeed() {
+    const base = new Date();
+    function fmt(ms) {
+      const d = new Date(base.getTime() + ms);
+      return d.getHours().toString().padStart(2,'0') + ':' +
+             d.getMinutes().toString().padStart(2,'0') + ':' +
+             d.getSeconds().toString().padStart(2,'0');
+    }
+    const MAX_ROWS = 4;
+    EVENTS.forEach(ev => {
+      setTimeout(() => {
+        while (feed.children.length >= MAX_ROWS) feed.removeChild(feed.firstChild);
+        const el = document.createElement('div');
+        el.className = 'tentry';
+        el.innerHTML =
+          `<span class="ttime">${fmt(ev.delay)}</span>` +
+          `<span class="ttag ttag-${ev.tag}">${ev.label}</span>` +
+          `<span class="tmsg">${ev.msg}</span>`;
+        feed.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+      }, ev.delay);
+    });
+    setTimeout(() => { feed.innerHTML = ''; launchFeed(); }, 10000);
+  }
+  launchFeed();
+
+  // ── SAV IA Chat ──
+  const chatMsgs = document.getElementById('wchat-msgs');
+  const CHAT = [
+    { role: 'user', text: 'Bonjour, mon site est-il toujours actif ?' },
+    { role: 'ai',   text: 'Oui, tout fonctionne parfaitement ! Votre site est en ligne depuis 14 jours.' },
+    { role: 'user', text: 'Super, merci !' },
+    { role: 'ai',   text: 'Avec plaisir 😊 Je suis disponible 24h/24.' },
+  ];
+  function addBubble(msg, delay) {
+    setTimeout(() => {
+      const tw = chatMsgs.querySelector('.typing-wrap');
+      if (tw) tw.remove();
+      const b = document.createElement('div');
+      b.className = 'chat-bubble ' + (msg.role === 'user' ? 'bubble-user' : 'bubble-ai');
+      b.textContent = msg.text;
+      chatMsgs.appendChild(b);
+      requestAnimationFrame(() => requestAnimationFrame(() => b.classList.add('show')));
+    }, delay);
+  }
+  function addTyping(delay) {
+    setTimeout(() => {
+      const tw = document.createElement('div');
+      tw.className = 'typing-wrap';
+      tw.innerHTML = '<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+      chatMsgs.appendChild(tw);
+    }, delay);
+  }
+  function launchChat() {
+    chatMsgs.innerHTML = '';
+    let t = 500;
+    CHAT.forEach((msg) => {
+      if (msg.role === 'ai') { addTyping(t); t += 800; }
+      addBubble(msg, t);
+      t += msg.role === 'user' ? 1000 : 1400;
+    });
+    setTimeout(() => launchChat(), t + 1200);
+  }
+  launchChat();
+
+  // ── Dashboard Gestion — tabs ──
+  (function() {
+    const tabs   = document.querySelectorAll('.dash-tab');
+    const panels = document.querySelectorAll('.dash-panel');
+    const ORDER  = ['planning', 'facture', 'stocks'];
+    let autoIdx  = 0;
+    function activate(name) {
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.panel === name));
+      panels.forEach(p => p.classList.toggle('active', p.id === 'dp-' + name));
+      if (name === 'facture') animateInvoice();
+      if (name === 'stocks')  animateStocks();
+    }
+    tabs.forEach(t => t.addEventListener('click', () => {
+      autoIdx = ORDER.indexOf(t.dataset.panel);
+      activate(t.dataset.panel);
+    }));
+    setInterval(() => { autoIdx = (autoIdx + 1) % ORDER.length; activate(ORDER[autoIdx]); }, 5500);
+    function typeInto(id, text, delay) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = '';
+      setTimeout(() => {
+        let i = 0;
+        const iv = setInterval(() => { el.textContent += text[i++]; if (i >= text.length) clearInterval(iv); }, 38);
+      }, delay);
+    }
+    function animateInvoice() {
+      const status = document.getElementById('inv-status');
+      if (status) status.classList.remove('show');
+      typeInto('iv-client',  'Boulangerie Martin', 0);
+      typeInto('iv-service', 'Site web + SAV IA',  600);
+      typeInto('iv-montant', '1 490 €',            1200);
+      if (status) setTimeout(() => { status.textContent = '✓ Facture générée et envoyée'; status.classList.add('show'); }, 2000);
+    }
+    function animateStocks() {
+      document.querySelectorAll('.stk-fill').forEach(el => {
+        const w = el.dataset.w + '%';
+        el.style.width = '0';
+        setTimeout(() => { el.style.width = w; }, 60);
+      });
+    }
+    animateStocks();
+  })();
+</script>
+</body>
+</html>

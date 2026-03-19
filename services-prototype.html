@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexxo — Services Carousel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Archivo:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --accent: #0071e3;
+  --accent-rgb: 0, 113, 227;
+  --accent-light: #34aadc;
+  --bg: #f5f7fc;
+  --card-bg: #ffffff;
+  --text: #0a0a14;
+  --text-secondary: rgba(10,10,20,0.45);
+  --border: rgba(0,0,0,0.07);
+  --font-head: 'Inter', sans-serif;
+  --font-body: 'Archivo', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 510px;
+  --angle: 30deg;
+  --rotation: 0deg;
+}
+
+body {
+  background: var(--bg);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: var(--font-body);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Background ── */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image: radial-gradient(rgba(var(--accent-rgb),0.07) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+}
+.bg-glow {
+  position: fixed;
+  left: 50%; top: 40%;
+  transform: translate(-50%, -50%);
+  width: 1200px; height: 700px;
+  background: radial-gradient(ellipse, rgba(var(--accent-rgb),0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.bg-vignette {
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(180,195,230,0.25) 100%);
+  pointer-events: none;
+}
+
+/* ── Title ── */
+.page-title {
+  position: absolute;
+  top: 52px; left: 56px;
+  z-index: 20;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text);
+  letter-spacing: -0.04em;
+}
+
+/* ── Carousel zone ── */
+.carousel-zone {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 40px;
+  margin-top: 40px;
+}
+
+/* ── 3D container ── */
+.carousel-container {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* ── Rotating carousel ── */
+.carousel {
+  transform-style: preserve-3d;
+  transform: rotateY(var(--rotation));
+  transition: transform 0.85s cubic-bezier(0.25, 0.1, 0.25, 1);
+  position: relative;
+  width: 0; height: 0;
+}
+
+/* ── Screen slot ── */
+.screen {
+  position: absolute;
+  transform-style: preserve-3d;
+  left: 50%; top: 50%;
+  margin-left: -130px;
+  margin-top: -170px;
+  transition: opacity 0.6s ease;
+}
+
+.screen:nth-child(1)  { transform: rotateY(0deg)   translateZ(var(--radius)); }
+.screen:nth-child(2)  { transform: rotateY(30deg)  translateZ(var(--radius)); }
+.screen:nth-child(3)  { transform: rotateY(60deg)  translateZ(var(--radius)); }
+.screen:nth-child(4)  { transform: rotateY(90deg)  translateZ(var(--radius)); }
+.screen:nth-child(5)  { transform: rotateY(120deg) translateZ(var(--radius)); }
+.screen:nth-child(6)  { transform: rotateY(150deg) translateZ(var(--radius)); }
+.screen:nth-child(7)  { transform: rotateY(180deg) translateZ(var(--radius)); }
+.screen:nth-child(8)  { transform: rotateY(210deg) translateZ(var(--radius)); }
+.screen:nth-child(9)  { transform: rotateY(240deg) translateZ(var(--radius)); }
+.screen:nth-child(10) { transform: rotateY(270deg) translateZ(var(--radius)); }
+.screen:nth-child(11) { transform: rotateY(300deg) translateZ(var(--radius)); }
+.screen:nth-child(12) { transform: rotateY(330deg) translateZ(var(--radius)); }
+
+/* ── Screen card ── */
+.screen-card {
+  width: 260px;
+  height: 340px;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  backface-visibility: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.06),
+    0 2px 12px rgba(0,0,0,0.13),
+    0 4px 32px rgba(0,0,0,0.12),
+    0 8px 64px rgba(0,0,0,0.10),
+    0 12px 96px rgba(var(--accent-rgb),0.08);
+  animation: float var(--float-dur, 4s) var(--float-delay, 0s) ease-in-out infinite;
+  cursor: pointer;
+  transition: box-shadow 0.4s ease;
+}
+
+/* Hover — subtle lift */
+.screen-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.07),
+    0 2px 14px rgba(0,0,0,0.15),
+    0 6px 36px rgba(0,0,0,0.13),
+    0 10px 72px rgba(0,0,0,0.11),
+    0 16px 100px rgba(var(--accent-rgb),0.09);
+}
+
+/* Active — halo renforcé */
+.screen.active .screen-card {
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.08),
+    0 2px 16px rgba(0,0,0,0.16),
+    0 6px 40px rgba(0,0,0,0.14),
+    0 12px 80px rgba(0,0,0,0.12),
+    0 20px 120px rgba(var(--accent-rgb),0.10);
+  border-color: rgba(0,0,0,0.08);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  30%      { transform: translateY(-7px); }
+  70%      { transform: translateY(-3px); }
+}
+@keyframes float-b {
+  0%, 100% { transform: translateY(0px) rotate(1.2deg); }
+  30%      { transform: translateY(-6px) rotate(1.2deg); }
+  70%      { transform: translateY(-2px) rotate(1.2deg); }
+}
+@keyframes float-c {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  30%      { transform: translateY(-8px) rotate(-1deg); }
+  70%      { transform: translateY(-4px) rotate(-1deg); }
+}
+@keyframes float-d {
+  0%, 100% { transform: translateY(0px) rotate(0.6deg); }
+  30%      { transform: translateY(-5px) rotate(0.6deg); }
+  70%      { transform: translateY(-2px) rotate(0.6deg); }
+}
+
+.screen:nth-child(4n+1) .screen-card { animation-name: float; }
+.screen:nth-child(4n+2) .screen-card { animation-name: float-b; }
+.screen:nth-child(4n+3) .screen-card { animation-name: float-c; }
+.screen:nth-child(4n+4) .screen-card { animation-name: float-d; }
+
+/* ── Card header ── */
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px 0;
+  position: relative;
+  z-index: 5;
+}
+
+/* Number — gradient shimmer */
+.card-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background: linear-gradient(
+    90deg,
+    #0071e3 0%,
+    #34aadc 35%,
+    #a8d8ff 50%,
+    #34aadc 65%,
+    #0071e3 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: num-shimmer 3.5s linear infinite;
+}
+@keyframes num-shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 250% center; }
+}
+
+/* ── Card body ── */
+.card-body {
+  padding: 0 18px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+}
+
+/* ── Visual gradient area — premium mesh gradients ── */
+.card-visual {
+  display: block;
+  flex: none;
+  height: 130px;
+  margin: 0 -18px 4px;
+  width: calc(100% + 36px);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+  border: none;
+  box-shadow:
+    inset 0 -20px 40px -20px rgba(var(--accent-rgb), 0.06),
+    inset 0 1px 0 0 rgba(255,255,255,0.5);
+}
+
+/* Decorative shape — varies per card */
+.card-visual::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Bottom edge — gradient separator */
+.card-visual::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  z-index: 3;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(var(--accent-rgb), 0.12) 15%,
+    rgba(var(--accent-rgb), 0.3) 50%,
+    rgba(var(--accent-rgb), 0.12) 85%,
+    transparent 100%);
+}
+
+/* ── Variation 1: Blue Mesh ── */
+.screen:nth-child(6n+1) .card-visual {
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(59, 130, 246, 0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(99, 102, 241, 0.16) 0%, transparent 45%),
+    radial-gradient(ellipse at 55% 0%, rgba(147, 197, 253, 0.28) 0%, transparent 55%),
+    linear-gradient(135deg, #eef2ff 0%, #dbeafe 50%, #e0e7ff 100%);
+}
+.screen:nth-child(6n+1) .card-visual::before {
+  width: 160px; height: 160px;
+  bottom: -50px; right: -25px;
+  border: 1.5px solid rgba(59, 130, 246, 0.18);
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+  box-shadow: 0 0 0 20px rgba(59, 130, 246, 0.03);
+}
+
+/* ── Variation 2: Teal Flow ── */
+.screen:nth-child(6n+2) .card-visual {
+  background:
+    radial-gradient(ellipse at 70% 15%, rgba(45, 212, 191, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 85%, rgba(56, 189, 248, 0.2) 0%, transparent 45%),
+    repeating-linear-gradient(
+      -55deg,
+      transparent, transparent 14px,
+      rgba(255,255,255,0.1) 14px, rgba(255,255,255,0.1) 15px
+    ),
+    linear-gradient(140deg, #dff5f2 0%, #dbeafe 50%, #e0f2fe 100%);
+}
+.screen:nth-child(6n+2) .card-visual::before {
+  width: 120px; height: 120px;
+  top: -40px; right: 25px;
+  border: 1.5px solid rgba(45, 212, 191, 0.22);
+  background: none;
+}
+
+/* ── Variation 3: Indigo Depth ── */
+.screen:nth-child(6n+3) .card-visual {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(99, 102, 241, 0.2) 0%, transparent 40%),
+    radial-gradient(ellipse at 5% 25%, rgba(129, 140, 248, 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 95% 75%, rgba(165, 180, 252, 0.16) 0%, transparent 45%),
+    linear-gradient(155deg, #e0e7ff 0%, #ddd6fe 40%, #ede9fe 100%);
+}
+.screen:nth-child(6n+3) .card-visual::before {
+  width: 190px; height: 190px;
+  top: -65px; left: -35px;
+  border: 1.5px solid rgba(99, 102, 241, 0.15);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 60%);
+}
+
+/* ── Variation 4: Sky Bright ── */
+.screen:nth-child(6n+4) .card-visual {
+  background:
+    radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.22) 0%, transparent 40%),
+    radial-gradient(circle at 15% 75%, rgba(96, 165, 250, 0.14) 0%, transparent 45%),
+    linear-gradient(120deg, #e0f2fe 0%, #dbeafe 40%, #eff6ff 100%);
+}
+.screen:nth-child(6n+4) .card-visual::before {
+  width: 90px; height: 90px;
+  bottom: -18px; left: 30px;
+  border: 1.5px solid rgba(56, 189, 248, 0.2);
+  background: none;
+  box-shadow:
+    0 0 0 16px rgba(56, 189, 248, 0.05),
+    0 0 0 32px rgba(56, 189, 248, 0.025);
+}
+
+/* ── Variation 5: Violet Premium ── */
+.screen:nth-child(6n+5) .card-visual {
+  background:
+    radial-gradient(ellipse at 75% 20%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(59, 130, 246, 0.14) 0%, transparent 50%),
+    radial-gradient(circle at 90% 90%, rgba(167, 139, 250, 0.1) 0%, transparent 35%),
+    linear-gradient(160deg, #ede9fe 0%, #e0e7ff 50%, #dbeafe 100%);
+}
+.screen:nth-child(6n+5) .card-visual::before {
+  width: 140px; height: 140px;
+  bottom: -40px; right: 15px;
+  border: none;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.02) 50%, transparent 70%);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.08);
+}
+
+/* ── Variation 6: Ocean Calm ── */
+.screen:nth-child(6n+6) .card-visual {
+  background:
+    radial-gradient(ellipse at 35% 10%, rgba(34, 211, 238, 0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 85%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 5% 55%, rgba(96, 165, 250, 0.1) 0%, transparent 40%),
+    repeating-linear-gradient(
+      65deg,
+      transparent, transparent 18px,
+      rgba(255,255,255,0.07) 18px, rgba(255,255,255,0.07) 19px
+    ),
+    linear-gradient(135deg, #e0f7fa 0%, #dbeafe 45%, #e0e7ff 100%);
+}
+.screen:nth-child(6n+6) .card-visual::before {
+  width: 200px; height: 200px;
+  top: -75px; left: 50%;
+  margin-left: -100px;
+  border: 1.5px solid rgba(34, 211, 238, 0.13);
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.04) 0%, transparent 55%);
+}
+
+/* ── Mini widgets inside gradient zones ── */
+.widget {
+  position: absolute;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05), 0 0 0 0.5px rgba(0,0,0,0.03);
+  font-family: 'Inter', sans-serif;
+  z-index: 5;
+  padding: 7px 9px;
+}
+.widget-label {
+  font-size: 0.38rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(0,0,0,0.3);
+  margin-bottom: 3px;
+}
+.widget-value {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0a0a14;
+  letter-spacing: -0.02em;
+}
+.widget-sub {
+  font-size: 0.36rem;
+  color: rgba(0,0,0,0.28);
+  margin-top: 1px;
+}
+.mini-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 18px;
+  margin-top: 3px;
+}
+.mini-bar {
+  width: 4px;
+  border-radius: 1.5px;
+  background: rgba(var(--accent-rgb), 0.18);
+}
+.mini-bar.hi { background: rgba(var(--accent-rgb), 0.55); }
+.mini-bubble {
+  padding: 4px 8px;
+  border-radius: 7px;
+  font-size: 0.36rem;
+  line-height: 1.35;
+  max-width: 82%;
+}
+.mini-bubble.out {
+  background: var(--accent);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+.mini-bubble.in {
+  background: rgba(0,0,0,0.04);
+  color: rgba(0,0,0,0.5);
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}
+.browser-dots {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.12);
+  box-shadow: 7px 0 0 rgba(0,0,0,0.12), 14px 0 0 rgba(0,0,0,0.12);
+  margin-bottom: 6px;
+}
+.skel {
+  height: 2.5px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 2px;
+}
+.widget-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.status-pill {
+  display: inline-block;
+  padding: 1.5px 6px;
+  border-radius: 4px;
+  font-size: 0.32rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.status-pill.green {
+  background: rgba(34, 197, 94, 0.12);
+  color: rgba(34, 197, 94, 0.8);
+}
+.status-pill.blue {
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+}
+/* Pipeline step */
+.pipe-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.pipe-dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb), 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.34rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.pipe-dot.filled {
+  background: var(--accent);
+  color: white;
+}
+.pipe-label {
+  font-size: 0.3rem;
+  color: rgba(0,0,0,0.3);
+  font-weight: 500;
+}
+.pipe-line {
+  width: 14px;
+  height: 1px;
+  background: rgba(var(--accent-rgb), 0.2);
+  align-self: center;
+  margin-top: -10px;
+}
+
+/* ── Card text — Attio-style: bold title + regular desc ── */
+.card-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  color: rgba(0,0,0,0.45);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+.card-text strong {
+  font-weight: 700;
+  color: #0a0a14;
+  letter-spacing: -0.02em;
+}
+
+/* Tags supprimés */
+.card-tags { display: none; }
+
+/* ── Floor glow ── */
+.floor-glow {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 80px;
+  background: radial-gradient(ellipse at center bottom, rgba(var(--accent-rgb),0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.floor-line {
+  position: absolute;
+  bottom: 68px;
+  left: 20%; right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb),0.15), transparent);
+  pointer-events: none;
+}
+
+/* ── Navigation dots ── */
+.carousel-dots {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 20;
+}
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.15);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(var(--accent-rgb),0.4);
+  transform: scale(1.35);
+}
+
+/* ── Arrow buttons ── */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.85);
+  color: var(--accent);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.carousel-arrow:hover {
+  border-color: rgba(var(--accent-rgb),0.3);
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb),0.15);
+}
+.arrow-left  { left: 28px; }
+.arrow-right { right: 28px; }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-vignette"></div>
+
+<h2 class="page-title">Ce qu'on construit<br>pour vous.</h2>
+
+<div class="carousel-zone" id="carouselZone">
+  <div class="carousel-container">
+    <div class="carousel" id="carousel">
+
+      <!-- 01 — Présence web -->
+      <div class="screen" data-index="0" style="--float-dur:4.0s;--float-delay:-0.2s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">01</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:16px;left:18px;right:18px;bottom:16px">
+                <div class="browser-dots"></div>
+                <div class="skel" style="width:45%;margin-bottom:7px"></div>
+                <div style="display:flex;gap:6px">
+                  <div style="width:30%;height:30px;background:rgba(var(--accent-rgb),0.06);border-radius:4px"></div>
+                  <div style="flex:1;padding-top:3px">
+                    <div class="skel" style="width:85%"></div>
+                    <div class="skel" style="width:60%;margin-top:4px"></div>
+                    <div class="skel" style="width:75%;margin-top:4px"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Présence web.</strong> Un site professionnel, rapide et responsive — conçu sur mesure pour votre activité.</p>
+            <div class="card-tags">
+              <span class="card-tag">Site vitrine</span>
+              <span class="card-tag">E-commerce</span>
+              <span class="card-tag">Réservation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 — Chatbot IA -->
+      <div class="screen" data-index="1" style="--float-dur:4.3s;--float-delay:-1.0s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">02</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:16px;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:5px;justify-content:center">
+                <div class="mini-bubble in">Bonjour, comment puis-je vous aider ?</div>
+                <div class="mini-bubble out">Je cherche un devis rapide</div>
+                <div class="mini-bubble in">Bien sûr ! Quel est votre secteur ?</div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Chatbot IA.</strong> Un assistant virtuel entraîné sur votre contenu, qui répond 24h/24 en langage naturel.</p>
+            <div class="card-tags">
+              <span class="card-tag">FAQ dynamique</span>
+              <span class="card-tag">Qualification leads</span>
+              <span class="card-tag">Prise de RDV</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 — Optimisation SEO -->
+      <div class="screen" data-index="2" style="--float-dur:3.8s;--float-delay:-0.6s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">03</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:18px;left:18px">
+                <div class="widget-label">POSITION GOOGLE</div>
+                <div class="widget-value">#1</div>
+                <div class="widget-sub">coiffeur Lyon 3e</div>
+              </div>
+              <div class="widget" style="bottom:18px;right:18px">
+                <div class="widget-label">TRAFIC ORGANIQUE</div>
+                <div class="mini-bars">
+                  <div class="mini-bar" style="height:5px"></div>
+                  <div class="mini-bar" style="height:8px"></div>
+                  <div class="mini-bar" style="height:7px"></div>
+                  <div class="mini-bar" style="height:11px"></div>
+                  <div class="mini-bar hi" style="height:15px"></div>
+                  <div class="mini-bar hi" style="height:18px"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Optimisation SEO.</strong> Être trouvé sur Google quand un client cherche votre activité — sans payer de publicité.</p>
+            <div class="card-tags">
+              <span class="card-tag">Audit SEO</span>
+              <span class="card-tag">Mots-clés</span>
+              <span class="card-tag">Local</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 — Automatisation marketing -->
+      <div class="screen" data-index="3" style="--float-dur:4.1s;--float-delay:-1.5s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">04</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:22px;left:18px;right:18px;display:flex;align-items:center;justify-content:center;gap:0">
+                <div class="pipe-step">
+                  <div class="pipe-dot filled">1</div>
+                  <div class="pipe-label">Détection</div>
+                </div>
+                <div class="pipe-line"></div>
+                <div class="pipe-step">
+                  <div class="pipe-dot filled">2</div>
+                  <div class="pipe-label">Contact</div>
+                </div>
+                <div class="pipe-line"></div>
+                <div class="pipe-step">
+                  <div class="pipe-dot">3</div>
+                  <div class="pipe-label">Client</div>
+                </div>
+              </div>
+              <div class="widget" style="bottom:16px;right:18px">
+                <div class="widget-label">CONVERSION</div>
+                <div class="widget-value" style="color:var(--accent)">+34%</div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Automatisation marketing.</strong> De la détection d'un prospect à sa conversion en client — sans lever le petit doigt.</p>
+            <div class="card-tags">
+              <span class="card-tag">Prospection</span>
+              <span class="card-tag">Relances auto</span>
+              <span class="card-tag">Scoring</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 — SAV automatisé -->
+      <div class="screen" data-index="4" style="--float-dur:4.4s;--float-delay:-0.8s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">05</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:16px;left:18px;right:60px">
+                <div class="widget-row" style="margin-bottom:4px">
+                  <span class="status-pill green">RÉSOLU</span>
+                  <span style="font-size:0.32rem;color:rgba(0,0,0,0.25)">il y a 2 min</span>
+                </div>
+                <div style="font-size:0.38rem;color:rgba(0,0,0,0.45);line-height:1.4">Problème de livraison résolu automatiquement</div>
+              </div>
+              <div class="widget" style="bottom:16px;right:18px">
+                <div class="widget-label">TEMPS DE RÉPONSE</div>
+                <div class="widget-value">&lt; 2min</div>
+              </div>
+            </div>
+            <p class="card-text"><strong>SAV automatisé.</strong> L'IA lit chaque demande client, la classe et la redirige — ou répond directement.</p>
+            <div class="card-tags">
+              <span class="card-tag">Classification IA</span>
+              <span class="card-tag">Alertes</span>
+              <span class="card-tag">Escalade</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 — Gestion des stocks IA -->
+      <div class="screen" data-index="5" style="--float-dur:3.9s;--float-delay:-2.1s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">06</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:16px;left:18px">
+                <div class="widget-label">STOCK ACTUEL</div>
+                <div class="widget-value">847</div>
+                <div class="widget-sub">unités en stock</div>
+              </div>
+              <div class="widget" style="bottom:16px;right:18px">
+                <div class="widget-row" style="gap:4px">
+                  <span style="width:5px;height:5px;border-radius:50%;background:rgba(245,158,11,0.6);display:inline-block"></span>
+                  <span style="font-size:0.36rem;color:rgba(0,0,0,0.4);font-weight:500">Réappro dans 3j</span>
+                </div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Gestion des stocks IA.</strong> Suivi en temps réel, anticipation des ruptures, commandes automatiques.</p>
+            <div class="card-tags">
+              <span class="card-tag">Temps réel</span>
+              <span class="card-tag">Prévision</span>
+              <span class="card-tag">Commandes auto</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 07 — Dashboard & données -->
+      <div class="screen" data-index="6" style="--float-dur:4.2s;--float-delay:-0.4s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">07</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:18px;left:18px;right:18px;display:flex;gap:6px">
+                <div style="flex:1;text-align:center">
+                  <div class="widget-label">REVENUE</div>
+                  <div class="widget-value" style="font-size:0.65rem">12.4K</div>
+                </div>
+                <div style="width:1px;background:rgba(0,0,0,0.06)"></div>
+                <div style="flex:1;text-align:center">
+                  <div class="widget-label">CLIENTS</div>
+                  <div class="widget-value" style="font-size:0.65rem">89</div>
+                </div>
+                <div style="width:1px;background:rgba(0,0,0,0.06)"></div>
+                <div style="flex:1;text-align:center">
+                  <div class="widget-label">TAUX</div>
+                  <div class="widget-value" style="font-size:0.65rem;color:var(--accent)">94%</div>
+                </div>
+              </div>
+              <div class="widget" style="bottom:16px;left:18px;right:18px">
+                <div class="mini-bars" style="justify-content:space-between">
+                  <div class="mini-bar" style="height:8px;width:12px;border-radius:2px"></div>
+                  <div class="mini-bar" style="height:12px;width:12px;border-radius:2px"></div>
+                  <div class="mini-bar hi" style="height:16px;width:12px;border-radius:2px"></div>
+                  <div class="mini-bar" style="height:10px;width:12px;border-radius:2px"></div>
+                  <div class="mini-bar hi" style="height:18px;width:12px;border-radius:2px"></div>
+                  <div class="mini-bar" style="height:14px;width:12px;border-radius:2px"></div>
+                  <div class="mini-bar hi" style="height:16px;width:12px;border-radius:2px"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Dashboard & données.</strong> Un tableau de bord intelligent qui compile vos chiffres et KPI en temps réel.</p>
+            <div class="card-tags">
+              <span class="card-tag">Synthèse mail</span>
+              <span class="card-tag">KPI business</span>
+              <span class="card-tag">Rapports</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 08 — Présence média -->
+      <div class="screen" data-index="7" style="--float-dur:4.5s;--float-delay:-1.3s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">08</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:16px;left:18px">
+                <div class="widget-label">PORTÉE MENSUELLE</div>
+                <div class="widget-value">12.4K</div>
+                <div class="widget-sub">vues ce mois</div>
+              </div>
+              <div class="widget" style="bottom:16px;right:18px">
+                <div class="widget-label">ENGAGEMENT</div>
+                <div class="widget-value" style="color:var(--accent)">+23%</div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Présence média.</strong> Audit et optimisation de votre visibilité digitale — site, réseaux, avis en ligne.</p>
+            <div class="card-tags">
+              <span class="card-tag">Audit digital</span>
+              <span class="card-tag">Réseaux</span>
+              <span class="card-tag">Veille</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 09 — Automatisation documents -->
+      <div class="screen" data-index="8" style="--float-dur:3.7s;--float-delay:-1.8s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">09</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:16px;left:18px;right:18px;bottom:16px">
+                <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
+                  <span class="status-pill blue">PDF</span>
+                  <span style="font-size:0.34rem;color:rgba(0,0,0,0.25)">facture_0847.pdf</span>
+                </div>
+                <div class="skel" style="width:90%;margin-bottom:3px"></div>
+                <div class="skel" style="width:70%;margin-bottom:3px"></div>
+                <div style="height:3px;background:rgba(var(--accent-rgb),0.15);border-radius:2px;width:80%;margin-bottom:3px"></div>
+                <div class="skel" style="width:60%"></div>
+                <div style="margin-top:6px;font-size:0.32rem;color:var(--accent);font-weight:600">Montant extrait : 2 340 €</div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Automatisation documents.</strong> Lecture, extraction et classification automatique de vos factures et contrats.</p>
+            <div class="card-tags">
+              <span class="card-tag">Factures</span>
+              <span class="card-tag">Extraction</span>
+              <span class="card-tag">Comptes-rendus</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 — E-commerce automatisé -->
+      <div class="screen" data-index="9" style="--float-dur:4.0s;--float-delay:-0.9s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">10</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:16px;left:18px">
+                <div class="widget-label">COMMANDES</div>
+                <div class="widget-value">156</div>
+                <div class="widget-sub">ce mois</div>
+              </div>
+              <div class="widget" style="bottom:16px;right:18px">
+                <div class="widget-label">REVENUE</div>
+                <div class="mini-bars">
+                  <div class="mini-bar" style="height:6px"></div>
+                  <div class="mini-bar" style="height:9px"></div>
+                  <div class="mini-bar hi" style="height:14px"></div>
+                  <div class="mini-bar" style="height:11px"></div>
+                  <div class="mini-bar hi" style="height:18px"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-text"><strong>E-commerce automatisé.</strong> Fiches produits IA, analyse des avis clients, gestion automatique des retours.</p>
+            <div class="card-tags">
+              <span class="card-tag">Fiches SEO</span>
+              <span class="card-tag">Avis clients</span>
+              <span class="card-tag">Retours auto</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 — Automatisation data -->
+      <div class="screen" data-index="10" style="--float-dur:4.3s;--float-delay:-2.4s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">11</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:16px;left:18px;right:18px;bottom:16px">
+                <div class="widget-label">TENDANCES</div>
+                <div class="mini-bars" style="height:40px;gap:3px;margin-top:5px">
+                  <div class="mini-bar" style="height:30%;width:8px;border-radius:2px"></div>
+                  <div class="mini-bar" style="height:55%;width:8px;border-radius:2px"></div>
+                  <div class="mini-bar hi" style="height:75%;width:8px;border-radius:2px"></div>
+                  <div class="mini-bar" style="height:45%;width:8px;border-radius:2px"></div>
+                  <div class="mini-bar hi" style="height:90%;width:8px;border-radius:2px"></div>
+                  <div class="mini-bar" style="height:60%;width:8px;border-radius:2px"></div>
+                  <div class="mini-bar hi" style="height:100%;width:8px;border-radius:2px"></div>
+                  <div class="mini-bar" style="height:70%;width:8px;border-radius:2px"></div>
+                </div>
+                <div class="widget-sub" style="margin-top:4px">+18% vs mois précédent</div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Automatisation data.</strong> Vos données brutes collectées, analysées et présentées en dashboards actionnables.</p>
+            <div class="card-tags">
+              <span class="card-tag">Dashboards</span>
+              <span class="card-tag">Insights IA</span>
+              <span class="card-tag">Export</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12 — Automatisations sur mesure -->
+      <div class="screen" data-index="11" style="--float-dur:3.8s;--float-delay:-1.6s">
+        <div class="screen-card">
+          <div class="card-head">
+            <span class="card-num">12</span>
+          </div>
+          <div class="card-body">
+            <div class="card-visual">
+              <div class="widget" style="top:20px;left:18px;right:18px;display:flex;align-items:center;justify-content:center;gap:0">
+                <div class="pipe-step">
+                  <div class="pipe-dot" style="width:26px;height:26px;font-size:0.4rem">CRM</div>
+                  <div class="pipe-label">Source</div>
+                </div>
+                <div class="pipe-line" style="width:18px"></div>
+                <div class="pipe-step">
+                  <div class="pipe-dot filled" style="width:26px;height:26px;font-size:0.4rem">IA</div>
+                  <div class="pipe-label">Traitement</div>
+                </div>
+                <div class="pipe-line" style="width:18px"></div>
+                <div class="pipe-step">
+                  <div class="pipe-dot" style="width:26px;height:26px;font-size:0.4rem">ERP</div>
+                  <div class="pipe-label">Action</div>
+                </div>
+              </div>
+              <div class="widget" style="bottom:16px;left:50%;transform:translateX(-50%)">
+                <div style="font-size:0.34rem;color:rgba(0,0,0,0.35);font-weight:500;text-align:center">Vos outils, connectés</div>
+              </div>
+            </div>
+            <p class="card-text"><strong>Automatisations sur mesure.</strong> Tout processus répétitif peut être automatisé. Décrivez-le — on construit.</p>
+            <div class="card-tags">
+              <span class="card-tag">Sync outils</span>
+              <span class="card-tag">Workflows</span>
+              <span class="card-tag">Alertes métier</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floor -->
+  <div class="floor-glow"></div>
+  <div class="floor-line"></div>
+
+  <!-- Arrows -->
+  <button class="carousel-arrow arrow-left" id="arrowLeft">&#8249;</button>
+  <button class="carousel-arrow arrow-right" id="arrowRight">&#8250;</button>
+
+  <!-- Dots -->
+  <div class="carousel-dots" id="dots"></div>
+</div>
+
+<script>
+(function() {
+  const TOTAL = 12;
+  const ANGLE_PER = 360 / TOTAL;
+  const HOVER_DELAY = 450;
+  const AUTO_INTERVAL = 3500;
+
+  const carousel = document.getElementById('carousel');
+  const zone     = document.getElementById('carouselZone');
+  const screens  = Array.from(document.querySelectorAll('.screen'));
+  const dotsWrap = document.getElementById('dots');
+
+  let currentIndex = 0;
+  let currentAngle = 0;
+  let autoTimer = null;
+  let hoverTimer = null;
+  let autoResumeTimer = null;
+  let isAutoTransitioning = false;
+
+  // ── Create dots ──
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => rotateTo(i));
+    dotsWrap.appendChild(d);
+  }
+  const dots = Array.from(dotsWrap.children);
+
+  // ── Rotate to index (shortest path) ──
+  function rotateTo(index, fromAuto = false) {
+    const target = -index * ANGLE_PER;
+    let diff = target - currentAngle;
+    diff = ((diff + 180) % 360 + 360) % 360 - 180;
+    currentAngle += diff;
+    currentIndex = index;
+
+    if (fromAuto) {
+      isAutoTransitioning = true;
+      setTimeout(() => { isAutoTransitioning = false; }, 900);
+    }
+
+    carousel.style.setProperty('--rotation', currentAngle + 'deg');
+    updateUI();
+  }
+
+  function updateUI() {
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+    screens.forEach((s, i) => {
+      const diff = Math.abs(((i - currentIndex) % TOTAL + TOTAL) % TOTAL);
+      const dist = Math.min(diff, TOTAL - diff);
+      s.classList.toggle('active', dist === 0);
+    });
+  }
+
+  // ── Auto-rotation ──
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(() => {
+      rotateTo((currentIndex + 1) % TOTAL, true);
+    }, AUTO_INTERVAL);
+  }
+
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  // ── Per-card hover ──
+  screens.forEach((s) => {
+    const idx = parseInt(s.dataset.index);
+
+    s.addEventListener('mouseenter', () => {
+      if (isAutoTransitioning) return;
+      clearTimeout(autoResumeTimer);
+      stopAuto();
+      hoverTimer = setTimeout(() => rotateTo(idx), HOVER_DELAY);
+    });
+
+    s.addEventListener('mouseleave', () => {
+      clearTimeout(hoverTimer);
+      autoResumeTimer = setTimeout(startAuto, 400);
+    });
+
+    s.addEventListener('click', () => {
+      clearTimeout(hoverTimer);
+      clearTimeout(autoResumeTimer);
+      stopAuto();
+      rotateTo(idx);
+      autoResumeTimer = setTimeout(startAuto, 1500);
+    });
+  });
+
+  // ── Arrow buttons ──
+  document.getElementById('arrowLeft').addEventListener('click', () => {
+    clearTimeout(autoResumeTimer);
+    stopAuto();
+    rotateTo(((currentIndex - 1) % TOTAL + TOTAL) % TOTAL);
+    autoResumeTimer = setTimeout(startAuto, 1500);
+  });
+  document.getElementById('arrowRight').addEventListener('click', () => {
+    clearTimeout(autoResumeTimer);
+    stopAuto();
+    rotateTo((currentIndex + 1) % TOTAL);
+    autoResumeTimer = setTimeout(startAuto, 1500);
+  });
+
+  // ── Keyboard navigation ──
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft')  rotateTo(((currentIndex - 1) % TOTAL + TOTAL) % TOTAL);
+    if (e.key === 'ArrowRight') rotateTo((currentIndex + 1) % TOTAL);
+  });
+
+  // ── Init ──
+  updateUI();
+  startAuto();
+})();
+</script>
+</body>
+</html>
