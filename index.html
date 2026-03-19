@@ -2529,12 +2529,18 @@
         padding: 48px 80px 100px;
         max-width: calc(64rem + 160px);
         margin: 0 auto;
+        background:
+          linear-gradient(to bottom, transparent 10%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.1) 70%, transparent 90%) left / 1px 100% no-repeat,
+          linear-gradient(to bottom, transparent 10%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.1) 70%, transparent 90%) right / 1px 100% no-repeat;
+      }
+      .bc6-frame {
+        padding: 14px;
       }
       .bento-grid-6 {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: 27rem 27rem;
-        gap: 16px;
+        gap: 14px;
       }
       /* Layout asymétrique */
       .bg6-1 { grid-column: 1 / 3; grid-row: 1; }
@@ -2544,6 +2550,7 @@
       .bg6-5 { grid-column: 3;     grid-row: 2; }
       /* Wide bottom card — spans full row 3 */
       .bg6-6 { grid-column: 1 / 4; grid-row: 3; height: 22rem; }
+      .bg6-7 { grid-column: 1 / 4; grid-row: 4; height: 22rem; margin-top: 80px; }
 
       .bc6 {
         position: relative;
@@ -2573,7 +2580,7 @@
       /* Gradient overlay */
       .bc6-bg::after {
         content: ''; position: absolute; inset: 0;
-        background: linear-gradient(to bottom, transparent 35%, rgba(255,255,255,0.85) 58%, rgba(255,255,255,1) 72%);
+        background: linear-gradient(to bottom, transparent 55%, rgba(255,255,255,0.85) 75%, rgba(255,255,255,1) 88%);
       }
 
       /* Content */
@@ -2605,6 +2612,182 @@
         max-width: 380px;
       }
 
+      /* Dashboard — Card 3 (tabbed, 4 panels) */
+      .dpm-wrap { position:absolute; inset:0; display:flex; flex-direction:column; gap:0; padding:10px 11px 9px; background:#fff; overflow:hidden; font-family:Inter,sans-serif; }
+      .dpm-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; flex-shrink:0; }
+      .dpm-hdr-left { display:flex; align-items:center; gap:6px; }
+      .dpm-status-dot { width:5px; height:5px; border-radius:50%; background:#10b981; animation:savPulse 2s ease-in-out infinite; }
+      .dpm-brand { font-size:7.5px; font-weight:700; letter-spacing:0.12em; color:rgba(30,41,59,0.4); text-transform:uppercase; }
+      .dpm-hdr-right { display:flex; align-items:center; gap:6px; }
+      .dpm-clock { font-family:'JetBrains Mono',monospace; font-size:8px; font-weight:600; color:#0071e3; background:rgba(0,113,227,0.08); padding:2px 6px; border-radius:4px; }
+      .dpm-live-badge { display:flex; align-items:center; gap:3px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); padding:2px 7px; border-radius:20px; font-size:6.5px; font-weight:700; letter-spacing:0.08em; color:#10b981; }
+      .dpm-live-pulse { width:4px; height:4px; border-radius:50%; background:#10b981; animation:savPulse 1.2s ease-in-out infinite; }
+      /* Tab bar */
+      .dpm-tabs { display:flex; gap:2px; margin-bottom:7px; background:rgba(0,113,227,0.05); border-radius:6px; padding:2px; flex-shrink:0; }
+      .dpm-tab { flex:1; font-size:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; background:transparent; border:none; cursor:pointer; padding:3.5px 1px; border-radius:4px; transition:all 0.2s; font-family:Inter,sans-serif; }
+      .dpm-tab.dpm-tab-active { background:#fff; color:#0071e3; box-shadow:0 1px 4px rgba(0,113,227,0.15); }
+      /* Panels */
+      .dpm-panel { display:none; flex-direction:column; gap:5px; flex:1; min-height:0; overflow:hidden; }
+      .dpm-panel.dpm-active { display:flex; }
+      /* KPIs */
+      .dpm-kpis { display:flex; gap:4px; flex-shrink:0; }
+      .dpm-kpi { flex:1; background:#fff; border:1px solid rgba(0,113,227,0.1); border-radius:7px; padding:5px 6px 4px; overflow:hidden; box-shadow:0 1px 4px rgba(0,113,227,0.06); }
+      .dpm-kpi-ft { border-color:rgba(0,113,227,0.25); box-shadow:0 0 12px rgba(0,113,227,0.08); }
+      .dpm-kpi-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; }
+      .dpm-kpi-lbl { font-size:6px; color:#94a3b8; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; }
+      .dpm-bdg { font-size:6px; font-weight:700; padding:1px 3px; border-radius:3px; }
+      .dpm-up { color:#10b981; background:rgba(16,185,129,0.1); }
+      .dpm-dn { color:#f43f5e; background:rgba(244,63,94,0.1); }
+      .dpm-kpi-val { font-size:13px; font-weight:800; color:#1e293b; letter-spacing:-0.04em; line-height:1.2; margin-bottom:2px; }
+      .dpm-kpi-glow { color:#0071e3; }
+      .dpm-spark { width:100%; height:10px; display:block; }
+      .dpm-sln { fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+      .dpm-si { stroke:#5aabff; } .dpm-sc { stroke:#06b6d4; } .dpm-sg { stroke:#10b981; } .dpm-sr { stroke:#f43f5e; }
+      /* Mid: line chart + donut */
+      .dpm-mid { display:flex; gap:5px; flex:1; min-height:0; }
+      .dpm-chart { flex:1.65; background:#fff; border:1px solid rgba(0,113,227,0.1); border-radius:7px; padding:6px 8px 4px; display:flex; flex-direction:column; gap:2px; min-width:0; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+      .dpm-chart-hdr { display:flex; justify-content:space-between; align-items:center; flex-shrink:0; }
+      .dpm-chart-lbl { font-size:7.5px; font-weight:600; color:#475569; }
+      .dpm-chart-bdg { font-size:6px; color:rgba(0,113,227,0.8); background:rgba(0,113,227,0.08); padding:1px 5px; border-radius:10px; }
+      .dpm-chart-svg { width:100%; flex:1; overflow:visible; }
+      .dpm-carea { opacity:0; } .dpm-cline { fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; } .dpm-cdot { opacity:0; }
+      @keyframes dpmBlink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+      .dpm-xlabels { display:flex; justify-content:space-between; flex-shrink:0; }
+      .dpm-xlabels span { font-size:6px; color:#cbd5e1; }
+      /* Donut */
+      .dpm-donut-box { flex:1; background:#fff; border:1px solid rgba(0,113,227,0.1); border-radius:7px; padding:6px 6px 5px; display:flex; flex-direction:column; align-items:center; gap:3px; min-width:0; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+      .dpm-donut-title { font-size:7.5px; font-weight:600; color:#475569; align-self:flex-start; }
+      .dpm-donut-svg { flex-shrink:0; }
+      .dpm-seg { fill:none; stroke-width:5; }
+      .dpm-donut-legend { width:100%; display:flex; flex-direction:column; gap:2px; }
+      .dpm-donut-item { display:flex; align-items:center; gap:3px; }
+      .dpm-donut-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+      .dpm-donut-lbl { font-size:6.5px; color:#64748b; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .dpm-donut-pct { font-size:7px; font-weight:700; flex-shrink:0; }
+      /* Heatmap */
+      .dpm-heat { display:flex; flex-direction:column; gap:3px; flex-shrink:0; }
+      .dpm-heat-title { font-size:6px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.08em; }
+      .dpm-heat-grid { display:flex; gap:3px; }
+      .dpm-heat-col { display:flex; flex-direction:column; gap:2px; flex:1; }
+      .dpm-heat-cell { height:6px; border-radius:2px; background:rgba(0,113,227,0.06); transition:background 0.3s ease,box-shadow 0.3s ease; }
+      .dpm-heat-days { display:flex; gap:3px; }
+      .dpm-heat-days span { flex:1; text-align:center; font-size:5.5px; color:rgba(148,163,184,0.25); }
+      /* Alert */
+      .dpm-alert { display:flex; align-items:center; gap:5px; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.18); border-radius:6px; padding:4px 8px; transform:translateY(6px); opacity:0; transition:transform 0.5s ease,opacity 0.5s ease; flex-shrink:0; }
+      .dpm-alert.dpm-visible { transform:translateY(0); opacity:1; }
+      .dpm-alert-dot { width:5px; height:5px; border-radius:50%; background:#10b981; flex-shrink:0; animation:savPulse 1.5s ease-in-out infinite; }
+      .dpm-alert-txt { font-size:7.5px; color:#374151; flex:1; }
+      .dpm-alert-time { font-size:6.5px; color:#94a3b8; }
+      /* ── Analytics tab ── */
+      .dpm-bar-section { flex:1.4; background:#fff; border:1px solid rgba(0,113,227,0.1); border-radius:7px; padding:7px 8px 6px; display:flex; flex-direction:column; gap:4px; min-height:0; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+      .dpm-bar-hdr { display:flex; justify-content:space-between; align-items:center; flex-shrink:0; }
+      .dpm-bar-lbl { font-size:7.5px; font-weight:600; color:#475569; }
+      .dpm-bar-sub { font-size:6px; color:#94a3b8; }
+      .dpm-bars { display:flex; align-items:flex-end; gap:4px; flex:1; min-height:0; }
+      .dpm-bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; justify-content:flex-end; height:100%; }
+      .dpm-bar-fill { width:80%; border-radius:3px 3px 0 0; height:0; }
+      .dpm-bar-day { font-size:6px; color:#cbd5e1; flex-shrink:0; }
+      .dpm-funnel-section { background:#fff; border:1px solid rgba(0,113,227,0.1); border-radius:7px; padding:7px 8px 6px; display:flex; flex-direction:column; gap:5px; box-shadow:0 1px 4px rgba(0,0,0,0.04); flex-shrink:0; }
+      .dpm-funnel-lbl { font-size:7.5px; font-weight:600; color:#475569; }
+      .dpm-funnel-steps { display:flex; flex-direction:column; gap:4px; }
+      .dpm-funnel-step { display:flex; align-items:center; gap:6px; }
+      .dpm-funnel-name { font-size:6.5px; color:#64748b; width:36px; flex-shrink:0; }
+      .dpm-funnel-track { flex:1; height:7px; background:rgba(0,113,227,0.06); border-radius:4px; overflow:hidden; }
+      .dpm-funnel-fill { height:100%; border-radius:4px; width:0%; transition:width 1s cubic-bezier(0.4,0,0.2,1); }
+      .dpm-funnel-num { font-size:6.5px; font-weight:700; color:#1e293b; width:28px; text-align:right; flex-shrink:0; }
+      /* ── Sources tab ── */
+      .dpm-src-section { flex:1; background:#fff; border:1px solid rgba(0,113,227,0.1); border-radius:7px; padding:8px 9px 7px; display:flex; flex-direction:column; gap:5px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+      .dpm-src-lbl { font-size:7.5px; font-weight:600; color:#475569; flex-shrink:0; }
+      .dpm-src-rows { display:flex; flex-direction:column; gap:5px; flex-shrink:0; }
+      .dpm-src-row { display:flex; align-items:center; gap:6px; }
+      .dpm-src-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+      .dpm-src-name { font-size:6.5px; color:#475569; width:42px; flex-shrink:0; font-weight:600; }
+      .dpm-src-track { flex:1; height:7px; background:rgba(0,113,227,0.06); border-radius:4px; overflow:hidden; }
+      .dpm-src-fill { height:100%; border-radius:4px; width:0%; transition:width 1s cubic-bezier(0.4,0,0.2,1); }
+      .dpm-src-pct { font-size:6.5px; font-weight:700; width:22px; text-align:right; flex-shrink:0; color:#1e293b; }
+      .dpm-src-divider { height:1px; background:rgba(0,113,227,0.08); flex-shrink:0; }
+      .dpm-src-table-hdr { display:flex; gap:4px; flex-shrink:0; }
+      .dpm-src-th { font-size:5.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#94a3b8; }
+      .dpm-src-th:first-child { flex:1.5; } .dpm-src-th:not(:first-child) { flex:1; text-align:right; }
+      .dpm-src-tbody { display:flex; flex-direction:column; gap:3px; }
+      .dpm-src-tr { display:flex; gap:4px; }
+      .dpm-src-td { font-size:6.5px; color:#475569; }
+      .dpm-src-td:first-child { flex:1.5; font-weight:600; color:#1e293b; } .dpm-src-td:not(:first-child) { flex:1; text-align:right; }
+      .dpm-td-pos { color:#10b981 !important; font-weight:700; } .dpm-td-neg { color:#f43f5e !important; font-weight:700; }
+      /* ── Activity tab ── */
+      .dpm-feed-section { flex:1; background:#fff; border:1px solid rgba(0,113,227,0.1); border-radius:7px; padding:7px 8px 6px; display:flex; flex-direction:column; gap:5px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+      .dpm-feed-hdr { display:flex; justify-content:space-between; align-items:center; flex-shrink:0; }
+      .dpm-feed-lbl { font-size:7.5px; font-weight:600; color:#475569; }
+      .dpm-feed-badge { font-size:6px; font-weight:700; color:#0071e3; background:rgba(0,113,227,0.1); padding:1px 6px; border-radius:10px; }
+      .dpm-feed-list { display:flex; flex-direction:column; gap:3px; flex:1; overflow:hidden; }
+      .dpm-feed-item { display:flex; align-items:center; gap:5px; padding:4px 6px; border-radius:5px; background:rgba(0,113,227,0.03); border:1px solid rgba(0,113,227,0.07); opacity:0; transform:translateX(-8px); transition:opacity 0.35s ease,transform 0.35s ease; flex-shrink:0; }
+      .dpm-feed-item.dpm-fi-in { opacity:1; transform:translateX(0); }
+      .dpm-fi-green { border-color:rgba(16,185,129,0.2) !important; background:rgba(16,185,129,0.04) !important; }
+      .dpm-fi-red { border-color:rgba(244,63,94,0.2) !important; background:rgba(244,63,94,0.04) !important; }
+      .dpm-fi-yellow { border-color:rgba(245,158,11,0.2) !important; background:rgba(245,158,11,0.04) !important; }
+      .dpm-feed-icon { font-size:9px; flex-shrink:0; line-height:1; }
+      .dpm-feed-content { flex:1; min-width:0; }
+      .dpm-feed-title { font-size:7px; font-weight:600; color:#1e293b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .dpm-feed-sub { font-size:6px; color:#94a3b8; }
+      .dpm-feed-time { font-size:6px; color:#cbd5e1; flex-shrink:0; font-family:'JetBrains Mono',monospace; }
+      /* Ticker */
+      .dpm-ticker { overflow:hidden; background:rgba(0,113,227,0.04); border:1px solid rgba(0,113,227,0.1); border-radius:5px; height:18px; display:flex; align-items:center; flex-shrink:0; }
+      .dpm-ticker-track { display:flex; white-space:nowrap; animation:dpmTick 22s linear infinite; font-size:7px; color:#94a3b8; }
+      .dpm-ticker-track span { padding:0 12px; }
+      .dpm-tick-hot { color:#10b981; font-weight:600; }
+      @keyframes dpmTick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+      /* SAV Chat Animation */
+      .sav-phone {
+        position: absolute; inset: 0;
+        display: flex; align-items: flex-start; justify-content: center;
+        padding-top: 20px;
+      }
+      .sav-screen {
+        width: 88%; max-width: 240px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+        overflow: hidden;
+        font-family: Inter, sans-serif;
+      }
+      .sav-topbar {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 14px;
+        background: #0f172a;
+        border-bottom: 1px solid rgba(6,182,212,0.15);
+      }
+      .sav-avatar {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: linear-gradient(135deg, #06b6d4, #0891b2);
+        flex-shrink: 0;
+      }
+      .sav-name { font-size: 12px; font-weight: 600; color: #f0f9ff; }
+      .sav-status { display: flex; align-items: center; gap: 5px; font-size: 10px; color: rgba(186,230,253,0.6); margin-top: 1px; }
+      .sav-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; animation: savPulse 2s ease-in-out infinite; }
+      @keyframes savPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+      .sav-messages {
+        padding: 12px 10px;
+        display: flex; flex-direction: column; gap: 7px;
+        background: #f0f9ff; height: 320px;
+      }
+      .sav-msg {
+        max-width: 82%; padding: 7px 11px;
+        border-radius: 12px; font-size: 10.5px; line-height: 1.4;
+        opacity: 0; transform: translateY(6px);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+      }
+      .sav-msg.sav-visible { opacity: 1; transform: translateY(0); }
+      .sav-msg.sav-out { opacity: 0; transform: translateY(-4px); transition: opacity 0.3s ease, transform 0.3s ease; }
+      .sav-msg-in {
+        background: #e0f2fe; color: #0c4a6e;
+        align-self: flex-start; border-bottom-left-radius: 4px;
+      }
+      .sav-msg-out {
+        background: #0d9488; color: #fff;
+        align-self: flex-end; border-bottom-right-radius: 4px;
+      }
+
       /* CTA — slide up on hover */
       .bc6-cta {
         position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
@@ -2629,14 +2812,241 @@
       }
       .bc6:hover::after { background: rgba(0,0,0,0.015); }
 
+      /* ── Card 4 — Automatisation Marketing ── */
+      .mkt-visual {
+        position: relative; z-index: 2;
+        padding: 22px 22px 0;
+        flex: 1; display: flex; flex-direction: column; gap: 10px;
+        justify-content: center;
+      }
+      .mkt-seq { display: flex; flex-direction: column; gap: 6px; }
+      .mkt-seq-row {
+        display: flex; align-items: center; gap: 10px;
+        background: #f5f5f7; border-radius: 10px;
+        padding: 9px 12px;
+      }
+      .mkt-seq-row.mkt-active { background: #eef4ff; }
+      .mkt-seq-label {
+        font-size: 0.75rem; font-weight: 600; color: #3c3c43;
+        flex: 1;
+      }
+      .mkt-seq-sub {
+        font-size: 0.68rem; color: #8e8e93;
+      }
+      .mkt-badge {
+        font-size: 0.65rem; font-weight: 700; padding: 2px 7px; border-radius: 20px;
+        white-space: nowrap;
+      }
+      .mkt-badge-green  { background: #d1fae5; color: #047857; }
+      .mkt-badge-blue   { background: #dbeafe; color: #1d4ed8; }
+      .mkt-badge-pulse  { background: #fef3c7; color: #92400e; display: flex; align-items: center; gap: 4px; }
+      .mkt-pulse-dot {
+        width: 6px; height: 6px; border-radius: 50%; background: #f59e0b;
+        animation: mktPulse 1.2s ease-in-out infinite;
+      }
+      @keyframes mktPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+      .mkt-metrics {
+        display: flex; gap: 6px;
+      }
+      .mkt-metric {
+        flex: 1; background: #f5f5f7; border-radius: 10px;
+        padding: 8px 10px; display: flex; flex-direction: column; gap: 1px;
+      }
+      .mkt-metric-val {
+        font-size: 1rem; font-weight: 700; color: #1d1d1f; letter-spacing: -0.03em;
+      }
+      .mkt-metric-lbl { font-size: 0.63rem; color: #8e8e93; }
+
+      /* ── Card 5 — Présence Média ── */
+      .media-visual {
+        position: relative; z-index: 2;
+        padding: 22px 22px 0;
+        flex: 1; display: flex; flex-direction: column; gap: 10px;
+        justify-content: center;
+      }
+      .media-platforms { display: flex; flex-direction: column; gap: 6px; }
+      .media-platform-row {
+        display: flex; align-items: center; gap: 10px;
+        background: #f5f5f7; border-radius: 10px; padding: 8px 12px;
+      }
+      .media-platform-icon {
+        width: 28px; height: 28px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 15px; flex-shrink: 0;
+      }
+      .media-platform-name { font-size: 0.75rem; font-weight: 600; color: #3c3c43; flex: 1; }
+      .media-bar-wrap { flex: 1.5; height: 5px; background: #e5e5ea; border-radius: 99px; overflow: hidden; }
+      .media-bar-fill {
+        height: 100%; border-radius: 99px;
+        animation: mediaBarGrow 1.4s cubic-bezier(.4,0,.2,1) both;
+      }
+      @keyframes mediaBarGrow { from { width: 0 } }
+      .media-score { font-size: 0.72rem; font-weight: 700; color: #1d1d1f; min-width: 28px; text-align: right; }
+      .media-bottom {
+        display: flex; gap: 6px;
+      }
+      .media-kpi {
+        flex: 1; background: #f5f5f7; border-radius: 10px;
+        padding: 8px 10px; display: flex; flex-direction: column; gap: 1px;
+      }
+      .media-kpi-val { font-size: 1rem; font-weight: 700; color: #1d1d1f; letter-spacing: -0.03em; }
+      .media-kpi-lbl { font-size: 0.63rem; color: #8e8e93; }
+
+      /* ── Card 6 — Présence Web (full-width) ── */
+      .web-visual {
+        position: relative; z-index: 2;
+        padding: 28px 28px 12px;
+        display: flex; align-items: center; gap: 16px; flex: 1;
+      }
+      .web-feature {
+        flex: 1; background: #f5f5f7; border-radius: 12px;
+        padding: 14px 16px; display: flex; flex-direction: column; gap: 6px;
+        transition: background 0.2s;
+      }
+      .web-feature:hover { background: #ebebf0; }
+      .web-feature-icon { font-size: 20px; }
+      .web-feature-name {
+        font-size: 0.78rem; font-weight: 700; color: #1d1d1f; line-height: 1.3;
+      }
+      .web-feature-desc { font-size: 0.68rem; color: #8e8e93; line-height: 1.4; }
+
+      /* ── Card 7 — Automatisations sur mesure ── */
+      .auto-visual {
+        position: relative; z-index: 2;
+        padding: 16px 28px 8px;
+        display: flex; align-items: center; gap: 32px; flex: 1;
+      }
+      .auto-stat-block {
+        display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
+      }
+      @keyframes autoStatPulse {
+        0%,100% { text-shadow: 0 0 12px rgba(255,255,255,0.4), 0 0 30px rgba(255,255,255,0.15); }
+        50%      { text-shadow: 0 0 24px rgba(255,255,255,0.7), 0 0 60px rgba(255,255,255,0.3); }
+      }
+      .auto-stat-number {
+        font-family: var(--font-head);
+        font-size: 2.4rem; font-weight: 800; letter-spacing: -0.05em;
+        color: #ffffff; line-height: 1;
+        animation: autoStatPulse 2.5s ease-in-out infinite;
+      }
+      .auto-stat-number span { color: var(--accent); }
+      .auto-stat-label {
+        font-size: 0.82rem; color: #6e6e73; max-width: 200px; line-height: 1.4;
+      }
+      .auto-divider {
+        width: 1px; height: 80px; background: #e5e5ea; flex-shrink: 0;
+      }
+      .auto-tasks {
+        display: flex; flex-wrap: wrap; gap: 8px; flex: 1;
+        align-content: center;
+      }
+      .auto-task {
+        display: flex; align-items: center; gap: 7px;
+        background: #f5f5f7; border-radius: 99px;
+        padding: 7px 13px; font-size: 0.76rem; font-weight: 500; color: #3c3c43;
+      }
+      .auto-task-dot {
+        width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+      }
+      .auto-task-dot.green  { background: #34c759; }
+      .auto-task-dot.blue   { background: var(--accent); }
+      .auto-task-dot.orange { background: #ff9f0a; }
+
+      /* ── Holographic effect — Card 7 ── */
+      .bg6-7 {
+        --x: 50%; --y: 50%; --bg-x: 50%; --bg-y: 50%;
+        transform-style: preserve-3d;
+        will-change: transform;
+        transition: box-shadow 0.2s ease;
+        overflow: visible !important;
+      }
+      .bg6-7 .auto-visual,
+      .bg6-7 .bc6-body,
+      .bg6-7 .bc6-cta { position: relative; z-index: 15; }
+      /* ── Holo animations ── */
+      @keyframes holoShift {
+        0%   { background-position: 0% 0%; }
+        50%  { background-position: 100% 100%; }
+        100% { background-position: 0% 0%; }
+      }
+      @keyframes holoScan {
+        0%   { transform: translateX(-100%) skewX(-15deg); opacity: 0; }
+        10%  { opacity: 1; }
+        90%  { opacity: 1; }
+        100% { transform: translateX(200%) skewX(-15deg); opacity: 0; }
+      }
+      @keyframes holoBorderPulse {
+        0%,100% { opacity: 0.45; }
+        50%      { opacity: 0.8; }
+      }
+
+      /* Rainbow shimmer — animates continuously */
+      .bg6-7 .holo-rainbow {
+        position: absolute; inset: 0; border-radius: 16px;
+        pointer-events: none; z-index: 8;
+        background: repeating-linear-gradient(
+          125deg,
+          hsl(220,100%,60%) 0%,
+          hsl(250,100%,60%) 20%,
+          hsl(280,100%,60%) 40%,
+          hsl(310,100%,60%) 60%,
+          hsl(340,100%,60%) 80%,
+          hsl(220,100%,60%) 100%
+        );
+        background-size: 300% 300%;
+        background-position: var(--bg-x) var(--bg-y);
+        mix-blend-mode: color;
+        opacity: 0.12;
+        animation: holoShift 6s ease-in-out infinite;
+        transition: opacity 0.4s ease;
+      }
+      .bg6-7:hover .holo-rainbow { opacity: 0.55; animation-play-state: paused; }
+
+      /* Scanning highlight */
+      .bg6-7 .holo-scan {
+        position: absolute; inset: 0; border-radius: 16px;
+        pointer-events: none; z-index: 10; overflow: hidden;
+      }
+      .bg6-7 .holo-scan::after {
+        content: '';
+        position: absolute; top: 0; left: 0;
+        width: 40%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+        animation: holoScan 4s ease-in-out infinite;
+      }
+
+      /* Specular light spot */
+      .bg6-7 .holo-glow {
+        position: absolute; inset: 0; border-radius: 16px;
+        pointer-events: none; z-index: 9;
+        background: radial-gradient(circle at var(--x) var(--y),
+          rgba(255,255,255,0.22) 0%,
+          rgba(255,255,255,0.06) 35%,
+          transparent 65%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .bg6-7:hover .holo-glow { opacity: 1; }
+
+      /* Iridescent border — always animated */
+      .bg6-7::before {
+        content: '';
+        position: absolute; inset: -1px; border-radius: 17px;
+        background: linear-gradient(135deg, #3a86ff, #7b2fff, #ff2d78);
+        z-index: -1; pointer-events: none;
+        animation: holoBorderPulse 3s ease-in-out infinite;
+      }
+      .bg6-7:hover { box-shadow: 0 0 40px rgba(130,80,255,0.35), 0 0 80px rgba(60,130,255,0.18), 0 30px 60px rgba(0,0,0,0.55); }
+
       @media (max-width: 900px) {
         #bento-section { padding: 0 24px 60px; }
         .bento-grid-6 { grid-template-columns: 1fr; grid-template-rows: auto; }
-        .bg6-1,.bg6-2,.bg6-3,.bg6-4,.bg6-5,.bg6-6 { grid-column: 1; grid-row: auto; height: 20rem; }
+        .bg6-1,.bg6-2,.bg6-3,.bg6-4,.bg6-5,.bg6-6,.bg6-7 { grid-column: 1; grid-row: auto; height: 20rem; }
       }
     </style>
 
     <div id="bento-section">
+      <div class="bc6-frame">
       <div class="bento-grid-6">
 
         <!-- Card 1 — Automatisation métier (large) -->
@@ -2644,18 +3054,27 @@
           <div class="bc6-bg" style="opacity:1;">
             <svg style="width:100%;height:100%;position:absolute;inset:0;" viewBox="-20 -10 840 420" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
               <defs>
-                <linearGradient id="lineGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="rgba(99,102,241,0.0)"/>
-                  <stop offset="50%" stop-color="rgba(99,102,241,0.25)"/>
-                  <stop offset="100%" stop-color="rgba(99,102,241,0.0)"/>
+                <!-- Palette: #386641 #6a994e #a7c957 #f2e8cf #bc4749 -->
+                <linearGradient id="gradExtract" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#386641"/>
+                  <stop offset="100%" stop-color="#6a994e"/>
                 </linearGradient>
-                <linearGradient id="lineGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="rgba(168,85,247,0.0)"/>
-                  <stop offset="50%" stop-color="rgba(168,85,247,0.2)"/>
-                  <stop offset="100%" stop-color="rgba(168,85,247,0.0)"/>
+                <linearGradient id="gradAnalyse" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#6a994e"/>
+                  <stop offset="100%" stop-color="#a7c957"/>
                 </linearGradient>
-                <!-- Dot glow filter -->
-                <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <linearGradient id="gradLine1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#f2e8cf" stop-opacity="0.4"/>
+                  <stop offset="60%" stop-color="#6a994e" stop-opacity="0.7"/>
+                  <stop offset="100%" stop-color="#386641" stop-opacity="0.8"/>
+                </linearGradient>
+                <linearGradient id="gradLine2" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#386641" stop-opacity="0.8"/>
+                  <stop offset="100%" stop-color="#a7c957" stop-opacity="0.6"/>
+                </linearGradient>
+                <!-- Stronger glow -->
+                <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <filter id="glowStrong"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
                 <!-- Paths for animated dots -->
                 <path id="pa" d="M158 82 C 240 82, 270 170, 320 170"/>
                 <path id="pb" d="M158 148 C 240 148, 270 170, 320 170"/>
@@ -2667,74 +3086,72 @@
                 <path id="ph" d="M550 185 C 580 220, 600 240, 640 280"/>
               </defs>
 
+              <!-- Background subtle tint -->
+              <rect x="-20" y="-10" width="840" height="420" fill="#f2e8cf" opacity="0.18" rx="0"/>
+
               <!-- Input → Extraction lines -->
-              <path d="M158 82 C 240 82, 270 170, 320 170" stroke="rgba(99,102,241,0.12)" stroke-width="1.5"/>
-              <path d="M158 148 C 240 148, 270 170, 320 170" stroke="rgba(99,102,241,0.12)" stroke-width="1.5"/>
-              <path d="M158 214 C 240 214, 280 170, 320 170" stroke="rgba(99,102,241,0.12)" stroke-width="1.5"/>
-              <path d="M158 280 C 240 280, 280 170, 320 170" stroke="rgba(99,102,241,0.12)" stroke-width="1.5"/>
+              <path d="M158 82 C 240 82, 270 170, 320 170" stroke="url(#gradLine1)" stroke-width="1.5"/>
+              <path d="M158 148 C 240 148, 270 170, 320 170" stroke="url(#gradLine1)" stroke-width="1.5"/>
+              <path d="M158 214 C 240 214, 280 170, 320 170" stroke="url(#gradLine1)" stroke-width="1.5"/>
+              <path d="M158 280 C 240 280, 280 170, 320 170" stroke="url(#gradLine1)" stroke-width="1.5"/>
 
               <!-- Extraction → Analyse line -->
-              <path d="M440 170 L 520 170" stroke="rgba(99,102,241,0.15)" stroke-width="1.5"/>
+              <path d="M440 170 L 520 170" stroke="#6a994e" stroke-width="2.5" stroke-opacity="0.8"/>
 
               <!-- Analyse → Output lines -->
-              <path d="M550 155 C 580 120, 600 100, 640 100" stroke="rgba(168,85,247,0.15)" stroke-width="1.5"/>
-              <path d="M550 170 L 640 200" stroke="rgba(168,85,247,0.15)" stroke-width="1.5"/>
-              <path d="M550 185 C 580 220, 600 240, 640 280" stroke="rgba(168,85,247,0.15)" stroke-width="1.5"/>
+              <path d="M550 155 C 580 120, 600 100, 640 100" stroke="url(#gradLine2)" stroke-width="1.5"/>
+              <path d="M550 170 L 640 200" stroke="url(#gradLine2)" stroke-width="1.5"/>
+              <path d="M550 185 C 580 220, 600 240, 640 280" stroke="#bc4749" stroke-width="1.5" stroke-opacity="0.5"/>
 
               <!-- INPUT NODES -->
-              <rect x="40" y="58" width="118" height="48" rx="10" fill="white" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
-              <text x="99" y="83" text-anchor="middle" font-size="10.5" fill="rgba(0,0,0,0.5)" font-family="Inter,sans-serif" font-weight="500">Document PDF</text>
-              <text x="99" y="97" text-anchor="middle" font-size="9" fill="rgba(0,0,0,0.28)" font-family="Inter,sans-serif">contrat / facture / bon</text>
+              <rect x="40" y="58" width="118" height="48" rx="10" fill="#f2e8cf" stroke="#6a994e" stroke-width="1.5"/>
+              <text x="99" y="83" text-anchor="middle" font-size="11" fill="#386641" font-family="Inter,sans-serif" font-weight="700">Document PDF</text>
+              <text x="99" y="97" text-anchor="middle" font-size="9.5" fill="#6a994e" font-family="Inter,sans-serif">contrat / facture / bon</text>
 
-              <rect x="40" y="124" width="118" height="48" rx="10" fill="white" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
-              <text x="99" y="149" text-anchor="middle" font-size="10.5" fill="rgba(0,0,0,0.5)" font-family="Inter,sans-serif" font-weight="500">Email client</text>
-              <text x="99" y="163" text-anchor="middle" font-size="9" fill="rgba(0,0,0,0.28)" font-family="Inter,sans-serif">commande / demande</text>
+              <rect x="40" y="124" width="118" height="48" rx="10" fill="#f2e8cf" stroke="#6a994e" stroke-width="1.5"/>
+              <text x="99" y="149" text-anchor="middle" font-size="11" fill="#386641" font-family="Inter,sans-serif" font-weight="700">Email client</text>
+              <text x="99" y="163" text-anchor="middle" font-size="9.5" fill="#6a994e" font-family="Inter,sans-serif">commande / demande</text>
 
-              <rect x="40" y="190" width="118" height="48" rx="10" fill="white" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
-              <text x="99" y="215" text-anchor="middle" font-size="10.5" fill="rgba(0,0,0,0.5)" font-family="Inter,sans-serif" font-weight="500">Données ERP</text>
-              <text x="99" y="229" text-anchor="middle" font-size="9" fill="rgba(0,0,0,0.28)" font-family="Inter,sans-serif">stocks / inventaire</text>
+              <rect x="40" y="190" width="118" height="48" rx="10" fill="#f2e8cf" stroke="#6a994e" stroke-width="1.5"/>
+              <text x="99" y="215" text-anchor="middle" font-size="11" fill="#386641" font-family="Inter,sans-serif" font-weight="700">Données ERP</text>
+              <text x="99" y="229" text-anchor="middle" font-size="9.5" fill="#6a994e" font-family="Inter,sans-serif">stocks / inventaire</text>
 
-              <rect x="40" y="256" width="118" height="48" rx="10" fill="white" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
-              <text x="99" y="281" text-anchor="middle" font-size="10.5" fill="rgba(0,0,0,0.5)" font-family="Inter,sans-serif" font-weight="500">Fichier interne</text>
-              <text x="99" y="295" text-anchor="middle" font-size="9" fill="rgba(0,0,0,0.28)" font-family="Inter,sans-serif">rapport / bilan</text>
+              <rect x="40" y="256" width="118" height="48" rx="10" fill="#f2e8cf" stroke="#6a994e" stroke-width="1.5"/>
+              <text x="99" y="281" text-anchor="middle" font-size="11" fill="#386641" font-family="Inter,sans-serif" font-weight="700">Fichier interne</text>
+              <text x="99" y="295" text-anchor="middle" font-size="9.5" fill="#6a994e" font-family="Inter,sans-serif">rapport / bilan</text>
 
               <!-- EXTRACTION NODE -->
-              <rect x="295" y="140" width="145" height="60" rx="13" fill="rgba(99,102,241,0.06)" stroke="rgba(99,102,241,0.25)" stroke-width="1.5"/>
-              <text x="367" y="165" text-anchor="middle" font-size="11.5" fill="rgba(60,60,180,0.75)" font-family="Inter,sans-serif" font-weight="700">Extraction</text>
-              <text x="367" y="181" text-anchor="middle" font-size="9.5" fill="rgba(99,102,241,0.5)" font-family="Inter,sans-serif">lecture + structuration auto</text>
-              <!-- Pulse ring -->
-              <circle cx="367" cy="170" r="36" stroke="rgba(99,102,241,0.08)" stroke-width="1">
-                <animate attributeName="r" values="34;42;34" dur="2.5s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="0.6;0;0.6" dur="2.5s" repeatCount="indefinite"/>
-              </circle>
+              <rect x="295" y="140" width="145" height="60" rx="13" fill="url(#gradExtract)" stroke="#a7c957" stroke-width="2"/>
+              <text x="367" y="165" text-anchor="middle" font-size="13" fill="#f2e8cf" font-family="Inter,sans-serif" font-weight="800">Extraction</text>
+              <text x="367" y="181" text-anchor="middle" font-size="10" fill="#a7c957" font-family="Inter,sans-serif">lecture + structuration auto</text>
 
               <!-- ANALYSE NODE -->
-              <rect x="492" y="140" width="90" height="60" rx="13" fill="rgba(168,85,247,0.06)" stroke="rgba(168,85,247,0.22)" stroke-width="1.5"/>
-              <text x="537" y="166" text-anchor="middle" font-size="11" fill="rgba(120,50,200,0.7)" font-family="Inter,sans-serif" font-weight="700">Analyse</text>
-              <text x="537" y="182" text-anchor="middle" font-size="9.5" fill="rgba(168,85,247,0.5)" font-family="Inter,sans-serif">classification</text>
+              <rect x="492" y="140" width="90" height="60" rx="13" fill="url(#gradAnalyse)" stroke="#a7c957" stroke-width="2"/>
+              <text x="537" y="166" text-anchor="middle" font-size="12.5" fill="#f2e8cf" font-family="Inter,sans-serif" font-weight="800">Analyse</text>
+              <text x="537" y="182" text-anchor="middle" font-size="10" fill="#f2e8cf" font-family="Inter,sans-serif" opacity="0.8">classification</text>
 
               <!-- OUTPUT NODES -->
-              <rect x="638" y="76" width="122" height="48" rx="10" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.22)" stroke-width="1"/>
-              <text x="699" y="101" text-anchor="middle" font-size="10.5" fill="rgba(20,130,60,0.7)" font-family="Inter,sans-serif" font-weight="600">Facture générée</text>
-              <text x="699" y="115" text-anchor="middle" font-size="9" fill="rgba(20,130,60,0.4)" font-family="Inter,sans-serif">envoyée automatiquement</text>
+              <rect x="638" y="76" width="122" height="48" rx="10" fill="rgba(167,201,87,0.15)" stroke="#a7c957" stroke-width="1.5"/>
+              <text x="699" y="101" text-anchor="middle" font-size="11" fill="#386641" font-family="Inter,sans-serif" font-weight="700">Facture générée</text>
+              <text x="699" y="115" text-anchor="middle" font-size="9.5" fill="#6a994e" font-family="Inter,sans-serif">envoyée automatiquement</text>
 
-              <rect x="638" y="176" width="122" height="48" rx="10" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
-              <text x="699" y="201" text-anchor="middle" font-size="10.5" fill="rgba(30,80,180,0.7)" font-family="Inter,sans-serif" font-weight="600">Rapport d'analyse</text>
-              <text x="699" y="215" text-anchor="middle" font-size="9" fill="rgba(30,80,180,0.4)" font-family="Inter,sans-serif">synthèse en temps réel</text>
+              <rect x="638" y="176" width="122" height="48" rx="10" fill="rgba(106,153,78,0.12)" stroke="#6a994e" stroke-width="1.5"/>
+              <text x="699" y="201" text-anchor="middle" font-size="11" fill="#386641" font-family="Inter,sans-serif" font-weight="700">Rapport d'analyse</text>
+              <text x="699" y="215" text-anchor="middle" font-size="9.5" fill="#6a994e" font-family="Inter,sans-serif">synthèse en temps réel</text>
 
-              <rect x="638" y="256" width="122" height="48" rx="10" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)" stroke-width="1"/>
-              <text x="699" y="281" text-anchor="middle" font-size="10.5" fill="rgba(180,80,10,0.7)" font-family="Inter,sans-serif" font-weight="600">Alerte stock</text>
-              <text x="699" y="295" text-anchor="middle" font-size="9" fill="rgba(180,80,10,0.4)" font-family="Inter,sans-serif">seuil atteint → notification</text>
+              <rect x="638" y="256" width="122" height="48" rx="10" fill="rgba(188,71,73,0.1)" stroke="#bc4749" stroke-width="1.5"/>
+              <text x="699" y="281" text-anchor="middle" font-size="11" fill="#bc4749" font-family="Inter,sans-serif" font-weight="700">Alerte stock</text>
+              <text x="699" y="295" text-anchor="middle" font-size="9.5" fill="rgba(188,71,73,0.7)" font-family="Inter,sans-serif">seuil atteint → notification</text>
 
               <!-- ANIMATED DOTS -->
-              <circle r="3.5" fill="rgba(99,102,241,0.7)" filter="url(#glow)"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#pa"/></animateMotion></circle>
-              <circle r="3.5" fill="rgba(99,102,241,0.7)" filter="url(#glow)"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.6s"><mpath href="#pb"/></animateMotion></circle>
-              <circle r="3.5" fill="rgba(99,102,241,0.7)" filter="url(#glow)"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#pc"/></animateMotion></circle>
-              <circle r="3.5" fill="rgba(99,102,241,0.7)" filter="url(#glow)"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.8s"><mpath href="#pd"/></animateMotion></circle>
-              <circle r="3.5" fill="rgba(140,60,220,0.7)" filter="url(#glow)"><animateMotion dur="1.2s" repeatCount="indefinite" begin="0.4s"><mpath href="#pe"/></animateMotion></circle>
-              <circle r="3" fill="rgba(34,197,94,0.8)" filter="url(#glow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.2s"><mpath href="#pf"/></animateMotion></circle>
-              <circle r="3" fill="rgba(59,130,246,0.8)" filter="url(#glow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.8s"><mpath href="#pg"/></animateMotion></circle>
-              <circle r="3" fill="rgba(249,115,22,0.8)" filter="url(#glow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.4s"><mpath href="#ph"/></animateMotion></circle>
+              <circle r="4" fill="#a7c957" filter="url(#glow)" opacity="0"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#pa"/></animateMotion><animate attributeName="opacity" to="1" dur="0.001s" begin="0s" fill="freeze"/></circle>
+              <circle r="4" fill="#a7c957" filter="url(#glow)" opacity="0"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.6s"><mpath href="#pb"/></animateMotion><animate attributeName="opacity" to="1" dur="0.001s" begin="0.6s" fill="freeze"/></circle>
+              <circle r="4" fill="#6a994e" filter="url(#glow)" opacity="0"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s"><mpath href="#pc"/></animateMotion><animate attributeName="opacity" to="1" dur="0.001s" begin="1.2s" fill="freeze"/></circle>
+              <circle r="4" fill="#6a994e" filter="url(#glow)" opacity="0"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.8s"><mpath href="#pd"/></animateMotion><animate attributeName="opacity" to="1" dur="0.001s" begin="1.8s" fill="freeze"/></circle>
+              <circle r="5" fill="#386641" filter="url(#glowStrong)" opacity="0"><animateMotion dur="1.2s" repeatCount="indefinite" begin="0.4s"><mpath href="#pe"/></animateMotion><animate attributeName="opacity" to="1" dur="0.001s" begin="0.4s" fill="freeze"/></circle>
+              <circle r="4" fill="#a7c957" filter="url(#glow)" opacity="0"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.2s"><mpath href="#pf"/></animateMotion><animate attributeName="opacity" to="1" dur="0.001s" begin="0.2s" fill="freeze"/></circle>
+              <circle r="4" fill="#6a994e" filter="url(#glow)" opacity="0"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.8s"><mpath href="#pg"/></animateMotion><animate attributeName="opacity" to="1" dur="0.001s" begin="0.8s" fill="freeze"/></circle>
+              <circle r="4" fill="#bc4749" filter="url(#glowStrong)" opacity="0"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.4s"><mpath href="#ph"/></animateMotion><animate attributeName="opacity" to="1" dur="0.001s" begin="1.4s" fill="freeze"/></circle>
             </svg>
           </div>
           <div class="bc6-body">
@@ -2751,8 +3168,25 @@
 
         <!-- Card 2 — SAV -->
         <div class="bc6 bg6-2">
-          <div class="bc6-bg">
-            <img src="https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=800&auto=format&fit=crop" alt="" style="opacity:0.9;object-position:top;">
+          <div class="bc6-bg" style="background:#f8f9fb;">
+            <!-- SAV Chat Animation -->
+            <div class="sav-phone">
+              <div class="sav-screen">
+                <div class="sav-topbar">
+                  <div class="sav-avatar"></div>
+                  <div>
+                    <div class="sav-name">Support Nexxo</div>
+                    <div class="sav-status"><span class="sav-dot"></span>IA active</div>
+                  </div>
+                </div>
+                <div class="sav-messages" id="savMessages">
+                  <div class="sav-msg sav-msg-in sav-m1">Bonjour, ma commande n'est pas arrivée 😕</div>
+                  <div class="sav-msg sav-msg-out sav-m2">Bonjour ! Je vérifie votre commande immédiatement…</div>
+                  <div class="sav-msg sav-msg-out sav-m3">Commande #4821 — expédiée hier</div>
+                  <div class="sav-msg sav-msg-out sav-m4">Livraison prévue demain avant 18h ✓</div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="bc6-body">
             <div class="bc6-title">SAV automatisé</div>
@@ -2766,15 +3200,203 @@
           </div>
         </div>
 
-        <!-- Card 3 — Automatisation -->
+        <!-- Card 3 — Automatisation data -->
         <div class="bc6 bg6-3">
-          <div class="bc6-bg">
-            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop" alt="">
+          <div class="bc6-bg" style="background:#f1f5f9;">
+            <div class="dpm-wrap">
+
+              <!-- Header -->
+              <div class="dpm-hdr">
+                <div class="dpm-hdr-left">
+                  <span class="dpm-status-dot"></span>
+                  <span class="dpm-brand">Nexxo Analytics</span>
+                </div>
+                <div class="dpm-hdr-right">
+                  <span class="dpm-clock" id="dpmClock">--:--</span>
+                  <span class="dpm-live-badge"><span class="dpm-live-pulse"></span>LIVE</span>
+                </div>
+              </div>
+
+              <!-- Tab bar -->
+              <div class="dpm-tabs">
+                <button class="dpm-tab dpm-tab-active" data-tab="0">Overview</button>
+                <button class="dpm-tab" data-tab="1">Analytics</button>
+                <button class="dpm-tab" data-tab="2">Sources</button>
+                <button class="dpm-tab" data-tab="3">Activité</button>
+              </div>
+
+              <!-- ── Panel 0 — Overview ── -->
+              <div class="dpm-panel dpm-active" id="dpmPanel0">
+                <div class="dpm-kpis">
+                  <div class="dpm-kpi dpm-kpi-ft">
+                    <div class="dpm-kpi-top"><span class="dpm-kpi-lbl">CA</span><span class="dpm-bdg dpm-up">↑18%</span></div>
+                    <div class="dpm-kpi-val dpm-kpi-glow" id="dpmv1">0€</div>
+                    <svg class="dpm-spark" viewBox="0 0 50 12"><polyline class="dpm-sln dpm-si" id="dpmsp1" points="0,10 8,7 17,9 25,3 33,5 42,1 50,3"/></svg>
+                  </div>
+                  <div class="dpm-kpi">
+                    <div class="dpm-kpi-top"><span class="dpm-kpi-lbl">Ventes</span><span class="dpm-bdg dpm-up">↑12%</span></div>
+                    <div class="dpm-kpi-val" id="dpmv2">0</div>
+                    <svg class="dpm-spark" viewBox="0 0 50 12"><polyline class="dpm-sln dpm-sc" id="dpmsp2" points="0,9 8,6 17,10 25,3 33,6 42,2 50,5"/></svg>
+                  </div>
+                  <div class="dpm-kpi">
+                    <div class="dpm-kpi-top"><span class="dpm-kpi-lbl">Visites</span><span class="dpm-bdg dpm-up">↑8%</span></div>
+                    <div class="dpm-kpi-val" id="dpmv3">0</div>
+                    <svg class="dpm-spark" viewBox="0 0 50 12"><polyline class="dpm-sln dpm-sg" id="dpmsp3" points="0,8 8,5 17,10 25,2 33,7 42,1 50,5"/></svg>
+                  </div>
+                  <div class="dpm-kpi">
+                    <div class="dpm-kpi-top"><span class="dpm-kpi-lbl">Conv.</span><span class="dpm-bdg dpm-dn">↓2%</span></div>
+                    <div class="dpm-kpi-val" id="dpmv4">0%</div>
+                    <svg class="dpm-spark" viewBox="0 0 50 12"><polyline class="dpm-sln dpm-sr" id="dpmsp4" points="0,2 8,4 17,2 25,6 33,8 42,10 50,9"/></svg>
+                  </div>
+                </div>
+                <div class="dpm-mid">
+                  <div class="dpm-chart">
+                    <div class="dpm-chart-hdr">
+                      <span class="dpm-chart-lbl">Chiffre d'affaires</span>
+                      <span class="dpm-chart-bdg">7 jours</span>
+                    </div>
+                    <svg class="dpm-chart-svg" viewBox="0 0 200 55" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="dpmLineGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5aabff"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient>
+                        <linearGradient id="dpmAreaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0071e3" stop-opacity="0.35"/><stop offset="100%" stop-color="#0071e3" stop-opacity="0"/></linearGradient>
+                        <filter id="dpmGlow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                      </defs>
+                      <line x1="0" y1="10" x2="200" y2="10" stroke="#e2e8f0" stroke-width="0.5"/>
+                      <line x1="0" y1="28" x2="200" y2="28" stroke="#e2e8f0" stroke-width="0.5"/>
+                      <line x1="0" y1="46" x2="200" y2="46" stroke="#e2e8f0" stroke-width="0.5"/>
+                      <text x="2" y="9" font-size="4.5" fill="#cbd5e1" font-family="Inter,sans-serif">15k</text>
+                      <text x="2" y="27" font-size="4.5" fill="#cbd5e1" font-family="Inter,sans-serif">10k</text>
+                      <text x="2" y="45" font-size="4.5" fill="#cbd5e1" font-family="Inter,sans-serif">5k</text>
+                      <path class="dpm-carea" id="dpmArea" fill="url(#dpmAreaGrad)" d="M14,52 L14,45 C38,45 50,23 74,26 C98,29 108,13 132,15 C157,17 169,7 200,6 L200,52 Z"/>
+                      <path class="dpm-cline" id="dpmLine" stroke="url(#dpmLineGrad)" filter="url(#dpmGlow)" d="M14,45 C38,45 50,23 74,26 C98,29 108,13 132,15 C157,17 169,7 200,6"/>
+                      <circle class="dpm-cdot" id="dpmDot1" cx="14" cy="45" r="2" fill="#5aabff"/>
+                      <circle class="dpm-cdot" id="dpmDot2" cx="74" cy="26" r="2" fill="#3b9eff"/>
+                      <circle class="dpm-cdot" id="dpmDot3" cx="132" cy="15" r="2" fill="#0071e3"/>
+                      <circle class="dpm-cdot" id="dpmDot4" cx="200" cy="6" r="2.5" fill="#06b6d4"/>
+                    </svg>
+                    <div class="dpm-xlabels"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+                  </div>
+                  <div class="dpm-donut-box">
+                    <div class="dpm-donut-title">Sources</div>
+                    <svg class="dpm-donut-svg" viewBox="0 0 60 60" width="50" height="50">
+                      <circle cx="30" cy="30" r="21" fill="none" stroke="rgba(0,113,227,0.08)" stroke-width="5"/>
+                      <circle cx="30" cy="30" r="21" class="dpm-seg" id="dpmSeg1" stroke="#0071e3" stroke-dasharray="81.9 50" transform="rotate(-90 30 30)"/>
+                      <circle cx="30" cy="30" r="21" class="dpm-seg" id="dpmSeg2" stroke="#10b981" stroke-dasharray="31.7 100.2" transform="rotate(133.2 30 30)"/>
+                      <circle cx="30" cy="30" r="21" class="dpm-seg" id="dpmSeg3" stroke="#f59e0b" stroke-dasharray="18.5 113.4" transform="rotate(219.6 30 30)"/>
+                      <text x="30" y="28" text-anchor="middle" font-size="8" fill="#0071e3" font-weight="800" font-family="Inter,sans-serif" id="dpmDonutVal">0</text>
+                      <text x="30" y="37" text-anchor="middle" font-size="4.5" fill="#94a3b8" font-family="Inter,sans-serif">visites</text>
+                    </svg>
+                    <div class="dpm-donut-legend">
+                      <div class="dpm-donut-item"><span class="dpm-donut-dot" style="background:#0071e3"></span><span class="dpm-donut-lbl">Organique</span><span class="dpm-donut-pct" id="dpmPct1" style="color:#7ec5ff">0%</span></div>
+                      <div class="dpm-donut-item"><span class="dpm-donut-dot" style="background:#10b981"></span><span class="dpm-donut-lbl">Direct</span><span class="dpm-donut-pct" id="dpmPct2" style="color:#6ee7b7">0%</span></div>
+                      <div class="dpm-donut-item"><span class="dpm-donut-dot" style="background:#f59e0b"></span><span class="dpm-donut-lbl">Social</span><span class="dpm-donut-pct" id="dpmPct3" style="color:#fcd34d">0%</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="dpm-heat">
+                  <div class="dpm-heat-title">Activité — 7 jours</div>
+                  <div class="dpm-heat-grid" id="dpmHeatGrid"></div>
+                  <div class="dpm-heat-days"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+                </div>
+                <div class="dpm-alert" id="dpmAlert">
+                  <span class="dpm-alert-dot"></span>
+                  <span class="dpm-alert-txt">Rapport hebdo · <strong>12.4k€</strong> · PDF envoyé auto</span>
+                  <span class="dpm-alert-time">2h</span>
+                </div>
+              </div>
+
+              <!-- ── Panel 1 — Analytics ── -->
+              <div class="dpm-panel" id="dpmPanel1">
+                <div class="dpm-bar-section">
+                  <div class="dpm-bar-hdr">
+                    <span class="dpm-bar-lbl">CA par jour</span>
+                    <span class="dpm-bar-sub">cette semaine</span>
+                  </div>
+                  <div class="dpm-bars">
+                    <div class="dpm-bar-col"><div class="dpm-bar-fill" id="dpmB0" style="background:rgba(0,113,227,0.3)"></div><span class="dpm-bar-day">L</span></div>
+                    <div class="dpm-bar-col"><div class="dpm-bar-fill" id="dpmB1" style="background:rgba(0,113,227,0.38)"></div><span class="dpm-bar-day">M</span></div>
+                    <div class="dpm-bar-col"><div class="dpm-bar-fill" id="dpmB2" style="background:rgba(0,113,227,0.5)"></div><span class="dpm-bar-day">M</span></div>
+                    <div class="dpm-bar-col"><div class="dpm-bar-fill" id="dpmB3" style="background:rgba(0,113,227,0.7)"></div><span class="dpm-bar-day">J</span></div>
+                    <div class="dpm-bar-col"><div class="dpm-bar-fill" id="dpmB4" style="background:#0071e3"></div><span class="dpm-bar-day">V</span></div>
+                    <div class="dpm-bar-col"><div class="dpm-bar-fill" id="dpmB5" style="background:rgba(0,113,227,0.42)"></div><span class="dpm-bar-day">S</span></div>
+                    <div class="dpm-bar-col"><div class="dpm-bar-fill" id="dpmB6" style="background:rgba(0,113,227,0.22)"></div><span class="dpm-bar-day">D</span></div>
+                  </div>
+                </div>
+                <div class="dpm-funnel-section">
+                  <span class="dpm-funnel-lbl">Funnel de conversion</span>
+                  <div class="dpm-funnel-steps">
+                    <div class="dpm-funnel-step">
+                      <span class="dpm-funnel-name">Visites</span>
+                      <div class="dpm-funnel-track"><div class="dpm-funnel-fill" id="dpmFun0" style="background:#0071e3"></div></div>
+                      <span class="dpm-funnel-num" id="dpmFunN0">0</span>
+                    </div>
+                    <div class="dpm-funnel-step">
+                      <span class="dpm-funnel-name">Leads</span>
+                      <div class="dpm-funnel-track"><div class="dpm-funnel-fill" id="dpmFun1" style="background:#06b6d4"></div></div>
+                      <span class="dpm-funnel-num" id="dpmFunN1">0</span>
+                    </div>
+                    <div class="dpm-funnel-step">
+                      <span class="dpm-funnel-name">Ventes</span>
+                      <div class="dpm-funnel-track"><div class="dpm-funnel-fill" id="dpmFun2" style="background:#10b981"></div></div>
+                      <span class="dpm-funnel-num" id="dpmFunN2">0</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ── Panel 2 — Sources ── -->
+              <div class="dpm-panel" id="dpmPanel2">
+                <div class="dpm-src-section">
+                  <span class="dpm-src-lbl">Trafic par source</span>
+                  <div class="dpm-src-rows">
+                    <div class="dpm-src-row"><span class="dpm-src-dot" style="background:#0071e3"></span><span class="dpm-src-name">Organique</span><div class="dpm-src-track"><div class="dpm-src-fill" id="dpmSF0" style="background:#0071e3"></div></div><span class="dpm-src-pct" id="dpmSP0">0%</span></div>
+                    <div class="dpm-src-row"><span class="dpm-src-dot" style="background:#10b981"></span><span class="dpm-src-name">Direct</span><div class="dpm-src-track"><div class="dpm-src-fill" id="dpmSF1" style="background:#10b981"></div></div><span class="dpm-src-pct" id="dpmSP1">0%</span></div>
+                    <div class="dpm-src-row"><span class="dpm-src-dot" style="background:#f59e0b"></span><span class="dpm-src-name">Social</span><div class="dpm-src-track"><div class="dpm-src-fill" id="dpmSF2" style="background:#f59e0b"></div></div><span class="dpm-src-pct" id="dpmSP2">0%</span></div>
+                    <div class="dpm-src-row"><span class="dpm-src-dot" style="background:#f43f5e"></span><span class="dpm-src-name">Payant</span><div class="dpm-src-track"><div class="dpm-src-fill" id="dpmSF3" style="background:#f43f5e"></div></div><span class="dpm-src-pct" id="dpmSP3">0%</span></div>
+                  </div>
+                  <div class="dpm-src-divider"></div>
+                  <div class="dpm-src-table-hdr">
+                    <span class="dpm-src-th">Source</span><span class="dpm-src-th">Visites</span><span class="dpm-src-th">Conv.</span><span class="dpm-src-th">ΔMois</span>
+                  </div>
+                  <div class="dpm-src-tbody">
+                    <div class="dpm-src-tr"><span class="dpm-src-td">Organique</span><span class="dpm-src-td">2 933</span><span class="dpm-src-td">7.1%</span><span class="dpm-src-td dpm-td-pos">+14%</span></div>
+                    <div class="dpm-src-tr"><span class="dpm-src-td">Direct</span><span class="dpm-src-td">1 135</span><span class="dpm-src-td">8.3%</span><span class="dpm-src-td dpm-td-pos">+6%</span></div>
+                    <div class="dpm-src-tr"><span class="dpm-src-td">Social</span><span class="dpm-src-td">426</span><span class="dpm-src-td">4.2%</span><span class="dpm-src-td dpm-td-neg">-3%</span></div>
+                    <div class="dpm-src-tr"><span class="dpm-src-td">Payant</span><span class="dpm-src-td">237</span><span class="dpm-src-td">11.8%</span><span class="dpm-src-td dpm-td-pos">+22%</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ── Panel 3 — Activité ── -->
+              <div class="dpm-panel" id="dpmPanel3">
+                <div class="dpm-feed-section">
+                  <div class="dpm-feed-hdr">
+                    <span class="dpm-feed-lbl">Flux en temps réel</span>
+                    <span class="dpm-feed-badge">6 événements</span>
+                  </div>
+                  <div class="dpm-feed-list" id="dpmFeedList">
+                    <div class="dpm-feed-item dpm-fi-green"><span class="dpm-feed-icon">🟢</span><div class="dpm-feed-content"><div class="dpm-feed-title">Commande #1847 · +290€</div><div class="dpm-feed-sub">Coiffure · Paris 11e</div></div><span class="dpm-feed-time">2m</span></div>
+                    <div class="dpm-feed-item"><span class="dpm-feed-icon">📈</span><div class="dpm-feed-content"><div class="dpm-feed-title">Pic de trafic · +340% vs hier</div><div class="dpm-feed-sub">Source : campagne Google</div></div><span class="dpm-feed-time">8m</span></div>
+                    <div class="dpm-feed-item dpm-fi-green"><span class="dpm-feed-icon">✅</span><div class="dpm-feed-content"><div class="dpm-feed-title">Lead qualifié · score 94</div><div class="dpm-feed-sub">Coiffure Paris — en attente appel</div></div><span class="dpm-feed-time">23m</span></div>
+                    <div class="dpm-feed-item dpm-fi-yellow"><span class="dpm-feed-icon">⚠️</span><div class="dpm-feed-content"><div class="dpm-feed-title">Conv. en baisse · -2.1%</div><div class="dpm-feed-sub">Social vs semaine dernière</div></div><span class="dpm-feed-time">1h</span></div>
+                    <div class="dpm-feed-item"><span class="dpm-feed-icon">📊</span><div class="dpm-feed-content"><div class="dpm-feed-title">Rapport hebdo · 12.4k€</div><div class="dpm-feed-sub">PDF généré et envoyé auto</div></div><span class="dpm-feed-time">2h</span></div>
+                    <div class="dpm-feed-item"><span class="dpm-feed-icon">📤</span><div class="dpm-feed-content"><div class="dpm-feed-title">Export · 2 340 lignes</div><div class="dpm-feed-sub">Google Sheets synchronisé</div></div><span class="dpm-feed-time">5h</span></div>
+                  </div>
+                </div>
+                <div class="dpm-ticker">
+                  <div class="dpm-ticker-track">
+                    <span class="dpm-tick-hot">⬤ Commande #1847 · +290€</span><span>·</span><span>4 leads qualifiés · Beauté</span><span>·</span><span class="dpm-tick-hot">Rapport · 12.4k€</span><span>·</span><span>+12% conv. cette semaine</span><span>·</span><span>Export · 2 340 lignes</span><span>·</span>
+                    <span class="dpm-tick-hot">⬤ Commande #1847 · +290€</span><span>·</span><span>4 leads qualifiés · Beauté</span><span>·</span><span class="dpm-tick-hot">Rapport · 12.4k€</span><span>·</span><span>+12% conv. cette semaine</span><span>·</span><span>Export · 2 340 lignes</span><span>·</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
           <div class="bc6-body">
 
-            <div class="bc6-title">Automatisation</div>
-            <div class="bc6-desc">Emails, relances, reporting — vos process tournent seuls pendant que vous travaillez.</div>
+            <div class="bc6-title">Automatisation data</div>
+            <div class="bc6-desc">Ventes, trafic, clients — collectés, analysés et présentés automatiquement en dashboards clairs et alertes en temps réel.</div>
           </div>
           <div class="bc6-cta">
             <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
@@ -2784,51 +3406,146 @@
           </div>
         </div>
 
-        <!-- Card 4 — SEO -->
+        <!-- Card 4 — Automatisation Marketing -->
         <div class="bc6 bg6-4">
-          <div class="bc6-bg">
-            <img src="https://images.unsplash.com/photo-1562577309-2592ab84b1bc?w=800&auto=format&fit=crop" alt="">
+          <div class="mkt-visual">
+            <div class="mkt-seq">
+              <div class="mkt-seq-row">
+                <span style="font-size:14px">📧</span>
+                <div style="flex:1">
+                  <div class="mkt-seq-label">Email 1 — Prise de contact</div>
+                  <div class="mkt-seq-sub">Envoyé automatiquement</div>
+                </div>
+                <span class="mkt-badge mkt-badge-green">✓ 41% ouverture</span>
+              </div>
+              <div class="mkt-seq-row mkt-active">
+                <span style="font-size:14px">🔁</span>
+                <div style="flex:1">
+                  <div class="mkt-seq-label">Relance J+2</div>
+                  <div class="mkt-seq-sub">Si pas de réponse</div>
+                </div>
+                <span class="mkt-badge mkt-badge-blue">↑ +18% conv.</span>
+              </div>
+              <div class="mkt-seq-row">
+                <span style="font-size:14px">🎯</span>
+                <div style="flex:1">
+                  <div class="mkt-seq-label">Lead scoré · appel planifié</div>
+                  <div class="mkt-seq-sub">Score 94 — priorité haute</div>
+                </div>
+                <span class="mkt-badge mkt-badge-pulse"><span class="mkt-pulse-dot"></span>Live</span>
+              </div>
+            </div>
+            <div class="mkt-metrics">
+              <div class="mkt-metric">
+                <span class="mkt-metric-val">2.3k</span>
+                <span class="mkt-metric-lbl">emails/mois</span>
+              </div>
+              <div class="mkt-metric">
+                <span class="mkt-metric-val">J+2/5</span>
+                <span class="mkt-metric-lbl">relances auto</span>
+              </div>
+              <div class="mkt-metric">
+                <span class="mkt-metric-val">0h</span>
+                <span class="mkt-metric-lbl">intervention</span>
+              </div>
+            </div>
           </div>
           <div class="bc6-body">
-            <div class="bc6-title">SEO & Visibilité</div>
-            <div class="bc6-desc">Remontez sur Google, soignez votre réputation et gagnez en visibilité locale.</div>
+            <div class="bc6-title">Automatisation Marketing</div>
+            <div class="bc6-desc">Prospection, relances auto et scoring de leads — votre pipeline commercial tourne sans vous.</div>
           </div>
           <div class="bc6-cta">
             <a href="#" onclick="event.preventDefault();scrollToSection('realisations')">
-              Analyser mon site
+              Voir les cas d'usage
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
         </div>
 
-        <!-- Card 5 — Conseil IA -->
+        <!-- Card 5 — Présence Média -->
         <div class="bc6 bg6-5">
-          <div class="bc6-bg">
-            <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&auto=format&fit=crop" alt="">
+          <div class="media-visual">
+            <div class="media-platforms">
+              <div class="media-platform-row">
+                <div class="media-platform-icon">🔍</div>
+                <span class="media-platform-name">Google Business</span>
+                <div class="media-bar-wrap">
+                  <div class="media-bar-fill" style="width:88%;background:#34a853;animation-delay:.1s"></div>
+                </div>
+                <span class="media-score">88</span>
+              </div>
+              <div class="media-platform-row">
+                <div class="media-platform-icon">📸</div>
+                <span class="media-platform-name">Instagram</span>
+                <div class="media-bar-wrap">
+                  <div class="media-bar-fill" style="width:62%;background:#e1306c;animation-delay:.25s"></div>
+                </div>
+                <span class="media-score">62</span>
+              </div>
+              <div class="media-platform-row">
+                <div class="media-platform-icon">⭐</div>
+                <span class="media-platform-name">Avis clients</span>
+                <div class="media-bar-wrap">
+                  <div class="media-bar-fill" style="width:75%;background:#fbbc04;animation-delay:.4s"></div>
+                </div>
+                <span class="media-score">75</span>
+              </div>
+            </div>
+            <div class="media-bottom">
+              <div class="media-kpi">
+                <span class="media-kpi-val">+34%</span>
+                <span class="media-kpi-lbl">visibilité locale</span>
+              </div>
+              <div class="media-kpi">
+                <span class="media-kpi-val">4.8★</span>
+                <span class="media-kpi-lbl">note moyenne</span>
+              </div>
+              <div class="media-kpi">
+                <span class="media-kpi-val">2j</span>
+                <span class="media-kpi-lbl">audit complet</span>
+              </div>
+            </div>
           </div>
           <div class="bc6-body">
-            <div class="bc6-title">Conseil IA</div>
-            <div class="bc6-desc">Audit, stratégie et implémentation — on vous guide pas à pas dans votre transition IA.</div>
+            <div class="bc6-title">Présence Média</div>
+            <div class="bc6-desc">Audit digital, Google Business, réseaux sociaux et réputation — votre visibilité locale optimisée.</div>
           </div>
           <div class="bc6-cta">
             <a href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">
-              Prendre RDV
+              Auditer ma présence
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
         </div>
 
-        <!-- Card 6 — Prospection (full-width) -->
+        <!-- Card 6 — Présence Web (full-width) -->
         <div class="bc6 bg6-6" style="grid-template-rows: unset;">
-          <div class="bc6-bg">
-            <img src="https://images.unsplash.com/photo-1553484771-047a44eee27b?w=1600&auto=format&fit=crop" alt="">
+          <div class="web-visual">
+            <div class="web-feature">
+              <div class="web-feature-icon">🌐</div>
+              <div class="web-feature-name">Site vitrine & e-commerce</div>
+              <div class="web-feature-desc">Conçu pour convertir, livré rapidement</div>
+            </div>
+            <div class="web-feature">
+              <div class="web-feature-icon">📅</div>
+              <div class="web-feature-name">Réservation en ligne</div>
+              <div class="web-feature-desc">Agenda intégré, zéro friction client</div>
+            </div>
+            <div class="web-feature">
+              <div class="web-feature-icon">🤖</div>
+              <div class="web-feature-name">Chatbot intégré</div>
+              <div class="web-feature-desc">Répond, qualifie et capte des leads 24h/24</div>
+            </div>
+            <div class="web-feature">
+              <div class="web-feature-icon">🔍</div>
+              <div class="web-feature-name">Optimisation SEO</div>
+              <div class="web-feature-desc">Visibilité locale et nationale sur Google</div>
+            </div>
           </div>
           <div class="bc6-body" style="flex-direction:row; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-            <div style="display:flex;align-items:center;gap:16px;">
-              <div>
-                <div class="bc6-title">Prospection automatisée</div>
-                <div class="bc6-desc" style="max-width:560px">Scraping, scoring, emails personnalisés et relances — votre pipeline commercial tourne en autonome.</div>
-              </div>
+            <div>
+              <div class="bc6-title">Présence web</div>
+              <div class="bc6-desc" style="max-width:560px">Création de site, réservation, chatbot et SEO — tout ce qu'il faut pour exister et convertir en ligne.</div>
             </div>
           </div>
           <div class="bc6-cta" style="bottom:auto;top:50%;transform:translateY(calc(-50% + 10px));left:auto;right:28px;width:auto;">
@@ -2840,6 +3557,45 @@
         </div>
 
       </div>
+        <!-- Card 7 — Automatisations sur mesure (full-width) -->
+        <div class="bc6 bg6-7" id="holoCard" style="grid-template-rows: unset; background: linear-gradient(135deg, #1a1aff 0%, #7b2fff 50%, #ff2d78 100%);">
+          <div class="holo-rainbow"></div>
+          <div class="holo-glow"></div>
+          <div class="holo-scan"></div>
+          <div class="auto-visual">
+            <div class="auto-stat-block">
+              <div class="auto-stat-number">2h<span style="color:#ffffff;font-size:1.4rem;">/jour</span></div>
+              <div class="auto-stat-label" style="color:#c7c7cc;">gagnées par employé dans les entreprises qui automatisent avec l'IA.</div>
+            </div>
+            <div class="auto-divider" style="background:#444;"></div>
+            <div class="auto-tasks">
+              <div class="auto-task" style="background:rgba(255,255,255,0.15);color:#fff;"><div class="auto-task-dot green"></div>Facturation automatique</div>
+              <div class="auto-task" style="background:rgba(255,255,255,0.15);color:#fff;"><div class="auto-task-dot green"></div>Suivi commandes</div>
+              <div class="auto-task" style="background:rgba(255,255,255,0.15);color:#fff;"><div class="auto-task-dot blue"></div>Relances clients</div>
+              <div class="auto-task" style="background:rgba(255,255,255,0.15);color:#fff;"><div class="auto-task-dot green"></div>Rapports hebdo</div>
+              <div class="auto-task" style="background:rgba(255,255,255,0.15);color:#fff;"><div class="auto-task-dot orange"></div>Gestion des stocks</div>
+              <div class="auto-task" style="background:rgba(255,255,255,0.15);color:#fff;"><div class="auto-task-dot blue"></div>Qualification de leads</div>
+              <div class="auto-task" style="background:rgba(255,255,255,0.15);color:#fff;"><div class="auto-task-dot green"></div>Confirmations de RDV</div>
+              <div class="auto-task" style="background:rgba(255,255,255,0.15);color:#fff;"><div class="auto-task-dot orange"></div>Saisie comptable</div>
+              <div class="auto-task" style="background:rgba(255,255,255,0.15);color:#fff;"><div class="auto-task-dot blue"></div>Veille concurrentielle</div>
+              <div class="auto-task" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);font-style:italic;">+ tout ce que vous faites à la main</div>
+            </div>
+          </div>
+          <div class="bc6-body" style="flex-direction:row; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div>
+              <div class="bc6-title" style="color:#ffffff;animation:autoStatPulse 3.5s ease-in-out infinite;text-shadow:0 0 8px rgba(255,255,255,0.2);">Automatisations sur mesure</div>
+              <div class="bc6-desc" style="color:#aeaeb2;max-width:560px;">Presque tout ce que vous faites à la main peut être automatisé. On vous montre exactement quoi — et on le fait.</div>
+            </div>
+          </div>
+          <div class="bc6-cta" style="bottom:auto;top:50%;transform:translateY(calc(-50% + 10px));left:auto;right:28px;width:auto;">
+            <a href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})" style="font-size:0.875rem;color:#f5f5f7;">
+              Calculer mon gain de temps
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /.bc6-frame -->
     </div>
 
   </section>
@@ -3973,6 +4729,219 @@
 
     // REALISATIONS — pas de dwell lock, fond beige fixe
 
+
+    // ─────────────────────────────────────────
+    // SAV CHAT LOOP
+    // ─────────────────────────────────────────
+    (function() {
+      var delays  = [300, 1100, 2000, 2800];
+      var loopAt  = 6500;
+
+      function runSav() {
+        var msgs = document.querySelectorAll('.sav-msg');
+        msgs.forEach(function(el) { el.classList.remove('sav-visible', 'sav-out'); });
+
+        delays.forEach(function(d, i) {
+          setTimeout(function() {
+            if (msgs[i]) msgs[i].classList.add('sav-visible');
+          }, d);
+        });
+
+        setTimeout(function() {
+          msgs.forEach(function(el) { el.classList.remove('sav-visible'); el.classList.add('sav-out'); });
+        }, 5200);
+
+        setTimeout(runSav, loopAt);
+      }
+
+      runSav();
+    })();
+
+    // ─────────────────────────────────────────
+    // DASHBOARD ANIMATION — Card 3 (tabbed, 4 panels)
+    // ─────────────────────────────────────────
+    (function() {
+      var clockEl = document.getElementById('dpmClock');
+      function updateClock() {
+        if (!clockEl) return;
+        var now = new Date();
+        clockEl.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+      }
+      updateClock(); setInterval(updateClock, 30000);
+
+      if (!document.getElementById('dpmv1')) return;
+
+      // ── Tab switching ──
+      var tabs = Array.from(document.querySelectorAll('.dpm-tab'));
+      var panels = [0,1,2,3].map(function(i){ return document.getElementById('dpmPanel'+i); });
+      var currentTab = 0, tabTimer = null;
+
+      function activateTab(idx) {
+        tabs.forEach(function(t,i){ t.classList.toggle('dpm-tab-active', i===idx); });
+        panels.forEach(function(p,i){ if(p) p.classList.toggle('dpm-active', i===idx); });
+        currentTab = idx;
+        animatePanel(idx);
+      }
+      tabs.forEach(function(t,i){
+        t.addEventListener('click', function(){ clearTimeout(tabTimer); activateTab(i); scheduleNext(); });
+      });
+      function scheduleNext() {
+        clearTimeout(tabTimer);
+        tabTimer = setTimeout(function(){ activateTab((currentTab+1)%4); scheduleNext(); }, 8000);
+      }
+
+      // ── Helpers ──
+      function stroke(el, len, delay, dur) {
+        if (!el) return;
+        el.style.transition='none'; el.style.strokeDasharray=len; el.style.strokeDashoffset=len;
+        void el.getBoundingClientRect();
+        setTimeout(function(){ el.style.transition='stroke-dashoffset '+(dur/1000)+'s cubic-bezier(0.4,0,0.2,1)'; el.style.strokeDashoffset='0'; }, delay);
+      }
+      function countN(el, target, delay, ms) {
+        if (!el) return;
+        setTimeout(function(){
+          var steps=40, dt=ms/steps, n=0;
+          var iv=setInterval(function(){ n++; el.textContent=Math.round(target*n/steps); if(n>=steps){clearInterval(iv);el.textContent=target;} }, dt);
+        }, delay);
+      }
+
+      // ── Panel 0 — Overview ──
+      var v1=document.getElementById('dpmv1'), v2=document.getElementById('dpmv2'),
+          v3=document.getElementById('dpmv3'), v4=document.getElementById('dpmv4');
+      var lineEl=document.getElementById('dpmLine'), areaEl=document.getElementById('dpmArea');
+      var dots=['dpmDot1','dpmDot2','dpmDot3','dpmDot4'].map(function(id){return document.getElementById(id);});
+      var sparks=['dpmsp1','dpmsp2','dpmsp3','dpmsp4'].map(function(id){return document.getElementById(id);});
+      var segs=['dpmSeg1','dpmSeg2','dpmSeg3'].map(function(id){return document.getElementById(id);});
+      var pcts=['dpmPct1','dpmPct2','dpmPct3'].map(function(id){return document.getElementById(id);});
+      var donutVal=document.getElementById('dpmDonutVal'), alertEl=document.getElementById('dpmAlert'), heatGrid=document.getElementById('dpmHeatGrid');
+      var segArcs=[81.8,31.7,18.5], segPcts=[62,24,14];
+      var heatData=[[2,4,3,1],[3,4,5,3],[2,3,4,2],[4,5,5,4],[3,4,5,3],[1,2,1,0],[0,1,2,1]];
+      var heatColors=['rgba(0,113,227,0.06)','rgba(0,113,227,0.2)','rgba(0,113,227,0.4)','rgba(0,113,227,0.65)','#0071e3','#7ec5ff'];
+
+      if (heatGrid && !heatGrid.children.length) {
+        heatData.forEach(function(col){
+          var c=document.createElement('div'); c.className='dpm-heat-col';
+          col.forEach(function(v){ var cell=document.createElement('div'); cell.className='dpm-heat-cell'; cell.setAttribute('data-v',v); c.appendChild(cell); });
+          heatGrid.appendChild(c);
+        });
+      }
+
+      function animatePanel0() {
+        if(v1)v1.textContent='0€'; if(v2)v2.textContent='0'; if(v3)v3.textContent='0'; if(v4)v4.textContent='0%';
+        if(donutVal)donutVal.textContent='0';
+        sparks.forEach(function(s){if(s){s.style.transition='none';s.style.strokeDasharray='70';s.style.strokeDashoffset='70';}});
+        if(lineEl){lineEl.style.transition='none';lineEl.style.strokeDasharray='260';lineEl.style.strokeDashoffset='260';}
+        if(areaEl){areaEl.style.transition='none';areaEl.style.opacity='0';}
+        dots.forEach(function(d){if(d){d.style.transition='none';d.style.opacity='0';d.style.animation='none';}});
+        segs.forEach(function(s,i){if(s){s.style.transition='none';s.style.strokeDashoffset=String(segArcs[i]);}});
+        pcts.forEach(function(p){if(p)p.textContent='0%';});
+        if(alertEl)alertEl.classList.remove('dpm-visible');
+        if(heatGrid)heatGrid.querySelectorAll('.dpm-heat-cell').forEach(function(c){c.style.background=heatColors[0];c.style.boxShadow='none';});
+        void document.body.getBoundingClientRect();
+
+        setTimeout(function(){
+          var steps=40,dt=25,n=0,iv=setInterval(function(){
+            n++; var val=12400*n/steps; if(v1)v1.textContent=(val>=1000?(val/1000).toFixed(1)+'k':Math.round(val))+'€';
+            if(n>=steps){clearInterval(iv);if(v1)v1.textContent='12.4k€';}
+          },dt);
+        },100);
+        countN(v2,248,200,950); countN(v3,4730,300,1000); countN(donutVal,4730,700,950);
+        setTimeout(function(){
+          var steps=40,dt=22,n=0,iv=setInterval(function(){
+            n++;if(v4)v4.textContent=(6.4*n/steps).toFixed(1)+'%';
+            if(n>=steps){clearInterval(iv);if(v4)v4.textContent='6.4%';}
+          },dt);
+        },380);
+        sparks.forEach(function(s,i){ stroke(s,70,160+i*100,900); });
+        setTimeout(function(){
+          stroke(lineEl,260,0,1600);
+          setTimeout(function(){if(areaEl){void areaEl.getBoundingClientRect();areaEl.style.transition='opacity 1s ease';areaEl.style.opacity='1';}},400);
+        },480);
+        dots.forEach(function(d,i){
+          setTimeout(function(){if(!d)return;d.style.transition='opacity 0.3s ease';d.style.opacity='1';if(i===3)d.style.animation='dpmBlink 1.5s ease-in-out infinite';},780+i*260);
+        });
+        segs.forEach(function(seg,i){
+          if(!seg)return;
+          (function(s,idx){
+            setTimeout(function(){
+              void s.getBoundingClientRect();
+              s.style.transition='stroke-dashoffset 1.1s cubic-bezier(0.4,0,0.2,1)'; s.style.strokeDashoffset='0';
+              var steps=25,dt=800/25,n=0,tgt=segPcts[idx],p=pcts[idx];
+              var iv=setInterval(function(){n++;if(p)p.textContent=Math.round(tgt*n/steps)+'%';if(n>=steps){clearInterval(iv);if(p)p.textContent=tgt+'%';}},dt);
+            },880+idx*180);
+          })(seg,i);
+        });
+        if(heatGrid){
+          heatGrid.querySelectorAll('.dpm-heat-cell').forEach(function(c,i){
+            setTimeout(function(){var v=parseInt(c.getAttribute('data-v')||'0');c.style.background=heatColors[v]||heatColors[0];if(v>=4)c.style.boxShadow='0 0 6px rgba(0,113,227,0.5)';},1050+i*32);
+          });
+        }
+        setTimeout(function(){if(v1){v1.textContent='12.5k€';setTimeout(function(){if(v1)v1.textContent='12.4k€';},500);}},5000);
+        setTimeout(function(){if(alertEl)alertEl.classList.add('dpm-visible');},3000);
+      }
+
+      // ── Panel 1 — Analytics ──
+      var barHeights=['30%','40%','53%','70%','85%','45%','20%'];
+      function animatePanel1() {
+        for(var i=0;i<7;i++){
+          var b=document.getElementById('dpmB'+i); if(b){b.style.transition='none';b.style.height='0';}
+        }
+        [0,1,2].forEach(function(i){
+          var f=document.getElementById('dpmFun'+i),fn=document.getElementById('dpmFunN'+i);
+          if(f){f.style.transition='none';f.style.width='0%';} if(fn)fn.textContent='0';
+        });
+        void document.body.getBoundingClientRect();
+        barHeights.forEach(function(h,i){
+          var b=document.getElementById('dpmB'+i);
+          setTimeout(function(){if(b){b.style.transition='height 0.7s cubic-bezier(0.34,1.56,0.64,1)';b.style.height=h;}},150+i*80);
+        });
+        var funnelData=[{w:'100%',n:4730},{w:'38%',n:1797},{w:'5.2%',n:248}];
+        funnelData.forEach(function(d,i){
+          var f=document.getElementById('dpmFun'+i),fn=document.getElementById('dpmFunN'+i);
+          setTimeout(function(){
+            if(f){void f.getBoundingClientRect();f.style.transition='width 1s cubic-bezier(0.4,0,0.2,1)';f.style.width=d.w;}
+            if(fn){var steps=30,dt=900/30,n=0,tgt=d.n;var iv=setInterval(function(){n++;fn.textContent=Math.round(tgt*n/steps);if(n>=steps){clearInterval(iv);fn.textContent=tgt;}},dt);}
+          },700+i*200);
+        });
+      }
+
+      // ── Panel 2 — Sources ──
+      var srcData=[{p:62,l:'62%'},{p:24,l:'24%'},{p:9,l:'9%'},{p:5,l:'5%'}];
+      function animatePanel2() {
+        for(var i=0;i<4;i++){
+          var sf=document.getElementById('dpmSF'+i),sp=document.getElementById('dpmSP'+i);
+          if(sf){sf.style.transition='none';sf.style.width='0%';} if(sp)sp.textContent='0%';
+        }
+        void document.body.getBoundingClientRect();
+        srcData.forEach(function(d,i){
+          var sf=document.getElementById('dpmSF'+i),sp=document.getElementById('dpmSP'+i);
+          setTimeout(function(){
+            if(sf){void sf.getBoundingClientRect();sf.style.transition='width 1s cubic-bezier(0.4,0,0.2,1)';sf.style.width=d.p+'%';}
+            if(sp){var steps=25,dt=900/25,n=0,tgt=d.p;var iv=setInterval(function(){n++;sp.textContent=Math.round(tgt*n/steps)+'%';if(n>=steps){clearInterval(iv);sp.textContent=d.l;}},dt);}
+          },300+i*150);
+        });
+      }
+
+      // ── Panel 3 — Activité ──
+      function animatePanel3() {
+        var items=document.querySelectorAll('#dpmFeedList .dpm-feed-item');
+        items.forEach(function(el){el.classList.remove('dpm-fi-in');});
+        void document.body.getBoundingClientRect();
+        items.forEach(function(el,i){ setTimeout(function(){el.classList.add('dpm-fi-in');},150+i*170); });
+      }
+
+      // ── Dispatch ──
+      function animatePanel(idx) {
+        if(idx===0) animatePanel0();
+        else if(idx===1) animatePanel1();
+        else if(idx===2) animatePanel2();
+        else if(idx===3) animatePanel3();
+      }
+
+      animatePanel0();
+      scheduleNext();
+    })();
+
     // ─────────────────────────────────────────
     // SCROLL REVEAL — Apple-style fade-up entrance
     // ─────────────────────────────────────────
@@ -4147,6 +5116,40 @@
       }
 
       document.querySelectorAll('.btn-secondary, .btn-dark').forEach(attachParticles);
+    })();
+  </script>
+
+  <script>
+    // ── Holographic Card (Card 7) ──
+    (function() {
+      const card = document.getElementById('holoCard');
+      if (!card) return;
+      let hue = 200;
+      card.addEventListener('mousemove', (e) => {
+        card.style.transition = 'box-shadow 0.2s ease';
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const rotX = (y - cy) / 18;
+        const rotY = (cx - x) / 18;
+        hue = (hue + 0.5) % 360;
+        card.style.setProperty('--x', x + 'px');
+        card.style.setProperty('--y', y + 'px');
+        card.style.setProperty('--bg-x', (x / rect.width * 100) + '%');
+        card.style.setProperty('--bg-y', (y / rect.height * 100) + '%');
+        card.style.setProperty('--hue', hue);
+        card.style.transform = `perspective(1200px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.7s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s ease';
+        card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
+        card.style.setProperty('--x', '50%');
+        card.style.setProperty('--y', '50%');
+        card.style.setProperty('--bg-x', '50%');
+        card.style.setProperty('--bg-y', '50%');
+      });
     })();
   </script>
 
