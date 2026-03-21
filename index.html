@@ -378,7 +378,7 @@
     }
     .hero-title {
       font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-      font-size: clamp(2rem, 3.3vw, 3.8rem);
+      font-size: clamp(2.4rem, 3.8vw, 4.6rem);
       font-weight: 700; line-height: 1.12; letter-spacing: -0.025em;
       color: #1d1d1f;
       margin-bottom: clamp(24px, 3vh, 36px);
@@ -1969,14 +1969,71 @@
       border-top: none;
     }
     .join-inner {
-      max-width: 720px; margin: 0 auto; text-align: center;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .join-top {
+      max-width: 640px;
+      margin-bottom: 72px;
+    }
+    .join-eyebrow {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 20px;
+    }
+    .join-top h2 {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 700; letter-spacing: -0.025em;
+      color: #ffffff; line-height: 1.12;
+      margin: 0 0 24px;
+    }
+    .join-text {
+      font-size: 1rem; color: rgba(255,255,255,0.55);
+      line-height: 1.75; margin: 0;
+    }
+    .join-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+    .join-card {
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+    }
+    .join-card-label {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3); margin-bottom: 6px;
+    }
+    .join-card-title {
+      font-size: 1rem; font-weight: 600;
+      color: #ffffff;
+    }
+    .join-card-badge {
+      font-size: 0.72rem; font-weight: 500;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: 4px 12px;
+      color: rgba(255,255,255,0.4);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .join-footer {
+      display: flex; align-items: center; gap: 40px;
+      margin-bottom: 64px;
+    }
+    @media (max-width: 768px) {
+      .join-grid { grid-template-columns: 1fr; }
+      .join-footer { flex-direction: column; align-items: flex-start; gap: 24px; }
     }
     .join-inner .section-header {
       padding: 0; margin-bottom: 48px;
-    }
-    .join-text {
-      font-size: 1.05rem; color: var(--text-secondary);
-      line-height: 1.75; margin-bottom: 20px;
     }
     .join-tags {
       display: flex; flex-wrap: wrap; gap: 10px;
@@ -2146,13 +2203,13 @@
             <!-- Panel : Services -->
             <div class="shift-panel" data-panel="services">
               <div class="sp-grid">
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Présence web</h4></div></a>
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Automatisation métier</h4></div></a>
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>SAV automatisé</h4></div></a>
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Automatisation data</h4></div></a>
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Automatisation Marketing</h4></div></a>
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')"><div class="sp-text"><h4>Présence Média</h4></div></a>
-                <a href="#" class="sp-item" onclick="event.preventDefault();scrollToSection('offres')" style="grid-column:1/-1;"><div class="sp-text"><h4>Automatisations sur mesure</h4></div></a>
+                <a href="services/presence-web.html" class="sp-item"><div class="sp-text"><h4>Présence web</h4></div></a>
+                <a href="services/automatisation-metier.html" class="sp-item"><div class="sp-text"><h4>Automatisation métier</h4></div></a>
+                <a href="services/sav-automatise.html" class="sp-item"><div class="sp-text"><h4>SAV automatisé</h4></div></a>
+                <a href="services/automatisation-data.html" class="sp-item"><div class="sp-text"><h4>Automatisation data</h4></div></a>
+                <a href="services/automatisation-marketing.html" class="sp-item"><div class="sp-text"><h4>Automatisation Marketing</h4></div></a>
+                <a href="services/presence-media.html" class="sp-item"><div class="sp-text"><h4>Présence Média</h4></div></a>
+                <a href="services/automatisations-sur-mesure.html" class="sp-item" style="grid-column:1/-1;"><div class="sp-text"><h4>Automatisations sur mesure</h4></div></a>
               </div>
               <div class="sp-footer">
                 <a class="sp-cta" href="#" onclick="event.preventDefault();scrollToSection('offres')">
@@ -2173,7 +2230,7 @@
   <!-- Hero -->
   <section id="hero" class="stack-slide">
     <div class="hero-content">
-      <h1 class="hero-title">Développez le <span class="hero-ai">plein potentiel</span> de votre<br>activité grâce à l'<span class="hero-ai" id="heroAI">IA</span>.</h1>
+      <h1 class="hero-title">Développez le <span class="hero-ai">plein potentiel</span><br>de votre activité grâce à l'<span class="hero-ai" id="heroAI">IA</span>.</h1>
     </div>
     <div class="hero-buttons-bottom">
       <a href="#" class="btn-primary" id="hero-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">
@@ -3546,6 +3603,149 @@
 
   </section>
 
+  <!-- Zoom Parallax -->
+  <section style="position: relative; z-index: 3; background: #fff;">
+    <style>
+      #zoom-parallax-section {
+        position: relative;
+        height: 400vh;
+        background: #fff;
+      }
+      .zp-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: hidden;
+        background: #ffffff;
+      }
+      .zp-layer {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        will-change: transform;
+      }
+      .zp-layer img {
+        position: absolute;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+        will-change: transform;
+        transform-origin: center center;
+      }
+      /* Image 0 — centre (rendu pleine résolution) */
+      .zp-layer:nth-child(1) img {
+        width: 100vw; height: 100vh;
+        top: 0; left: 0;
+      }
+      /* Image 1 — haut, décalée droite */
+      .zp-layer:nth-child(2) img {
+        width: 35vw; height: 30vh;
+        top: calc(50% - 45vh);
+        left: calc(50% - 12.5vw);
+      }
+      /* Image 2 — gauche, haute */
+      .zp-layer:nth-child(3) img {
+        width: 20vw; height: 45vh;
+        top: calc(50% - 32.5vh);
+        left: calc(50% - 35vw);
+      }
+      /* Image 3 — droite */
+      .zp-layer:nth-child(4) img {
+        width: 25vw; height: 25vh;
+        top: calc(50% - 12.5vh);
+        left: calc(50% + 15vw);
+      }
+      /* Image 4 — bas centre-droite */
+      .zp-layer:nth-child(5) img {
+        width: 20vw; height: 25vh;
+        top: calc(50% + 15vh);
+        left: calc(50% - 5vw);
+      }
+      /* Image 5 — bas gauche */
+      .zp-layer:nth-child(6) img {
+        width: 30vw; height: 25vh;
+        top: calc(50% + 15vh);
+        left: calc(50% - 37.5vw);
+      }
+      /* Image 6 — bas droite */
+      .zp-layer:nth-child(7) img {
+        width: 15vw; height: 15vh;
+        top: calc(50% + 15vh);
+        left: calc(50% + 17.5vw);
+      }
+    </style>
+
+    <div id="zoom-parallax-section">
+      <div class="zp-sticky">
+
+        <!-- Layer 0 — centre, scale 0.25→1 -->
+        <div class="zp-layer" data-scale-start="0.25">
+          <img src="images/hero-bg.png" alt="Code IA">
+        </div>
+
+        <!-- Layer 1 — haut, scale 1→5 -->
+        <div class="zp-layer" data-scale-end="5">
+          <img src="images/par-layer1.png" alt="Circuit board">
+        </div>
+
+        <!-- Layer 2 — gauche, scale 1→6 -->
+        <div class="zp-layer" data-scale-end="6">
+          <img src="images/par-layer2.png" alt="Server rack">
+        </div>
+
+        <!-- Layer 3 — droite, scale 1→5 -->
+        <div class="zp-layer" data-scale-end="5">
+          <img src="images/par-layer3.png" alt="Eye reflection">
+        </div>
+
+        <!-- Layer 4 — bas centre-droite, scale 1→6 -->
+        <div class="zp-layer" data-scale-end="6">
+          <img src="images/par-layer4.png" alt="Dashboard screens">
+        </div>
+
+        <!-- Layer 5 — bas gauche, scale 1→8 -->
+        <div class="zp-layer" data-scale-end="8">
+          <img src="images/par-layer5.png" alt="Hands keyboard">
+        </div>
+
+        <!-- Layer 6 — bas droite, scale 1→9 -->
+        <div class="zp-layer" data-scale-end="9">
+          <img src="images/par-layer6.png" alt="Fiber optics">
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var section = document.getElementById('zoom-parallax-section');
+        if (!section) return;
+        var layers = Array.from(section.querySelectorAll('.zp-layer'));
+        function tick() {
+          var rect = section.getBoundingClientRect();
+          var scrollable = section.offsetHeight - window.innerHeight;
+          var progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+
+          layers.forEach(function (layer) {
+            var startAttr = layer.getAttribute('data-scale-start');
+            var scale;
+            if (startAttr !== null) {
+              var s = parseFloat(startAttr);
+              scale = s + progress * (1 - s);
+            } else {
+              var end = parseFloat(layer.getAttribute('data-scale-end')) || 4;
+              scale = 1 + progress * (end - 1);
+            }
+            layer.style.transform = 'scale(' + scale + ')';
+          });
+        }
+
+        window.addEventListener('scroll', tick, { passive: true });
+        tick();
+      })();
+    </script>
+  </section>
+
   <!-- Notre Processus -->
   <section id="timeline-section" style="position: relative; z-index: 2; background: #ffffff;">
 
@@ -3805,32 +4005,31 @@
           <div class="tl-step-label-mobile">01</div>
           <h3 class="tl-step-title">Brief & cadrage</h3>
           <div class="scroll-cards-section">
-            <!-- Photo — meeting -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.55) saturate(0.85);"></div>
-              <!-- Vignette top -->
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.72) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 01</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Analyse de votre activité<br>et vos besoins</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">On écoute vos besoins, on analyse votre activité, et on identifie comment vous faire <strong style="color:#fff;font-weight:600;">gagner</strong> du <strong style="color:#fff;font-weight:600;">temps</strong> et de l'<strong style="color:#fff;font-weight:600;">argent</strong>.</p>
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;background:#f5f5f7;border:1px solid rgba(0,0,0,0.06);">
+              <div style="position:absolute;inset:0;background-image:url('images/card-brief.png');background-size:cover;background-position:center top;opacity:0.9;"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, transparent 35%, rgba(245,245,247,0.97) 70%);"></div>
+              <div style="position:absolute;top:20px;right:28px;font-size:5rem;font-weight:800;color:rgba(0,0,0,0.05);line-height:1;font-family:var(--font-head);user-select:none;">01</div>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:32px;">
+                <span style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Analyse & cadrage</span>
+                <h3 style="font-size:1.1rem;font-weight:700;color:#1d1d1f;line-height:1.35;margin:0 0 10px;">Comprendre votre activité<br>avant de toucher une ligne de code</h3>
+                <p style="font-size:0.82rem;color:#6e6e73;line-height:1.6;margin:0;">Écoute, analyse, formalisation — cahier des charges co-construit et signé avant de démarrer.</p>
               </div>
             </div>
-            <!-- Photo — cahier des charges -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.5) saturate(0.8);"></div>
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 01</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Cahier des charges<br>co-construit</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">On travaille à deux pour formaliser vos contraintes, vos priorités et le périmètre exact du projet — signé avant de commencer.</p>
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);">
+              <div style="position:absolute;inset:0;background-image:url('images/card-proposal.png');background-size:cover;background-position:center;opacity:0.8;"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.88) 100%);"></div>
+              <div style="position:absolute;top:20px;right:28px;font-size:5rem;font-weight:800;color:rgba(255,255,255,0.04);line-height:1;font-family:var(--font-head);user-select:none;">01</div>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:32px;">
+                <span style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Proposition</span>
+                <h3 style="font-size:1.1rem;font-weight:700;color:#fff;line-height:1.35;margin:0 0 10px;">Devis clair,<br>sans surprise</h3>
+                <p style="font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:0;">Coût, délais, livrables — tout par écrit. On ne démarre qu'avec votre accord signé.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ÉTAPE 02 — Proposition & validation -->
+      <!-- ÉTAPE 02 — Conception & développement -->
       <div class="tl-entry" data-tl>
         <div class="tl-left">
           <div class="tl-dot"><div class="tl-dot-inner"></div></div>
@@ -3838,33 +4037,32 @@
         </div>
         <div class="tl-right">
           <div class="tl-step-label-mobile">02</div>
-          <h3 class="tl-step-title">Proposition & validation</h3>
+          <h3 class="tl-step-title">Conception & développement</h3>
           <div class="scroll-cards-section">
-            <!-- Photo — devis -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.5) saturate(0.8);"></div>
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 02</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Devis clair,<br>sans surprise</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Coût, délais, livrables — tout posé par écrit avant de commencer.</p>
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);">
+              <div style="position:absolute;inset:0;background-image:url('images/card-dev.png');background-size:cover;background-position:center;opacity:0.75;"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.85) 100%);"></div>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:32px;">
+                <span style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Développement</span>
+                <h3 style="font-size:1.1rem;font-weight:700;color:#fff;line-height:1.35;margin:0 0 10px;">Construit avec rigueur,<br>livré sans bug</h3>
+                <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.6;margin:0;">Développement propre, testé en interne — cross-browser, mobile, performance.</p>
               </div>
             </div>
-            <!-- Photo — validation/accord -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.45) saturate(0.8);"></div>
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 02</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Votre accord<br>avant tout</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">On ne démarre qu'avec votre signature. Aucune dérive de périmètre possible.</p>
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;background:#f5f5f7;border:1px solid rgba(0,0,0,0.06);">
+              <div style="position:absolute;inset:0;background-image:url('images/card-iter.png');background-size:cover;background-position:center top;opacity:0.9;"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, transparent 35%, rgba(245,245,247,0.97) 70%);"></div>
+              <div style="position:absolute;top:20px;right:28px;font-size:5rem;font-weight:800;color:rgba(0,0,0,0.05);line-height:1;font-family:var(--font-head);user-select:none;">02</div>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:32px;">
+                <span style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Itérations</span>
+                <h3 style="font-size:1.1rem;font-weight:700;color:#1d1d1f;line-height:1.35;margin:0 0 10px;">Un round d'ajustements<br>inclus, sans discussion</h3>
+                <p style="font-size:0.82rem;color:#6e6e73;line-height:1.6;margin:0;">Vos retours intégrés rapidement. Votre feu vert avant la mise en ligne.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ÉTAPE 03 — Première version -->
+      <!-- ÉTAPE 03 — Livraison & suivi -->
       <div class="tl-entry" data-tl>
         <div class="tl-left">
           <div class="tl-dot"><div class="tl-dot-inner"></div></div>
@@ -3872,129 +4070,22 @@
         </div>
         <div class="tl-right">
           <div class="tl-step-label-mobile">03</div>
-          <h3 class="tl-step-title">Première version</h3>
+          <h3 class="tl-step-title">Livraison & suivi</h3>
           <div class="scroll-cards-section">
-            <!-- Photo — laptop/code -->
-            <div class="scroll-card-item">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80');background-size:cover;background-position:center;"></div>
-              <div class="sc-body" style="background:linear-gradient(to top,rgba(0,0,0,0.78) 0%,rgba(0,0,0,0.08) 100%);">
-                <h3 class="sc-title" style="color:#fff;">On construit, pas on bricole</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.72);">Développement propre, testé en interne avant de vous montrer quoi que ce soit.</p>
-              </div>
-            </div>
-            <!-- Photo — design/screens -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 03</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Testé avant<br>de vous montrer</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Cross-browser, mobile, performance — zéro bug au moment de la présentation.</p>
+            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);">
+              <div style="position:absolute;inset:0;background-image:url('images/card-deploy.png');background-size:cover;background-position:center;opacity:0.8;"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.88) 100%);"></div>
+              <div style="position:absolute;top:20px;right:28px;font-size:5rem;font-weight:800;color:rgba(255,255,255,0.04);line-height:1;font-family:var(--font-head);user-select:none;">03</div>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:32px;">
+                <span style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Mise en production</span>
+                <h3 style="font-size:1.1rem;font-weight:700;color:#fff;line-height:1.35;margin:0 0 10px;">Votre projet en ligne,<br>tout vous appartient</h3>
+                <p style="font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:0;">Déploiement, tests finaux, formation. Hébergement, domaine, accès — remise complète. Un interlocuteur dédié dans la durée.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ÉTAPE 04 — Retours & ajustements -->
-      <div class="tl-entry" data-tl>
-        <div class="tl-left">
-          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
-          <span class="tl-step-label">04</span>
-        </div>
-        <div class="tl-right">
-          <div class="tl-step-label-mobile">04</div>
-          <h3 class="tl-step-title">Retours & ajustements</h3>
-          <div class="scroll-cards-section">
-            <!-- Photo — feedback/review -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 04</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Vos retours<br>bien pris en compte</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Feedback structuré, priorisé, intégré. Pas d'allers-retours éparpillés.</p>
-              </div>
-            </div>
-            <!-- Photo — laptop/review -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 04</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Un round inclus,<br>sans discussion</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Modifications intégrées rapidement. Votre feu vert avant la mise en ligne.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ÉTAPE 05 — Livraison finale -->
-      <div class="tl-entry" data-tl>
-        <div class="tl-left">
-          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
-          <span class="tl-step-label">05</span>
-        </div>
-        <div class="tl-right">
-          <div class="tl-step-label-mobile">05</div>
-          <h3 class="tl-step-title">Livraison finale</h3>
-          <div class="scroll-cards-section">
-            <!-- Photo — analytics/live -->
-            <div class="scroll-card-item">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80');background-size:cover;background-position:center;"></div>
-              <div class="sc-body" style="background:linear-gradient(to top,rgba(0,0,0,0.78) 0%,rgba(0,0,0,0.08) 100%);">
-                <h3 class="sc-title" style="color:#fff;">Votre site est en ligne</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.72);">Déploiement, tests finaux, formation à la mise à jour — tout inclus.</p>
-              </div>
-            </div>
-            <!-- Photo — handover/keys -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 05</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Tout vous<br>appartient</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Hébergement, domaine, backoffice — remise complète de tous les accès.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ÉTAPE 06 — Suivi J+30 -->
-      <div class="tl-entry" data-tl>
-        <div class="tl-left">
-          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
-          <span class="tl-step-label">06</span>
-        </div>
-        <div class="tl-right">
-          <div class="tl-step-label-mobile">06</div>
-          <h3 class="tl-step-title">Maintenance & suivi</h3>
-          <div class="scroll-cards-section">
-            <!-- Photo — analytics/results -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 06</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Votre site<br>toujours à jour</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Mises à jour, sécurité, performances — on s'occupe de la maintenance pour que vous puissiez vous concentrer sur votre métier.</p>
-              </div>
-            </div>
-            <!-- Photo — support/followup -->
-            <div class="scroll-card-item" style="border-radius:20px;overflow:hidden;">
-              <div class="sc-bg" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=85');background-size:cover;background-position:center;filter:brightness(0.3) saturate(0.8);"></div>
-              <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 50%, rgba(0,0,0,0.88) 100%);z-index:1;"></div>
-              <div class="sc-body" style="position:relative;z-index:2;padding:32px;background:none;gap:10px;">
-                <span style="display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Étape 06</span>
-                <h3 class="sc-title" style="color:#fff;font-size:1.15rem;line-height:1.3;">Un interlocuteur<br>dédié, dans la durée</h3>
-                <p class="sc-desc" style="color:rgba(255,255,255,0.65);font-size:0.82rem;line-height:1.6;margin-top:4px;">Corrections, évolutions, questions — on reste disponibles. Pas de ticket anonyme, vous avez un contact direct.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <script>
@@ -4060,24 +4151,46 @@
   <!-- Join -->
   <section id="join" class="stack-slide">
     <div class="join-inner">
-      <div class="section-header">
-        <h2 class="section-title">Rejoindre Nexxo</h2>
+      <div class="join-top">
+        <span class="join-eyebrow">Rejoindre l'équipe</span>
+        <h2>Construisons ensemble.</h2>
+        <p class="join-text">Vous êtes passionné par l'IA, le développement web ou le conseil digital — et vous souhaitez contribuer à des projets à impact réel. Nous recrutons des profils exigeants, capables d'évoluer rapidement dans un environnement ambitieux.</p>
       </div>
-      <p class="join-text">Nous construisons quelque chose de sérieux. Si vous êtes passionné par l'IA, le web et les nouvelles technologies — et que vous voulez avoir un impact réel sur des projets concrets — nous voulons vous rencontrer.</p>
-      <p class="join-text">Chez Nexxo, pas de bureaucratie, pas de bullshit. Une équipe soudée, des clients exigeants, et une culture orientée résultats. Vous apprenez vite, vous progressez vite.</p>
-      <div class="join-tags">
-        <span class="join-tag">Développement Web</span>
-        <span class="join-tag">Automatisation IA</span>
-        <span class="join-tag">Marketing Digital</span>
-        <span class="join-tag">Commercial</span>
-        <span class="join-tag">Design</span>
+
+      <div class="join-grid">
+        <div class="join-card">
+          <div>
+            <div class="join-card-label">Profil recherché</div>
+            <div class="join-card-title">Développement Web & IA</div>
+          </div>
+          <span class="join-card-badge">CDI</span>
+        </div>
+        <div class="join-card">
+          <div>
+            <div class="join-card-label">Profil recherché</div>
+            <div class="join-card-title">Commercial & Développement client</div>
+          </div>
+          <span class="join-card-badge">CDI</span>
+        </div>
+        <div class="join-card">
+          <div>
+            <div class="join-card-label">Profil recherché</div>
+            <div class="join-card-title">Automatisation & Intégration IA</div>
+          </div>
+          <span class="join-card-badge">Freelance</span>
+        </div>
+        <div class="join-card">
+          <div>
+            <div class="join-card-label">Profil recherché</div>
+            <div class="join-card-title">Design UI/UX & Marketing Digital</div>
+          </div>
+          <span class="join-card-badge">CDI</span>
+        </div>
       </div>
-      <a href="mailto:contact@nexxo.systems" class="btn-primary">
-        <div class="shimmer-spark-wrap"><div class="shimmer-spark"><div class="shimmer-spin"></div></div></div>
-        <span class="btn-primary-text">Envoyer votre candidature →</span>
-        <div class="shimmer-highlight"></div>
-        <div class="shimmer-backdrop"></div>
-      </a>
+
+      <div class="join-footer">
+        <p style="font-size:0.85rem;color:rgba(255,255,255,0.3);margin:0;">Candidature spontanée bienvenue — <a href="mailto:contact@nexxo.systems" style="color:rgba(255,255,255,0.45);text-decoration:underline;">contact@nexxo.systems</a></p>
+      </div>
     </div>
 
     <!-- Footer (inside last panel) -->
