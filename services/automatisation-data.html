@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automatisation data — Nexxo</title>
+  <link rel="icon" type="image/png" href="data:image/png;base64,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">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent: #3b82f6;
+      --accent-dark: #2563eb;
+      --accent-rgb: 59, 130, 246;
+      --bg: #ffffff;
+      --text: #1d1d1f;
+      --text-secondary: #6b7280;
+      --border: #e5e7eb;
+      --font-head: 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    .wordmark { font-family: var(--font-head); font-weight: 700; letter-spacing: -0.03em; color: currentColor; }
+    .wordmark .accent-dot { color: #7c3aed; }
+    #navbar { position: sticky; top: 0; z-index: 1000; padding: 14px 48px; transition: background 0.3s; }
+    #navbar.nav-scrolled { background: rgba(250,250,250,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; color: #1d1d1f; font-size: 1.45rem; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .shift-wrap { position: relative; display: flex; align-items: center; gap: 2px; }
+    .shift-tab { display: flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; border: none; background: transparent; color: #3a3a3f; cursor: pointer; font-family: var(--font-body); white-space: nowrap; line-height: 1; transition: background 0.18s, color 0.18s; }
+    .shift-tab.is-active { background: #1d1d1f; color: #f5f5f7; }
+    .shift-chevron { display: inline-flex; align-items: center; justify-content: center; transition: transform 0.22s ease; }
+    .shift-tab.is-active .shift-chevron { transform: rotate(180deg); }
+    .shift-link { display: flex; align-items: center; padding: 7px 14px; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; color: #3a3a3f; text-decoration: none; white-space: nowrap; transition: background 0.18s, color 0.18s; }
+    .shift-link:hover { background: rgba(0,0,0,0.06); color: #1d1d1f; }
+    .shift-bridge { position: absolute; left: 0; right: 0; top: 100%; height: 24px; z-index: 100; }
+    .shift-overlay { position: absolute; top: calc(100% + 20px); left: 0; width: 480px; background: linear-gradient(160deg, #18181b 0%, #141417 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; z-index: 9999; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 0.18s ease, transform 0.18s ease; }
+    .shift-overlay.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .shift-nub { position: absolute; top: -7px; width: 12px; height: 12px; background: #18181b; border-top: 1px solid rgba(255,255,255,0.1); border-left: 1px solid rgba(255,255,255,0.1); transform: translateX(-50%) rotate(45deg); border-radius: 2px 0 0 0; transition: left 0.25s cubic-bezier(0.16,1,0.3,1); }
+    .shift-panel { display: none; }
+    .shift-panel.is-active { display: block; animation: shiftFadeIn 0.15s ease; }
+    @keyframes shiftFadeIn { from { opacity:0; } to { opacity:1; } }
+    .sp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .sp-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px; border-radius: 9px; text-decoration: none; transition: background 0.15s; }
+    .sp-item:hover { background: rgba(255,255,255,0.06); }
+    .sp-text h4 { font-size: 0.78rem; font-weight: 600; color: #f5f5f7; margin-bottom: 2px; }
+    .sp-footer { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: flex-end; }
+    .sp-cta { font-size: 0.78rem; font-weight: 600; color: #7c3aed; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.15s; }
+    .sp-cta:hover { gap: 7px; }
+    .nav-links .nav-cta { background: linear-gradient(135deg, #3b82f6, #7c3aed); color: #fff; padding: 7px 18px; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; border: none; letter-spacing: -0.01em; text-decoration: none; transition: opacity 0.2s ease, transform 0.2s ease; margin-left: 8px; white-space: nowrap; }
+    .nav-links .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .hero {
+      padding: 80px max(48px, 6vw) 72px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 20px;
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1.05;
+      color: var(--text); max-width: 700px;
+    }
+    .hero-desc {
+      margin-top: 20px; font-size: 1.1rem; color: var(--text-secondary);
+      line-height: 1.65; max-width: 560px;
+    }
+    .hero-actions { margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #3b82f6, #7c3aed); color: #fff;
+      padding: 12px 28px; border-radius: 9999px;
+      font-size: 0.9rem; font-weight: 600; transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border); padding: 12px 24px; border-radius: 9999px;
+      font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-secondary:hover { border-color: #9ca3af; color: var(--text); }
+
+    .stats {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex; gap: 0;
+    }
+    .stat {
+      flex: 1; padding: 32px max(48px, 6vw);
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-val {
+      font-size: 2rem; font-weight: 800; letter-spacing: -0.04em; color: var(--text);
+    }
+    .stat-lbl { font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px; }
+
+    .section { padding: 80px max(48px, 6vw); max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700;
+      letter-spacing: -0.03em; color: var(--text); margin-bottom: 48px;
+    }
+
+    .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    @media (max-width: 640px) { .features-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 28px; background: #fff; transition: box-shadow 0.2s;
+    }
+    .feature-card:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+    .feature-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: rgba(var(--accent-rgb), 0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: 16px;
+    }
+    .feature-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex; gap: 28px; padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      font-weight: 600; color: var(--accent);
+      width: 28px; padding-top: 3px; flex-shrink: 0;
+    }
+    .step-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .step-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; }
+
+    .usecases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 720px) { .usecases-grid { grid-template-columns: 1fr; } }
+    .usecase-card {
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 24px; background: #f9fafb;
+    }
+    .usecase-sector {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 10px; display: block;
+    }
+    .usecase-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+    .usecase-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+    .usecase-result {
+      margin-top: 14px; padding: 8px 12px;
+      background: rgba(var(--accent-rgb), 0.06); border-radius: 6px;
+      font-size: 0.78rem; font-weight: 600; color: var(--accent);
+    }
+
+    .cta-section {
+      margin: 0 max(48px, 6vw) 80px;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 16px; padding: 64px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 32px;
+    }
+    .cta-title {
+      font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 700;
+      letter-spacing: -0.03em; color: #fff; max-width: 420px;
+    }
+    .cta-sub { color: #94a3b8; font-size: 0.9rem; margin-top: 8px; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px max(48px, 6vw);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.78rem; color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a class="nav-logo" href="../index.html">
+        <span class="wordmark">Nexxo<span class="accent-dot">.</span></span>
+      </a>
+      <div class="nav-links">
+        <div class="shift-wrap" id="shift-wrap">
+          <button class="shift-tab" data-tab="services">
+            Services
+            <span class="shift-chevron">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+          <a class="shift-link" href="../index.html">Process</a>
+          <a class="shift-link" href="../index.html">Nous rejoindre</a>
+          <div class="shift-bridge"></div>
+          <div class="shift-overlay" id="shift-overlay">
+            <div class="shift-nub" id="shift-nub"></div>
+            <div class="shift-panel" data-panel="services">
+              <div class="sp-grid">
+                <a href="presence-web.html" class="sp-item"><div class="sp-text"><h4>Présence web</h4></div></a>
+                <a href="automatisation-metier.html" class="sp-item"><div class="sp-text"><h4>Automatisation métier</h4></div></a>
+                <a href="sav-automatise.html" class="sp-item"><div class="sp-text"><h4>SAV automatisé</h4></div></a>
+                <a href="automatisation-data.html" class="sp-item"><div class="sp-text"><h4>Automatisation data</h4></div></a>
+                <a href="automatisation-marketing.html" class="sp-item"><div class="sp-text"><h4>Automatisation Marketing</h4></div></a>
+                <a href="presence-media.html" class="sp-item"><div class="sp-text"><h4>Présence Média</h4></div></a>
+                <a href="automatisations-sur-mesure.html" class="sp-item" style="grid-column:1/-1;"><div class="sp-text"><h4>Automatisations sur mesure</h4></div></a>
+              </div>
+              <div class="sp-footer">
+                <a class="sp-cta" href="../index.html">
+                  Voir tous les services
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="nav-cta" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">Solliciter un devis</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <span class="hero-eyebrow">Automatisation data</span>
+    <h1 class="hero-title">Vos données collectées, analysées et présentées automatiquement</h1>
+    <p class="hero-desc">Ventes, trafic, performances — agrégés depuis toutes vos sources et transformés en dashboards clairs, mis à jour en temps réel. Plus jamais de fichiers Excel à consolider.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">
+        Voir un dashboard démo
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn-secondary" href="../index.html#bento-section">Voir tous les services</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val">100%</div>
+      <div class="stat-lbl">de vos sources connectées</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">0h</div>
+      <div class="stat-lbl">de reporting manuel chaque semaine</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">Temps réel</div>
+      <div class="stat-lbl">alertes et mises à jour automatiques</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-eyebrow">Ce qu'on automatise</span>
+    <h2 class="section-title">De la collecte à la décision, sans intervention</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title">Agrégation multi-sources</div>
+        <div class="feature-desc">Connexion de vos outils : CRM, e-commerce, Google Analytics, réseaux sociaux, ERP, Google Sheets — tout centralisé en un seul endroit.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Dashboards automatiques</div>
+        <div class="feature-desc">Tableaux de bord sur mesure selon vos KPIs. Actualisés en temps réel, accessibles depuis n'importe quel appareil, sans manipulation.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">Alertes intelligentes</div>
+        <div class="feature-desc">Notification immédiate si un indicateur dépasse un seuil, si une anomalie est détectée ou si une opportunité apparaît dans vos données.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">Rapports automatisés</div>
+        <div class="feature-desc">Rapport hebdomadaire ou mensuel généré en PDF et envoyé automatiquement aux bonnes personnes, au bon moment.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="background:#f9fafb; max-width:100%; padding-top:72px; padding-bottom:72px;">
+    <div style="max-width:1100px; margin:0 auto; padding:0 max(48px,6vw);">
+      <span class="section-eyebrow">Comment ça marche</span>
+      <h2 class="section-title">Votre data pipeline en 3 étapes</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <div class="step-body">
+            <div class="step-title">Audit de vos sources de données</div>
+            <div class="step-desc">On identifie toutes vos sources (outils, fichiers, APIs) et vos KPIs prioritaires. On cartographie ce que vous voulez voir et décider.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <div class="step-body">
+            <div class="step-title">Construction du pipeline</div>
+            <div class="step-desc">Connexion des sources, transformation des données, création des dashboards et configuration des alertes. Tout est documenté pour que vous en soyez propriétaire.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <div class="step-body">
+            <div class="step-title">Formation et autonomie</div>
+            <div class="step-desc">On vous montre comment lire vos dashboards et interpréter vos alertes. Vous prenez de meilleures décisions, plus vite, sans dépendre de personne.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-eyebrow">Cas d'usage</span>
+    <h2 class="section-title">De la donnée brute à la décision éclairée</h2>
+    <div class="usecases-grid">
+      <div class="usecase-card">
+        <span class="usecase-sector">Commerce / E-commerce</span>
+        <div class="usecase-title">Dashboard ventes en temps réel</div>
+        <div class="usecase-desc">CA, panier moyen, produits les plus vendus, conversion — agrégés depuis votre boutique et envoyés chaque matin par email.</div>
+        <div class="usecase-result">→ Décision pricing 3× plus rapide</div>
+      </div>
+      <div class="usecase-card">
+        <span class="usecase-sector">Agence / Conseil</span>
+        <div class="usecase-title">Reporting client automatisé</div>
+        <div class="usecase-desc">Chaque client reçoit son rapport mensuel personnalisé, généré automatiquement depuis vos outils. Zéro PowerPoint à faire.</div>
+        <div class="usecase-result">→ 8h/mois économisées par client</div>
+      </div>
+      <div class="usecase-card">
+        <span class="usecase-sector">TPE / PME</span>
+        <div class="usecase-title">Suivi de performance multi-sites</div>
+        <div class="usecase-desc">Plusieurs points de vente ou entités ? Toutes leurs données consolidées en un seul dashboard avec comparaisons et alertes.</div>
+        <div class="usecase-result">→ Vision globale en 2 minutes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <div>
+      <div class="cta-title">Vos données valent plus que des tableaux Excel</div>
+      <div class="cta-sub">On vous montre ce qu'un pipeline data peut apporter à votre activité. Démonstration gratuite.</div>
+    </div>
+    <a class="btn-primary" style="background:linear-gradient(135deg,#3b82f6,#7c3aed);flex-shrink:0;" href="#" onclick="event.preventDefault();Calendly.initPopupWidget({url:'https://calendly.com/santu-felli-nexxo-qpkw/30min'})">
+      Réserver une démo →
+    </a>
+  </div>
+
+  <footer>
+    <span>© 2026 Nexxo — Automatisation IA</span>
+    <a href="../index.html" style="color:var(--accent)">← Retour au site</a>
+  </footer>
+
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  <script>
+    (function() {
+      var wrap    = document.getElementById('shift-wrap');
+      var overlay = document.getElementById('shift-overlay');
+      var nub     = document.getElementById('shift-nub');
+      if (!wrap || !overlay || !nub) return;
+      var tabs   = wrap.querySelectorAll('.shift-tab');
+      var panels = wrap.querySelectorAll('.shift-panel');
+      var current = null;
+      function positionNub(tabId) {
+        var activeTab = wrap.querySelector('[data-tab="' + tabId + '"]');
+        if (!activeTab) return;
+        var tabRect = activeTab.getBoundingClientRect();
+        var wrapRect = wrap.getBoundingClientRect();
+        nub.style.left = (tabRect.left + tabRect.width / 2 - wrapRect.left) + 'px';
+      }
+      function showTab(tabId) {
+        current = tabId;
+        tabs.forEach(function(t) { t.classList.toggle('is-active', t.dataset.tab === tabId); });
+        positionNub(tabId);
+        panels.forEach(function(p) {
+          p.classList.remove('is-active');
+          if (p.dataset.panel === tabId) { void p.offsetWidth; p.classList.add('is-active'); }
+        });
+        overlay.classList.add('is-visible');
+      }
+      function hideAll() {
+        current = null;
+        tabs.forEach(function(t) { t.classList.remove('is-active'); });
+        panels.forEach(function(p) { p.classList.remove('is-active'); });
+        overlay.classList.remove('is-visible');
+      }
+      tabs.forEach(function(tab) {
+        tab.addEventListener('mouseenter', function() { showTab(tab.dataset.tab); });
+        tab.addEventListener('click', function() {
+          if (current === tab.dataset.tab) hideAll(); else showTab(tab.dataset.tab);
+        });
+      });
+      wrap.addEventListener('mouseleave', hideAll);
+      window.addEventListener('scroll', function() {
+        document.getElementById('navbar').classList.toggle('nav-scrolled', window.scrollY > 10);
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
